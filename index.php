@@ -1,15 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-    include "src/route.php";
-?>
+require_once "src/router.php";
 
-<!--<html>
-    <head>
-    </head>
-    <body>
-        <a href="views/login.php">Login</a>
+use qk1e\mysite\Router as Router;
 
-    </body>
-</html>-->
+session_start();
+
+Router::route($_GET["path"]);
