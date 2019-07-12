@@ -4,7 +4,12 @@
 namespace qk1e\mysite;
 
 require_once $_SERVER["DOCUMENT_ROOT"]."/src/controllers/BlogPageController.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/src/controllers/DevsPageController.php";
+require_once $_SERVER["DOCUMENT_ROOT"]."/src/controllers/ProfilePageController.php";
+
 use qk1e\mysite\controllers\BlogPageController as BlogPageController;
+use qk1e\mysite\controllers\DevsPageController;
+use qk1e\mysite\controllers\ProfilePageController;
 
 class Router
 {
@@ -19,19 +24,27 @@ class Router
                     break;
 
                 case "profile":
-                    require $_SERVER["DOCUMENT_ROOT"]."/views/profile.php";
+                    $controller = new ProfilePageController();
+                    $controller->getPage();
                     break;
 
                 case "admin":
-                    require $_SERVER["DOCUMENT_ROOT"]."/views/admin.php";
+                    echo "No admin page!";
                     break;
                 case "devs":
-                    require $_SERVER["DOCUMENT_ROOT"]."/views/devs.php";
+                    $controller = new DevsPageController();
+                    $controller->getPage();
                     break;
                 case "":
-                    require $_SERVER["DOCUMENT_ROOT"]."/views/blog.php";
+                    $bpcontroller = new BlogPageController();
+                    $bpcontroller->getPage();
                     break;
-
+                case "adminer":
+                    include $_SERVER["DOCUMENT_ROOT"]."/adminer.php";
+                    break;
+                case "info":
+                    phpinfo();
+                    break;
                 default:header("HTTP/1.0 404 Not Found");
 
             }

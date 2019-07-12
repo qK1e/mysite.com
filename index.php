@@ -1,6 +1,6 @@
 <?php
-require_once "src/router.php";
 
+require_once $_SERVER["DOCUMENT_ROOT"]."/src/router.php";
 use qk1e\mysite\Router as Router;
 
 session_start();

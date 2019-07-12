@@ -22,7 +22,6 @@ class BlogPageController
 
     public function getPage(){
         $this->getRecentArticles();
-        $_GLOBALS["articles"] = $this->recent_articles;
         include $_SERVER["DOCUMENT_ROOT"]."/views/blog.php";
     }
 
