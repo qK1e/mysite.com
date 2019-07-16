@@ -1,3 +1,6 @@
 <div>
-    <input type="button" value="Войти">
+    <form>
+        <button formaction="register">Register</button>
+        <button formaction="login">Sign in</button>
+    </form>
 </div>

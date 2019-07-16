@@ -5,10 +5,13 @@
 
     <body>
         <div class="login-form">
-            <form action="/src/controllers/login-controller.php" method="post" name="login">
-                <input name="username" type="text" placeholder="login">
-                <input name="password" type="password" placeholder="password">
-                <input name="submit" type="submit">
+            <form action="auth" method="post" name="login">
+                <h1>Sign In</h1><br>
+                Your login:
+                <input name="username" type="text" placeholder="login"><br>
+                Your password:
+                <input name="password" type="password" placeholder="password"><br>
+                <input name="signin" type="submit">
             </form>
         </div>
     </body>

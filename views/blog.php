@@ -10,12 +10,13 @@
     ?>
 
     <?php
-    include $_SERVER["DOCUMENT_ROOT"]."/views/assets/login-block.php";
+    //include $_SERVER["DOCUMENT_ROOT"]."/views/assets/login-block.php";
+    include $login_block;
     ?>
 
     <div class="blog-content">
         <?php
-            foreach ($this->recent_articles as $article){?>
+            foreach ($recent_articles as $article){?>
                 <div class="blog-article">
                     <h3><?php echo $article->getHeader()?></h3>
                     <p><?php echo $article->getTextcontent()?></p>

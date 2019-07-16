@@ -9,12 +9,13 @@
     include $_SERVER["DOCUMENT_ROOT"]."/views/assets/navigation-menu.php";
     ?>
     <?php
-    include $_SERVER["DOCUMENT_ROOT"]."/views/assets/login-block.php";
+    //include $_SERVER["DOCUMENT_ROOT"]."/views/assets/login-block.php";
+    include $login_block;
     ?>
 
     <div class="developers-list">
         <?php
-        foreach ($this->devs as $dev){?>
+        foreach ($devs as $dev){?>
             <div class="developer-preview">
 
                 <h3><?php echo $dev->getName()?></h3>
