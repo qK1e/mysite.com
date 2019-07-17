@@ -10,7 +10,7 @@
     ?>
     <?php
     //include $_SERVER["DOCUMENT_ROOT"]."/views/assets/login-block.php";
-    include $login_block;
+    @include($login_block);
     ?>
 
     <div class="developers-list">

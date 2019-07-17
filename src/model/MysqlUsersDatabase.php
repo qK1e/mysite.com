@@ -12,7 +12,7 @@ use PDO;
 
 class MysqlUsersDatabase implements UsersDatabase
 {
-    private static $url = "mysql:host=mysite.com;dbname=mysite";
+    private static $url = "mysql:host=localhost;dbname=mysite";
     private static $user = "admin";
     private static $password = "root";
 
