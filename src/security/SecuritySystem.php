@@ -1,9 +1,6 @@
 <?php
 namespace qk1e\mysite\security;
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/src/model/MysqlUsersDatabase.php";
-
-
 use qk1e\mysite\model\MysqlUsersDatabase as MysqlUsersDatabase;
 
 class SecuritySystem

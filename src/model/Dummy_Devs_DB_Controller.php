@@ -3,8 +3,7 @@
 
 namespace qk1e\mysite\model;
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/src/model/Devs_DB_Controller.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."/src/model/Entities/Developer.php";
+use qk1e\mysite\model\entities\Developer;
 
 class Dummy_Devs_DB_Controller implements Devs_DB_Controller
 {

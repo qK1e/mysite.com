@@ -1,6 +1,6 @@
 <?php
 
-namespace qk1e\mysite\model;
+namespace qk1e\mysite\model\entities;
 
 class Article
 {

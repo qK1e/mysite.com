@@ -3,10 +3,6 @@
 
 namespace qk1e\mysite\controllers;
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/src/controllers/Controller.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."/src/model/MysqlUsersDatabase.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."/src/security/SecuritySystem.php";
-
 use qk1e\mysite\model\MysqlUsersDatabase;
 use qk1e\mysite\security\SecuritySystem;
 
@@ -15,7 +11,6 @@ class AuthenticationPageController implements Controller
     /**
      * @param $url
      */
-
     public function handleRequest($url)
     {
         if($url == "register")
@@ -50,4 +45,17 @@ class AuthenticationPageController implements Controller
             header("Location: /");
         }
     }
+
+
+    public function signIn($request)
+    {}
+
+    public function register($request)
+    {}
+
+    public function getLoginPage($request)
+    {}
+
+    public function getRegisterPage($request)
+    {}
 }

@@ -3,9 +3,6 @@
 
 namespace qk1e\mysite\model;
 
-require_once $_SERVER["DOCUMENT_ROOT"]."/src/model/Blog_DB_Controller.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."/src/model/Entities/Article.php";
-
 class Dummy_Blog_DB_Controller implements Blog_DB_Controller
 {
     public function getRecentArticles($number)

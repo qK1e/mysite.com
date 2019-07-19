@@ -2,13 +2,9 @@
 
 
 namespace qk1e\mysite\model;
-require_once $_SERVER["DOCUMENT_ROOT"]."/src/model/Entities/User.php";
-require_once $_SERVER["DOCUMENT_ROOT"]."/src/model/UsersDatabase.php";
 
 use PDOException;
 use PDO;
-
-
 
 class MysqlUsersDatabase implements UsersDatabase
 {
