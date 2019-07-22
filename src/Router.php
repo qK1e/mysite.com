@@ -11,6 +11,10 @@ use qk1e\mysite\controllers\AuthenticationPageController;
 
 class Router
 {
+    public function parseConfig($config){
+
+    }
+
     public static function route($url)
     {
 

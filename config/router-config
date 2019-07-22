@@ -1,0 +1,58 @@
+{
+    "path": "login"
+    "controller": "AuthenticationPageController"
+    "method": "getLoginPage"
+    "http": "GET"
+}
+
+{
+    "path": "%"
+    "action": "logout"
+    "controller": "AuthenticationPageController"
+    "method": "logout"
+    "http": "ANY"
+}
+
+{
+    "path": "register"
+    "controller": "AuthenticationPageController"
+    "method": "getRegisterPage"
+    "http": "GET"
+}
+
+{
+    "path": "login"
+    "action": "signin"
+    "controller": "AuthenticationPageController"
+    "method": "signIn"
+    "http": "ANY"
+}
+
+{
+    "path": "register"
+    "action": "register"
+    "controller": "AuthenticationPageController"
+    "method": "register"
+    "http": "ANY"
+}
+
+{
+    "path": "blog"
+    "controller": "BlogPageController"
+    "method": "getBlogPage"
+    "http": "GET"
+}
+
+{
+    "path": "devs"
+    "controller": "DevsPageController"
+    "method": "getDevsPage"
+    "http": "GET"
+}
+
+{
+    "path": "profile"
+    "controller": "ProfilePageController"
+    "method": "getProfilePage"
+    "http": "GET"
+}

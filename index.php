@@ -2,6 +2,8 @@
 
 use qk1e\mysite\Router;
 
+define("ROOTDIR", $_SERVER["DOCUMENT_ROOT"]);
+
 spl_autoload_register(function (String $class){
     $sourcePath = __DIR__ . DIRECTORY_SEPARATOR . 'src';
     $replaceRootPath = str_replace('qk1e\\mysite', $sourcePath, $class);
@@ -13,7 +15,5 @@ spl_autoload_register(function (String $class){
 });
 
 session_start();
-
-
 
 Router::route($_GET["path"]);
