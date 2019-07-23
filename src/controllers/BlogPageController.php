@@ -7,7 +7,7 @@ use qk1e\mysite\model\Dummy_Blog_DB_Controller as Dummy_Blog_DB_Controller;
 use qk1e\mysite\controllers\Controller;
 use qk1e\mysite\view\View;
 
-class BlogPageController implements Controller
+class BlogPageController
 {
     private $recent_articles;
 
@@ -19,7 +19,7 @@ class BlogPageController implements Controller
     {
     }
 
-    public function handleRequest($url)
+    public function getBlogPage($request)
     {
         $this->getRecentArticles();
 

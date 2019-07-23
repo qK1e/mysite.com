@@ -7,7 +7,7 @@ use qk1e\mysite\model\Dummy_Devs_DB_Controller;
 use qk1e\mysite\controllers\Controller;
 use qk1e\mysite\view\View;
 
-class DevsPageController implements Controller
+class DevsPageController
 {
     private $devs;
 
@@ -17,7 +17,7 @@ class DevsPageController implements Controller
         $this->devs = $DB->getSomeDevs(5);
     }
 
-    public function handleRequest($url)
+    public function getDevsPage($request)
     {
         $this->getDevs();
 

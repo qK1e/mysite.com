@@ -5,57 +5,40 @@ namespace qk1e\mysite\controllers;
 
 use qk1e\mysite\model\MysqlUsersDatabase;
 use qk1e\mysite\security\SecuritySystem;
+use qk1e\mysite\view\View;
 
-class AuthenticationPageController implements Controller
+class AuthenticationPageController
 {
-    /**
-     * @param $url
-     */
-    public function handleRequest($url)
+    public function signIn($request)
     {
-        if($url == "register")
-        {
-            include $_SERVER["DOCUMENT_ROOT"]."/views/register.php";
-        }
-        else if ($url == "login")
-        {
-            include $_SERVER["DOCUMENT_ROOT"]."/views/login.php";
+        $ss = SecuritySystem::getInstance();
 
-        }
-        else if($url == "auth-register")
+        if($ss->authenticate($request["username"], $request["password"]))
         {
-            $ss = SecuritySystem::getInstance();
-            $ss->register($_REQUEST["username"], $_REQUEST["password"]);
             header("Location: /");
-
         }
-        else if($url == "auth-signin")
+        else
         {
-            $ss = SecuritySystem::getInstance();
-
-            if($ss->authenticate($_POST["username"], $_POST["password"]))
-            {
-                header("Location: /");
-            }
-        }
-        else if($url == "logout")
-        {
-            $ss = SecuritySystem::getInstance();
-            $ss->logout();
-            header("Location: /");
+            echo "NOPE";
         }
     }
 
-
-    public function signIn($request)
-    {}
-
     public function register($request)
-    {}
+    {
+        $ss = SecuritySystem::getInstance();
+        $ss->register($request["username"], $request["password"]);
+        header("Location: /");
+    }
 
     public function getLoginPage($request)
-    {}
+    {
+        $view = new View();
+        $view->getPage("login", null);
+    }
 
     public function getRegisterPage($request)
-    {}
+    {
+        $view = new View();
+        $view->getPage("register", null);
+    }
 }

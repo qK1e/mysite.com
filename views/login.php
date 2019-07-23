@@ -5,13 +5,13 @@
 
     <body>
         <div class="login-form">
-            <form action="auth" method="post" name="login">
+            <form action="sing-in" method="post" name="login">
                 <h1>Sign In</h1><br>
                 Your login:
                 <input name="username" type="text" placeholder="login"><br>
                 Your password:
                 <input name="password" type="password" placeholder="password"><br>
-                <input name="signin" type="submit">
+                <input name="sign-in" type="submit">
             </form>
         </div>
     </body>

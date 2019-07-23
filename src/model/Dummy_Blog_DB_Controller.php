@@ -2,6 +2,7 @@
 
 
 namespace qk1e\mysite\model;
+use qk1e\mysite\model\entities\Article;
 
 class Dummy_Blog_DB_Controller implements Blog_DB_Controller
 {

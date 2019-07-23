@@ -1,6 +1,4 @@
 <div>
-    <form>
-        <button formaction="register">Register</button>
-        <button formaction="login">Sign in</button>
-    </form>
+    <a href="login">Login</a> |
+    <a href="register">Register</a>
 </div>

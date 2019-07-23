@@ -6,12 +6,11 @@ use qk1e\mysite\controllers\Controller;
 use qk1e\mysite\view\View;
 
 
-class ProfilePageController implements Controller
+class ProfilePageController
 {
-
-    public function handleRequest($url)
+    public function getProfilePage()
     {
         $view = new View();
-        $view->getPage("profile", []);
+        $view->getPage("profile", null);
     }
 }
