@@ -1,5 +1,3 @@
 <div>
-    <form>
-        <button formaction="logout">Logout</button>
-    </form>
+    <a href="logout">Logout</a>
 </div>

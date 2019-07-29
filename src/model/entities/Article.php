@@ -2,21 +2,17 @@
 
 namespace qk1e\mysite\model\entities;
 
+use qk1e\mysite\model\MysqlUsersDatabase;
+
 class Article
 {
-    private $header;
-    private $htmlcontent; //not gonna use for now
-    private $textcontent; //gonna use
-    private $date;
-    private $author;
+    private $id;
+    private $header; //string
+    private $content; //string
+    private $date; //j-n-Y date
+    private $author_id;
+    private $visibility; //type: bool
 
-    /**
-     * Article constructor.
-     * @param $header
-     * @param $textcontent
-     * @param $date
-     * @param $author
-     */
     public function __construct()
     {
     }
@@ -40,17 +36,14 @@ class Article
     /**
      * @return mixed
      */
-    public function getTextcontent()
+    public function getContent()
     {
-        return $this->textcontent;
+        return $this->content;
     }
 
-    /**
-     * @param mixed $textcontent
-     */
-    public function setTextcontent($textcontent)
+    public function setContent($content)
     {
-        $this->textcontent = $textcontent;
+        $this->content = $content;
     }
 
     /**
@@ -71,19 +64,36 @@ class Article
 
     /**
      * @return mixed
+     *
+     * returns author id in the database
      */
-    public function getAuthor()
+    public function getAuthorId()
     {
-        return $this->author;
+        return $this->author_id;
+    }
+
+    public function getAuthorLogin()
+    {
+        $DB = new MysqlUsersDatabase();
+        return $DB->loginById($this->author_id);
     }
 
     /**
      * @param mixed $author
      */
-    public function setAuthor($author)
+    public function setAuthorId($author)
     {
-        $this->author = $author;
+        $this->author_id = $author;
     }
 
+    public function setVisibility($visibility)
+    {
+        $this->visibility = $visibility;
+    }
+
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
 
 }

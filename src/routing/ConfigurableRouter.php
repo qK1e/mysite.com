@@ -11,12 +11,9 @@ class ConfigurableRouter
         $this->configuration = new FileRouterConfig($configuration_file);
     }
 
-    public function route()
+    public function route($path, $method, $args)
     {
-        $path = $_SERVER["REQUEST_URI"];
-        $args = $_REQUEST;
-
-        $mappings = $this->configuration->getMappings($path, $args["action"]);
+        $mappings = $this->configuration->getMappings($path, $method, $args["action"]);
 
         foreach ($mappings as $mapping)
         {

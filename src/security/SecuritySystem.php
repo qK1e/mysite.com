@@ -6,59 +6,71 @@ use qk1e\mysite\model\MysqlUsersDatabase as MysqlUsersDatabase;
 class SecuritySystem
 {
 
-    private static $instance;
-    private static $authenticated = false;
-
-    public static function getInstance(): SecuritySystem
-    {
-        if (null === static::$instance) {
-            static::$instance = new static();
-        }
-
-        return static::$instance;
-    }
-
-    private function __construct()
+    public function __construct()
     {
     }
-
-    private function __clone()
-    {
-    }
-
-    private function __wakeup()
-    {
-    }
-
 
     public function authenticate($login, $password)
     {
         $DB = new MysqlUsersDatabase();
 
-        if ($DB->userExist($login, $password)) {
-            //SecuritySystem::$authenticated = true;
-            setcookie("authenticated", true);
-            setcookie("user", $login);
+        if ($DB->verifyUser($login, $password)) {
+            $_SESSION["user"] = $login;
+            $_SESSION["authenticated"] = true;
             return true;
         }
     }
 
     public function logout()
     {
-        SecuritySystem::$authenticated = false;
-        setcookie("authenticated", false);
+        $_SESSION["authenticated"] = false;
+        unset($_SESSION["user"]);
     }
 
     public function register($login, $password)
     {
         $DB = new MysqlUsersDatabase();
-        $DB->registerUser($login, $password);
+
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+        $DB->registerUser($login, $hashed_password);
         $this->authenticate($login, $password);
     }
 
-    public static function isAuthenticated()
+    public function isAuthenticated()
     {
-        return $_COOKIE["authenticated"];
+        if(isset($_SESSION["authenticated"]))
+        {
+            return $_SESSION["authenticated"];
+        }
+        else{
+            return false;
+        }
+    }
+
+    public function currentUserRole()
+    {
+        $DB = new MysqlUsersDatabase();
+        if(isset($_SESSION["user"]))
+        {
+            return $DB->getRole($_SESSION["user"]);
+        }
+        else{
+            return ROLE_UNAUTHORIZED;
+        }
+
+    }
+
+    public function currentUser()
+    {
+        if(isset($_SESSION["user"]))
+        {
+            return $_SESSION["user"];
+        }
+        else
+        {
+            return null;
+        }
     }
 
 }

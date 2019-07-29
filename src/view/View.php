@@ -8,54 +8,46 @@ use qk1e\mysite\security\SecuritySystem;
 
 class View
 {
-    public function getPage($url, $args)
+    public function getPage($page, $args)
     {
-        switch ($url)
+
+        $nav_block = $this->prepareNavigationBlock();
+        $login_block = $this->prepareLoginBlock();
+
+        //этого здесь не должно быть -> роль должен передавать Controller
+        $ss = new SecuritySystem();
+        $user_role = $ss->currentUserRole();
+
+        extract($args);
+
+        $page_file = ROOTDIR."/views/".$page.".php";
+
+        if(file_exists($page_file))
         {
-            case "blog":
-                extract($args);
-                $login_block = $this->prepareLoginBlock();
-                include $_SERVER["DOCUMENT_ROOT"]."/views/blog.php";
-
-                break;
-
-            case "profile":
-                extract($args);
-                $login_block = $this->prepareLoginBlock();
-                include $_SERVER["DOCUMENT_ROOT"]."/views/profile.php";
-
-                break;
-
-            case "devs":
-                extract($args);
-                $login_block = $this->prepareLoginBlock();
-                include $_SERVER["DOCUMENT_ROOT"]."/views/devs.php";
-
-                break;
-
-            case "register":
-                include $_SERVER["DOCUMENT_ROOT"]."/views/register.php";
-
-                break;
-
-            case "login":
-                include $_SERVER["DOCUMENT_ROOT"]."/views/login.php";
-
-                break;
-
-            default:
-                header("HTTP/1.0 404 Not Found");
+            include($page_file);
+        }
+        else
+        {
+            header("HTTP/1.0 404 Not Found");
         }
     }
 
     private function prepareLoginBlock()
     {
-        if(SecuritySystem::isAuthenticated())
+        $ss = new SecuritySystem();
+
+        if($ss->isAuthenticated())
         {
-            return $_SERVER["DOCUMENT_ROOT"]."/views/assets/login-block-authorized.php";
+            return ROOTDIR."/views/assets/login-block-authorized.php";
         }
         else{
-            return $_SERVER["DOCUMENT_ROOT"]."/views/assets/login-block.php";
+            return ROOTDIR."/views/assets/login-block.php";
         }
+    }
+
+    //should prepare navigation block according to current user role
+    private function prepareNavigationBlock()
+    {
+        return ROOTDIR."/views/assets/navigation-menu.php";
     }
 }

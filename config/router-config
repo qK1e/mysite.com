@@ -14,11 +14,10 @@
 },
 
 {
-    "path": "%",
-    "action": "logout",
+    "path": "logout",
     "controller": "AuthenticationPageController",
     "method": "logout",
-    "http": "ANY"
+    "http": "GET"
 },
 
 {
@@ -29,19 +28,17 @@
 },
 
 {
-    "path": "login",
-    "action": "sign-in",
+    "path": "sign-in",
     "controller": "AuthenticationPageController",
     "method": "signIn",
-    "http": "ANY"
+    "http": "POST"
 },
 
 {
     "path": "register",
-    "action": "register",
     "controller": "AuthenticationPageController",
     "method": "register",
-    "http": "ANY"
+    "http": "POST"
 },
 
 {
@@ -62,6 +59,27 @@
     "path": "profile",
     "controller": "ProfilePageController",
     "method": "getProfilePage",
+    "http": "GET"
+},
+
+{
+    "path": "blog/new",
+    "controller": "BlogPageController",
+    "method": "newBlog",
+    "http": "GET"
+},
+
+{
+    "path": "blog/new",
+    "controller": "BlogPageController",
+    "method": "submitBlog",
+    "http": "POST"
+},
+
+{
+    "path": "info",
+    "controller": "InfoController",
+    "method": "info",
     "http": "GET"
 }
 ]

@@ -1,0 +1,4 @@
+host : mysite.com
+database : mysite
+user : admin
+password : root

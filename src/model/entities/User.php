@@ -1,47 +1,43 @@
 <?php
 
-
 namespace qk1e\mysite\model\entities;
-
+use PDO;
+use PDOException;
+use qk1e\mysite\model\MysqlUsersDatabase;
 
 class User
 {
     private $id;
     private $login;
     private $password;
-    private $hash;
+    private $profile_id;
+    private $first_name;
+    private $second_name;
+    private $role;
 
-    function generateHash($password)
+    public function getId()
     {
-        if (defined("CRYPT_BLOWFISH") && CRYPT_BLOWFISH) {
-            $salt = '$2y$11$' . substr(md5(uniqid(rand(), true)), 0, 22);
-            return crypt($password, $salt);
+        if(isset($this->id))
+        {
+            return $this->id;
+        }
+        else
+        {
+            try
+            {
+                $DB = new MysqlUsersDatabase();
+                $id = $DB->idByLogin($this->login);
+            }
+            catch (PDOException $e)
+            {
+                echo $e->getMessage();
+            }
         }
     }
 
-    public static function checkName($name)
+    public static function idByLogin($login)
     {
-        return true;
-    }
-
-    public static function checkLogin($login)
-    {
-        return true;
-    }
-
-    public static function checkPassword($pass)
-    {
-        return true;
-    }
-
-    //проверка по базе данных
-    public static function checkUserLogin($login)
-    {
-        return true;
-    }
-
-    public static function register($login, $password)
-    {
-        //to do: реализовать регистрацию
+        $DB = new MysqlUsersDatabase();
+        return $DB->idByLogin($login);
     }
 }

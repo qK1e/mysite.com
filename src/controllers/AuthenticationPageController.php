@@ -11,7 +11,7 @@ class AuthenticationPageController
 {
     public function signIn($request)
     {
-        $ss = SecuritySystem::getInstance();
+        $ss = new SecuritySystem();
 
         if($ss->authenticate($request["username"], $request["password"]))
         {
@@ -19,13 +19,17 @@ class AuthenticationPageController
         }
         else
         {
-            echo "NOPE";
+            echo "Don't try to fool me, pal! -_-
+            <br>
+            <a href='/'>Main page</a><br>
+            <a href='/login'>Try again</a>
+            ";
         }
     }
 
     public function register($request)
     {
-        $ss = SecuritySystem::getInstance();
+        $ss = new SecuritySystem();
         $ss->register($request["username"], $request["password"]);
         header("Location: /");
     }
@@ -40,5 +44,12 @@ class AuthenticationPageController
     {
         $view = new View();
         $view->getPage("register", null);
+    }
+
+    public function logout($request)
+    {
+        $ss = new SecuritySystem();
+        $ss->logout();
+        header("Location: /");
     }
 }
