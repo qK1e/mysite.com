@@ -10,15 +10,19 @@ class View
 {
     public function getPage($page, $args)
     {
-
-        $nav_block = $this->prepareNavigationBlock();
-        $login_block = $this->prepareLoginBlock();
-
-        //этого здесь не должно быть -> роль должен передавать Controller
-        $ss = new SecuritySystem();
-        $user_role = $ss->currentUserRole();
-
         extract($args);
+
+        if(!isset($user_role))
+        {
+            $ss = new SecuritySystem();
+            $user_role = $ss->currentUserRole();
+        }
+
+        $nav_args = $this->prepareNavigationBlock($user_role);
+        $nav_block = ROOTDIR."/views/assets/navigation-menu.php";
+        extract($nav_args);
+
+        $login_block = $this->prepareLoginBlock();
 
         $page_file = ROOTDIR."/views/".$page.".php";
 
@@ -46,8 +50,35 @@ class View
     }
 
     //should prepare navigation block according to current user role
-    private function prepareNavigationBlock()
+    private function prepareNavigationBlock($user_role)
     {
-        return ROOTDIR."/views/assets/navigation-menu.php";
+        $nav_blog = true;
+        $nav_devs = true;
+        $nav_profile = false;
+        $nav_admin = false;
+
+        switch ($user_role)
+        {
+            case ROLE_DEVELOPER:
+            {
+                $nav_profile = true;
+                break;
+            }
+            case ROLE_ADMIN:
+            {
+                $nav_profile = true;
+                $nav_admin = true;
+                break;
+            }
+        }
+
+        $args = array();
+
+        $args["nav_blog"] = $nav_blog;
+        $args["nav_devs"] = $nav_devs;
+        $args["nav_profile"] = $nav_profile;
+        $args["nav_admin"] = $nav_admin;
+
+        return $args;
     }
 }

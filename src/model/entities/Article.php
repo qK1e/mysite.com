@@ -2,6 +2,7 @@
 
 namespace qk1e\mysite\model\entities;
 
+use qk1e\mysite\model\MysqlBlogDatabase;
 use qk1e\mysite\model\MysqlUsersDatabase;
 
 class Article
@@ -94,6 +95,22 @@ class Article
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        if (isset($this->id))
+        {
+            return $this->id;
+        }
+        else
+        {
+            $DB = new MysqlBlogDatabase();
+            return $DB->getIdByHeader($this->header);
+        }
     }
 
 }

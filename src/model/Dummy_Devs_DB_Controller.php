@@ -5,7 +5,7 @@ namespace qk1e\mysite\model;
 
 use qk1e\mysite\model\entities\Developer;
 
-class Dummy_Devs_DB_Controller implements Devs_DB_Controller
+class Dummy_Devs_DB_Controller
 {
 
     public function getSomeDevs($number)

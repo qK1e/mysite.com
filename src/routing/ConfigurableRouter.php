@@ -2,6 +2,8 @@
 
 namespace qk1e\mysite\routing;
 
+use qk1e\mysite\Request;
+
 class ConfigurableRouter
 {
     private $configuration;
@@ -21,7 +23,12 @@ class ConfigurableRouter
             $controller = new $controller_name();
             $method = $mapping["method"];
 
-            $controller->$method($args);
+            $request = new Request();
+            $request->setMethod($method);
+            $request->setArguments($args);
+            $request->setUrl($path);
+
+            $controller->$method($request);
         }
     }
 }

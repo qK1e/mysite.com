@@ -99,7 +99,10 @@ class MysqlUsersDatabase
     {
         try
         {
-            $this->DB->query("INSERT INTO users(`login`, `password`, `hash`) VALUES ("."'"."$login"."'".", "."'"."$password"."'".", '0')"); //нах я так сделал?
+            $this->DB->query("
+                INSERT INTO users(`login`, `password`)
+                VALUES ('".$login."', '".$password."')
+                ");
         }
         catch (PDOException $e)
         {

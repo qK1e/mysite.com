@@ -6,11 +6,15 @@
 <body>
     <h1>Разрабы</h1>
     <?php
-    include $_SERVER["DOCUMENT_ROOT"]."/views/assets/navigation-menu.php";
+    if(isset($nav_block))
+    {
+        include($nav_block);
+    };
     ?>
+
     <?php
     //include $_SERVER["DOCUMENT_ROOT"]."/views/assets/login-block.php";
-    @include($login_block);
+        include($login_block);
     ?>
 
     <div class="developers-list">

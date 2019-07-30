@@ -47,9 +47,11 @@ class Developer
     public function getImage(){
         return "<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThi6yrm0NAd4yq1FR_uctbzRyNcZsd_CNJOvy2723qxX8zjqnlhA'>";
     }
+
     public function getName(){
         return $this->f_name." ".$this->s_name;
     }
+
     public function getPreview(){
         return $this->about;
     }

@@ -81,5 +81,12 @@
     "controller": "InfoController",
     "method": "info",
     "http": "GET"
+},
+
+{
+    "path": "admin",
+    "controller": "AdminController",
+    "method": "getAdminPage",
+    "http": "GET"
 }
 ]

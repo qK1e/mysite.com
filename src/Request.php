@@ -1,7 +1,7 @@
 <?php
 
 
-namespace qk1e\mysite\routing;
+namespace qk1e\mysite;
 
 
 class Request

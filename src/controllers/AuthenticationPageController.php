@@ -4,16 +4,20 @@
 namespace qk1e\mysite\controllers;
 
 use qk1e\mysite\model\MysqlUsersDatabase;
+use qk1e\mysite\Request;
 use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\view\View;
 
 class AuthenticationPageController
 {
-    public function signIn($request)
+    public function signIn(Request $request)
     {
         $ss = new SecuritySystem();
 
-        if($ss->authenticate($request["username"], $request["password"]))
+        $username = $request->getArgument("username");
+        $password = $request->getArgument("password");
+
+        if($ss->authenticate($username, $password))
         {
             header("Location: /");
         }
@@ -27,26 +31,26 @@ class AuthenticationPageController
         }
     }
 
-    public function register($request)
+    public function register(Request $request)
     {
         $ss = new SecuritySystem();
-        $ss->register($request["username"], $request["password"]);
+        $ss->register($request->getArgument("username"), $request->getArgument("password"));
         header("Location: /");
     }
 
-    public function getLoginPage($request)
+    public function getLoginPage(Request $request)
     {
         $view = new View();
         $view->getPage("login", null);
     }
 
-    public function getRegisterPage($request)
+    public function getRegisterPage(Request $request)
     {
         $view = new View();
         $view->getPage("register", null);
     }
 
-    public function logout($request)
+    public function logout(Request $request)
     {
         $ss = new SecuritySystem();
         $ss->logout();

@@ -16,9 +16,6 @@ class MysqlBlogDatabase
 
     private $DB;
 
-
-    //replace with real
-
     /**
      * MysqlBlogDatabase constructor.
      */
@@ -91,7 +88,18 @@ class MysqlBlogDatabase
         }
     }
 
+    public function getIdByHeader($header)
+    {
+        $response = $this->DB->query("
+            SELECT id
+            FROM blogs
+            WHERE header = '".$header."'
+        ");
 
+        $result_set = $response->fetchAll();
+
+        return $result_set[0]["id"];
+    }
 
 
     private function validateArticle()

@@ -4,7 +4,7 @@
 namespace qk1e\mysite\view;
 
 
-class DevsPage
+class DevsPage extends View
 {
 
 }

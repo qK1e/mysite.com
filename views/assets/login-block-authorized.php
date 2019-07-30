@@ -1,3 +1,7 @@
-<div>
-    <a href="logout">Logout</a>
-</div>
+<ul class="nav nav-pills">
+    <li class="nav-item">
+        <a class="nav-link active" href="logout">Logout</a>
+    </li>
+</ul>
+
+
