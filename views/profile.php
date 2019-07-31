@@ -2,17 +2,33 @@
 <head>
     <title>My profile</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="views/css/custom.css">
+    <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
 </head>
 <body>
-
-    <h1>Профиль</h1>
-    <?php
-        include $_SERVER["DOCUMENT_ROOT"]."/views/assets/navigation-menu.php";
-    ?>
-    <?php
-        //include $_SERVER["DOCUMENT_ROOT"]."/views/assets/login-block.php";
-        include $login_block;
-    ?>
+    <!--Навигационное меню и блок авторизации -->
+    <header class="container-fluid hdr-clr">
+        <div class="row align-items-center">
+            <div class="col">
+                <?php //navigation block
+                if(isset($nav_block))
+                {
+                    include($nav_block);
+                }
+                ;
+                ?>
+            </div>
+            <div class="col justify-content-end">
+                <?php //register sign-in buttons
+                if(isset($login_block))
+                {
+                    include($login_block);
+                }
+                ?>
+            </div>
+        </div>
+    </header>
+    <hr class="m-0">
 
     <div class="profile-content">
         <h1>БОЧ Фролов-Воронин</h1>

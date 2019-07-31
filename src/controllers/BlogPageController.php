@@ -13,7 +13,7 @@ use qk1e\mysite\Request;
 class BlogPageController
 {
     private $recent_articles = array();
-    private $page_size = 2;
+    private $page_size = 5;
 
 
     public function __construct()
