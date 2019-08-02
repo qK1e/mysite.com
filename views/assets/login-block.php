@@ -6,4 +6,3 @@
         <a href="/register" class="nav-link btn-primary p-1 px-2">Register</a>
     </li>
 </ul>
-

@@ -8,7 +8,7 @@ use qk1e\mysite\Request;
 use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\view\View;
 
-class AuthenticationPageController
+class AuthenticationController
 {
     public function signIn(Request $request)
     {

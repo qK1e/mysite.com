@@ -10,7 +10,7 @@ use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\view\View;
 use qk1e\mysite\Request;
 
-class BlogPageController
+class BlogController
 {
     private $recent_articles = array();
     private $page_size = 5;

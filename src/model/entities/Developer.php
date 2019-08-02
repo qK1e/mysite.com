@@ -6,42 +6,10 @@ namespace qk1e\mysite\model\entities;
 
 class Developer
 {
-    private $f_name;
-    private $s_name;
-    private $l_name;
+    private $first_name;
+    private $second_name;
+    private $last_name;
     private $about;
-
-    /**
-     * @param mixed $f_name
-     */
-    public function setFName($f_name)
-    {
-        $this->f_name = $f_name;
-    }
-
-    /**
-     * @param mixed $s_name
-     */
-    public function setSName($s_name)
-    {
-        $this->s_name = $s_name;
-    }
-
-    /**
-     * @param mixed $l_name
-     */
-    public function setLName($l_name)
-    {
-        $this->l_name = $l_name;
-    }
-
-    /**
-     * @param mixed $about
-     */
-    public function setAbout($about)
-    {
-        $this->about = $about;
-    }
 
 
     public function getImage(){
@@ -53,8 +21,40 @@ class Developer
         return "./views/img/indian-developer.jpg";
     }
 
+    /**
+     * @param  mixed  $first_name
+     */
+    public function setFirstName($first_name): void
+    {
+        $this->first_name = $first_name;
+    }
+
+    /**
+     * @param  mixed  $second_name
+     */
+    public function setSecondName($second_name): void
+    {
+        $this->second_name = $second_name;
+    }
+
+    /**
+     * @param  mixed  $last_name
+     */
+    public function setLastName($last_name): void
+    {
+        $this->last_name = $last_name;
+    }
+
+    /**
+     * @param  mixed  $about
+     */
+    public function setAbout($about): void
+    {
+        $this->about = $about;
+    }
+
     public function getName(){
-        return $this->f_name." ".$this->s_name;
+        return $this->first_name." ".$this->second_name;
     }
 
     public function getPreview(){

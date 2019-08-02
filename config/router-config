@@ -1,77 +1,77 @@
 [
 {
     "path": "/",
-    "controller": "BlogPageController",
+    "controller": "BlogController",
     "method": "getBlogPage",
     "http": "GET"
 },
 
 {
     "path": "login",
-    "controller": "AuthenticationPageController",
+    "controller": "AuthenticationController",
     "method": "getLoginPage",
     "http": "GET"
 },
 
 {
     "path": "logout",
-    "controller": "AuthenticationPageController",
+    "controller": "AuthenticationController",
     "method": "logout",
     "http": "GET"
 },
 
 {
     "path": "register",
-    "controller": "AuthenticationPageController",
+    "controller": "AuthenticationController",
     "method": "getRegisterPage",
     "http": "GET"
 },
 
 {
     "path": "sign-in",
-    "controller": "AuthenticationPageController",
+    "controller": "AuthenticationController",
     "method": "signIn",
     "http": "POST"
 },
 
 {
     "path": "register",
-    "controller": "AuthenticationPageController",
+    "controller": "AuthenticationController",
     "method": "register",
     "http": "POST"
 },
 
 {
     "path": "blog",
-    "controller": "BlogPageController",
+    "controller": "BlogController",
     "method": "getBlogPage",
     "http": "GET"
 },
 
 {
     "path": "devs",
-    "controller": "DevsPageController",
+    "controller": "DevsController",
     "method": "getDevsPage",
     "http": "GET"
 },
 
 {
     "path": "profile",
-    "controller": "ProfilePageController",
+    "controller": "ProfileController",
     "method": "getProfilePage",
     "http": "GET"
 },
 
 {
     "path": "blog/new",
-    "controller": "BlogPageController",
+    "controller": "BlogController",
     "method": "newBlog",
     "http": "GET"
 },
 
 {
     "path": "blog/new",
-    "controller": "BlogPageController",
+    "controller": "BlogController",
     "method": "submitBlog",
     "http": "POST"
 },
@@ -99,14 +99,14 @@
 
 {
     "path": "admin/new-user",
-    "controller": "AuthenticationPageController",
+    "controller": "AuthenticationController",
     "method": "register",
     "http": "POST"
 },
 
 {
     "path": "blog/article",
-    "controller": "BlogPageController",
+    "controller": "BlogController",
     "method": "getArticle",
     "http": "GET"
 }

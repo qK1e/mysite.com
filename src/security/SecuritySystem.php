@@ -34,7 +34,10 @@ class SecuritySystem
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $DB->registerUser($login, $hashed_password, $role);
-        $this->authenticate($login, $password);
+        if(!$this->isAuthenticated())
+        {
+            $this->authenticate($login, $password);
+        }
     }
 
     public function isAuthenticated()

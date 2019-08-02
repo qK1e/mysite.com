@@ -8,7 +8,7 @@ use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\view\View;
 
 
-class ProfilePageController
+class ProfileController
 {
     public function getProfilePage(Request $request)
     {
