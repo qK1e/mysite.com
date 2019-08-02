@@ -9,7 +9,7 @@ use PDO;
 class MysqlUsersDatabase
 {
     private static $url = "mysql:host=localhost;dbname=mysite";
-    private static $user = "admin";
+    private static $user = "root";
     private static $password = "root";
 
     private $DB;

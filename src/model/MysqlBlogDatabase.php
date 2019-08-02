@@ -11,7 +11,7 @@ use qk1e\mysite\model\entities\Article;
 class MysqlBlogDatabase
 {
     private static $url = "mysql:host=localhost;dbname=mysite";
-    private static $user = "admin";
+    private static $user = "root";
     private static $password = "root";
 
     private $DB;
