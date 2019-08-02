@@ -2,7 +2,7 @@
 
 try
 {
-    $DB = new PDO("mysql:host=localhost;dbname=mysite", "admin", "root");
+    $DB = new PDO("mysql:host=localhost;dbname=mysite", "root", "root");
     $DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $DB->query("
             CREATE TABLE IF NOT EXISTS users(
@@ -18,7 +18,7 @@ try
     $DB->query("
         CREATE TABLE IF NOT EXISTS blogs(
             id INT PRIMARY KEY AUTO_INCREMENT,
-            header VARCHAR(100),
+            header VARCHAR(200),
             content TEXT(65000),
             author_id INT,
             date VARCHAR(10),
