@@ -48,6 +48,11 @@ class Developer
         return "<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThi6yrm0NAd4yq1FR_uctbzRyNcZsd_CNJOvy2723qxX8zjqnlhA'>";
     }
 
+    public function getImageFile()
+    {
+        return "./views/img/indian-developer.jpg";
+    }
+
     public function getName(){
         return $this->f_name." ".$this->s_name;
     }

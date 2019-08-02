@@ -74,9 +74,9 @@ class MysqlBlogDatabase
             $response = $this->DB->query("
                 INSERT INTO blogs(header, content, author_id, `date`, visibility)
                 VALUES (
-                        '".$header."',
-                        '".$content."',
-                        '".$author_id."',
+                        ".$this->DB->quote($header).",
+                        ".$this->DB->quote($content).",
+                        ".$this->DB->quote($author_id).",
                         '".$date."',
                            TRUE
                 )
@@ -101,14 +101,26 @@ class MysqlBlogDatabase
         return $result_set[0]["id"];
     }
 
-
-    private function validateArticle()
+    public function getArticleById($id)
     {
+        $response = $this->DB->query("
+            SELECT *
+            FROM blogs
+            WHERE `id`= ".$this->DB->quote($id)
+        );
 
+        $result_set = $response->fetchAll();
+
+        $article = new Article();
+        $article->setHeader($result_set[0]["header"]);
+        $article->setDate($result_set[0]["date"]);
+        $article->setAuthorId($result_set[0]["author_id"]);
+        $article->setContent($result_set[0]["content"]);
+        $article->setVisibility($result_set[0]["visibility"]);
+        $article->setId($result_set[0]["id"]);
+
+        return $article;
     }
 
-    private function prepareText()
-    {
 
-    }
 }

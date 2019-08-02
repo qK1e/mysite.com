@@ -31,7 +31,7 @@
 
 
 
-    <section class="content content-clr container-flex">
+    <section class="content content-clr container-fluid">
         <div class="row">
             <!-- Blog section -->
             <div class="blogs col-9 container">

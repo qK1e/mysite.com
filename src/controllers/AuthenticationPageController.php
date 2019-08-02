@@ -34,6 +34,13 @@ class AuthenticationPageController
     public function register(Request $request)
     {
         $ss = new SecuritySystem();
+        $role = strtolower($request->getArgument("role"));
+
+        if(isset($role))
+        {
+            $ss->register($request->getArgument("username"), $request->getArgument("password"), $role);
+        }
+
         $ss->register($request->getArgument("username"), $request->getArgument("password"));
         header("Location: /");
     }

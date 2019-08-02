@@ -58,8 +58,8 @@ class BlogPageController
         $user_id = User::idByLogin($user_login);
 
         $article->setAuthorId($user_id);
-        $article->setHeader($request["header"]);
-        $article->setContent($request["content"]);
+        $article->setHeader($request->getArgument("header"));
+        $article->setContent($request->getArgument("content"));
         $article->setDate(date("j-n-Y"));
         $article->setVisibility(true);
 
@@ -68,6 +68,23 @@ class BlogPageController
         $DB->addArticle($article);
 
         header("Location: /blog");
+    }
+
+    public function getArticle(Request $request)
+    {
+        $ss = new SecuritySystem();
+        $role = $ss->currentUserRole();
+
+        $id = $request->getArgument("id");
+        $args = array();
+
+        $DB = new MysqlBlogDatabase();
+        $article = $DB->getArticleById($id);
+        $args["article"] = $article;
+        $args["user_role"] = $role;
+
+        $view = new View();
+        $view->getPage("article", $args);
     }
 
     private function getArticles($page)

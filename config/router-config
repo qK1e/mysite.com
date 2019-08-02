@@ -88,5 +88,27 @@
     "controller": "AdminController",
     "method": "getAdminPage",
     "http": "GET"
+},
+
+{
+    "path": "admin/new-user",
+    "controller": "AdminController",
+    "method": "newUser",
+    "http": "GET"
+},
+
+{
+    "path": "admin/new-user",
+    "controller": "AuthenticationPageController",
+    "method": "register",
+    "http": "POST"
+},
+
+{
+    "path": "blog/article",
+    "controller": "BlogPageController",
+    "method": "getArticle",
+    "http": "GET"
 }
+
 ]

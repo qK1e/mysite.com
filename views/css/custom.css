@@ -11,10 +11,14 @@
 /*}*/
 
 body{
-    font-family: "PT Sans", SansSerif;
+    font-family: "PT Sans", SansSerif, sans-serif;
 }
 
-/*.dev-preview-img{*/
-/*    width: 10rem;*/
-/*    height: 9rem;*/
-/*}*/
+.dev-preview-img{
+    max-width: 200px;
+    max-height: 180px;
+}
+
+.textarea-height{
+    height: 40rem;
+}

@@ -1,4 +1,6 @@
-host : mysite.com
-database : mysite
-user : admin
-password : root
+{
+    "host" : "mysite.com",
+    "database" : "mysite",
+    "user" : "root",
+    "password" : "root"
+}

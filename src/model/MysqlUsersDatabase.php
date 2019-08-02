@@ -20,6 +20,7 @@ class MysqlUsersDatabase
     public function __construct()
     {
 
+
         $this->DB = new PDO(MysqlUsersDatabase::$url, MysqlUsersDatabase::$user, MysqlUsersDatabase::$password);
         $this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
@@ -95,13 +96,13 @@ class MysqlUsersDatabase
 
     }
 
-    public function registerUser($login, $password)
+    public function registerUser($login, $password, $role)
     {
         try
         {
             $this->DB->query("
-                INSERT INTO users(`login`, `password`)
-                VALUES ('".$login."', '".$password."')
+                INSERT INTO users(`login`, `password`, `role`)
+                VALUES ('".$login."', '".$password."','".$role."')
                 ");
         }
         catch (PDOException $e)

@@ -27,13 +27,13 @@ class SecuritySystem
         unset($_SESSION["user"]);
     }
 
-    public function register($login, $password)
+    public function register($login, $password, $role=ROLE_READER)
     {
         $DB = new MysqlUsersDatabase();
 
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        $DB->registerUser($login, $hashed_password);
+        $DB->registerUser($login, $hashed_password, $role);
         $this->authenticate($login, $password);
     }
 

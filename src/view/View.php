@@ -12,13 +12,7 @@ class View
     {
         extract($args);
 
-        if(!isset($user_role))
-        {
-            $ss = new SecuritySystem();
-            $user_role = $ss->currentUserRole();
-        }
-
-        $nav_args = $this->prepareNavigationBlock($user_role);
+        $nav_args = $this->prepareNavigationBlockArguments($user_role);
         $nav_block = ROOTDIR."/views/assets/navigation-menu.php";
         extract($nav_args);
 
@@ -50,7 +44,7 @@ class View
     }
 
     //should prepare navigation block according to current user role
-    private function prepareNavigationBlock($user_role)
+    private function prepareNavigationBlockArguments($user_role)
     {
         $nav_blog = true;
         $nav_devs = true;
@@ -61,12 +55,14 @@ class View
         {
             case ROLE_DEVELOPER:
             {
-                $nav_profile = true;
+                //no profiles yet
+//                $nav_profile = true;
                 break;
             }
             case ROLE_ADMIN:
             {
-                $nav_profile = true;
+                //no profiles yes
+//                $nav_profile = true;
                 $nav_admin = true;
                 break;
             }
