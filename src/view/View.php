@@ -55,14 +55,12 @@ class View
         {
             case ROLE_DEVELOPER:
             {
-                //no profiles yet
-//                $nav_profile = true;
+                $nav_profile = true;
                 break;
             }
             case ROLE_ADMIN:
             {
-                //no profiles yes
-//                $nav_profile = true;
+                $nav_profile = true;
                 $nav_admin = true;
                 break;
             }

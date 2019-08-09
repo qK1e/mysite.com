@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>New User</title>
 </head>
 <body>
 <!--Навигационное меню и блок авторизации -->
@@ -37,7 +37,7 @@
 
     <section class="container">
         <div class="row mt-2">
-            <form class="col row d-flex justify-content-center" action="new-user" method="post">
+            <form class="col row d-flex justify-content-center" id="user-info-form" action="new-user" method="post">
                 <div class="form-group d-flex justify-content-center col-12">
                     <label for="username">Username:</label>
                     <input id="username" name="username" type="text">
@@ -47,8 +47,8 @@
                     <input id="password" name="password" type="password">
                 </div>
                 <div class="form-group d-flex justify-content-center col-12">
-                    <label for="role">Role:</label>
-                    <select id="role" name="role">
+                    <label for="role_select">Role:</label>
+                    <select id="role_select" name="role">
                         <option>Reader</option>
                         <option>Developer</option>
                         <option>Admin</option>
@@ -60,6 +60,8 @@
 
     </section>
 
+    <!--Page javascript -->
+    <script src="/views/js/new_user.js"></script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

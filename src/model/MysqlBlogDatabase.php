@@ -10,8 +10,11 @@ use qk1e\mysite\model\entities\Article;
 
 class MysqlBlogDatabase
 {
+
     private static $url = "mysql:host=localhost;dbname=mysite";
+
     private static $user = "root";
+
     private static $password = "root";
 
     private $DB;
@@ -22,7 +25,8 @@ class MysqlBlogDatabase
     public function __construct()
     {
 
-        $this->DB = new PDO(MysqlBlogDatabase::$url, MysqlBlogDatabase::$user, MysqlBlogDatabase::$password);
+        $this->DB = new PDO(MysqlBlogDatabase::$url, MysqlBlogDatabase::$user,
+          MysqlBlogDatabase::$password);
         $this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
@@ -30,7 +34,7 @@ class MysqlBlogDatabase
     {
         $articles = [];
 
-        $from = ($page-1) * $page_size;
+        $from = ($page - 1) * $page_size;
         $response = $this->DB->query("
         SELECT * FROM blogs 
         ORDER BY `date` DESC 
@@ -39,10 +43,8 @@ class MysqlBlogDatabase
 
         $result_set = $response->fetchAll();
 
-        for($i = 0; $i < $page_size; $i++)
-        {
-            if(isset($result_set[$i]))
-            {
+        for ($i = 0; $i < $page_size; $i++) {
+            if (isset($result_set[$i])) {
                 $article = new Article();
                 $article->setHeader($result_set[$i]["header"]);
                 $article->setDate($result_set[$i]["date"]);
@@ -51,9 +53,7 @@ class MysqlBlogDatabase
                 $article->setVisibility($result_set[$i]["visibility"]);
                 $article->setId($result_set[$i]["id"]);
                 array_push($articles, $article);
-            }
-            else
-            {
+            } else {
                 break;
             }
         }
@@ -69,8 +69,7 @@ class MysqlBlogDatabase
         $date = $article->getDate();
 
 
-        try
-        {
+        try {
             $response = $this->DB->query("
                 INSERT INTO blogs(header, content, author_id, `date`, visibility)
                 VALUES (
@@ -81,9 +80,7 @@ class MysqlBlogDatabase
                            TRUE
                 )
             ");
-        }
-        catch (PDOException $e)
-        {
+        } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }

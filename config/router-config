@@ -100,7 +100,7 @@
 {
     "path": "admin/new-user",
     "controller": "AuthenticationController",
-    "method": "register",
+    "method": "newUser",
     "http": "POST"
 },
 
@@ -109,6 +109,12 @@
     "controller": "BlogController",
     "method": "getArticle",
     "http": "GET"
-}
+},
 
+{
+    "path": "profile",
+    "controller": "ProfileController",
+    "method": "saveProfile",
+    "http": "POST"
+}
 ]

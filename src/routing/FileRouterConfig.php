@@ -70,7 +70,7 @@ class FileRouterConfig
         {
             if($mapping["http"] == "ANY" || $mapping["http"] == $http_method)
             {
-                //should work if both actions are null or equal to each other
+                //should work if both actions are null or equal to each other - just ignore errors
                 if($mapping["action"] == $action)
                 {
                     if($path[0] == "/")

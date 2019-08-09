@@ -27,6 +27,27 @@ try
         )
     ");
 
+    $DB->query("
+        CREATE TABLE IF NOT EXISTS developers(
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            user_id INT NOT NULL,
+            profile_id INT,
+            first_name VARCHAR(30),
+            second_name VARCHAR(30),
+            about TEXT(65000),
+            photo BINARY(255),
+            FOREIGN KEY (user_id) REFERENCES users(id)
+        )
+    ");
+
+    $DB->query("
+        CREATE TABLE IF NOT EXISTS profiles(
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            dev_id INT,
+            about TEXT(50000)
+        )
+    ");
+
 }
 catch (PDOException $e)
 {

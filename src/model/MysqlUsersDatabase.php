@@ -5,6 +5,9 @@ namespace qk1e\mysite\model;
 
 use PDOException;
 use PDO;
+use qk1e\mysite\model\entities\Developer;
+use qk1e\mysite\model\entities\Profile;
+use qk1e\mysite\model\entities\User;
 
 class MysqlUsersDatabase
 {
@@ -63,10 +66,35 @@ class MysqlUsersDatabase
         }
     }
 
-    private function configure()
+    //returns type User with all field like in DB
+    public function getUserByLogin($user)
     {
+        try
+        {
+            $response = $this->DB->query("
+                SELECT *
+                FROM users
+                WHERE `login`=".$this->DB->quote($user)
+            );
 
+            $result_set = $response->fetchAll();
+
+            $user = $result_set[0];
+
+            $return_user = new User();
+            $return_user->setId($user["id"]);
+            $return_user->setLogin($user["login"]);
+            $return_user->setPassword($user["password"]);
+            $return_user->setRole($user["role"]);
+
+            return $return_user;
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+        }
     }
+
 
     //creates model structure
     public function initialize_users()
@@ -78,8 +106,6 @@ class MysqlUsersDatabase
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 login VARCHAR(30) NOT NULL,
                 password VARCHAR(255) NOT NULL,
-                first_name VARCHAR(20),
-                second_name VARCHAR(20),
                 role VARCHAR(15) DEFAULT 'reader'
             )
             ");
@@ -91,43 +117,90 @@ class MysqlUsersDatabase
         }
     }
 
-    private function destroy()
-    {
-
-    }
-
-    public function registerUser($login, $password, $role)
+    public function getDeveloperByUserId($id)
     {
         try
         {
-            $this->DB->query("
-                INSERT INTO users(`login`, `password`, `role`)
-                VALUES ('".$login."', '".$password."','".$role."')
-                ");
+            $response = $this->DB->query("
+                SELECT * FROM developers
+                WHERE `user_id`=".$id
+            );
+
+            $result_set = $response->fetchAll();
+            $result = $result_set[0];
+
+            $developer = new Developer();
+            $developer->setId($result["id"]);
+            $developer->setUserId($result["user_id"]);
+            $developer->setFirstName($result["first_name"]);
+            $developer->setSecondName($result["second_name"]);
+            $developer->setProfileId($result["profile_id"]);
+            $developer->setAbout($result["about"]);
+            $developer->setAvatar($result["photo"]);
+
+            return $developer;
         }
         catch (PDOException $e)
         {
             echo $e->getMessage();
+            return null;
         }
     }
 
-    public function userExist($login)
+    public function registerUser($login, $password, $role, $first_name=null, $second_name=null)
     {
         try
         {
-            $pdostatement = $this->DB->query("SELECT * FROM users WHERE login = '".$login."' LIMIT 1");
-            $response = $pdostatement->fetchAll();
+            $response = $this->DB->query("
+                INSERT INTO users(`login`, `password`, `role`)
+                VALUES ('".$login."', '".$password."','".$role."')
+                ");
 
-            if($response[0])
+            //ebatt govnocode
+            if($role === ROLE_DEVELOPER || $role === ROLE_ADMIN)
             {
-                return true;
+
+                $user_id = $this->DB->query("
+                SELECT id FROM users
+                WHERE `login`=".$this->DB->quote($login)
+                )->fetchAll()[0]["id"];
+
+                $this->DB->query("
+                INSERT INTO developers(`user_id`, `first_name`, `second_name`)
+                VALUES (
+                        ".$this->DB->quote($user_id).",
+                        ".$this->DB->quote($first_name).",
+                        ".$this->DB->quote($second_name)."
+                )
+                ");
+                $dev_id = $this->getDeveloperByUserId($user_id)->getId();
+
+                $this->DB->query("
+                    INSERT INTO profiles(`about`, `dev_id`)
+                    VALUES ('I have nothing to tell. Just love my job!',
+                            ".$dev_id.")
+                ");
+
+                $profile_id = null;
+                $response = $this->DB->query("
+                    SELECT id
+                    FROM profiles
+                    WHERE `dev_id`=".$dev_id."
+                ");
+                $result_set = $response->fetchAll();
+                $profile_id = $result_set[0]["id"];
+
+                $this->DB->query("
+                    UPDATE developers
+                    SET `profile_id`=".$profile_id."
+                    WHERE `user_id`=".$user_id."
+                ");
             }
         }
         catch (PDOException $e)
         {
             echo $e->getMessage();
         }
-
     }
 
     /**
@@ -138,6 +211,7 @@ class MysqlUsersDatabase
      */
     public function verifyUser($login, $password)
     {
+        //LOOOK HERE! PASSWORD VERIFY SHOULDN'T BE HERE
         try{
             $response = $this->DB->query("
             SELECT password
@@ -184,6 +258,42 @@ class MysqlUsersDatabase
         {
             echo $e->getMessage();
         }
+    }
+
+    public function getProfileByProfileId($profile_id)
+    {
+        $result_set = $this->DB->query("
+            SELECT *
+            FROM profiles
+            WHERE `id`=".$profile_id."
+        ")->fetchAll();
+        $result = $result_set[0];
+
+        $id = $result["id"];
+        $about = $result["about"];
+        $profile = new Profile($id, $about);
+
+        return $profile;
+    }
+
+    public function updateProfile($id, $about)
+    {
+        $this->DB->query("
+            UPDATE profiles
+            SET `about`=".$this->DB->quote($about)."
+            WHERE `id`=".$id."
+        ");
+    }
+
+    //SHOULD BE IN DEVELOPERS DATABASE
+    public function updateDeveloperFullName($first_name, $second_name, $developer_id)
+    {
+        $this->DB->query("
+            UPDATE developers
+            SET `first_name`=".$this->DB->quote($first_name).",
+                `second_name`=".$this->DB->quote($second_name)."
+            WHERE `id`=".$developer_id."
+        ");
     }
 
 

@@ -27,13 +27,13 @@ class SecuritySystem
         unset($_SESSION["user"]);
     }
 
-    public function register($login, $password, $role=ROLE_READER)
+    public function register($login, $password, $role=ROLE_READER, $first_name=null, $second_name=null)
     {
         $DB = new MysqlUsersDatabase();
 
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-        $DB->registerUser($login, $hashed_password, $role);
+        $DB->registerUser($login, $hashed_password, $role, $first_name, $second_name);
         if(!$this->isAuthenticated())
         {
             $this->authenticate($login, $password);
@@ -64,7 +64,7 @@ class SecuritySystem
 
     }
 
-    public function currentUser()
+    public function currentUserLogin()
     {
         if(isset($_SESSION["user"]))
         {
@@ -74,6 +74,12 @@ class SecuritySystem
         {
             return null;
         }
+    }
+
+    public function currentUser()
+    {
+        $DB = new MysqlUsersDatabase();
+        return $DB->getUserByLogin($_SESSION["user"]);
     }
 
 }

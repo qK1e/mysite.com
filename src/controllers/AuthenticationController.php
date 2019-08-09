@@ -45,6 +45,28 @@ class AuthenticationController
         header("Location: /");
     }
 
+    public function newUser(Request $request)
+    {
+        $role = strtolower($request->getArgument("role"));
+        $username = $request->getArgument("username");
+        $password = $request->getArgument("password");
+        if($role == ROLE_ADMIN || $role == ROLE_DEVELOPER)
+        {
+            $first_name = $request->getArgument("first-name");
+            $second_name = $request->getArgument("second-name");
+
+            $ss = new SecuritySystem();
+            $ss->register($username, $password, $role, $first_name, $second_name);
+        }
+        else
+        {
+            $ss = new SecuritySystem();
+            $ss->register($username, $password, $role);
+        }
+
+        header("Location: /admin");
+    }
+
     public function getLoginPage(Request $request)
     {
         $view = new View();

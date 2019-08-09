@@ -4,19 +4,132 @@
 namespace qk1e\mysite\model\entities;
 
 
+use qk1e\mysite\model\MysqlUsersDatabase;
+
 class Developer
 {
+    private $id;
+    private $user_id;
+    private $profile_id;
     private $first_name;
     private $second_name;
-    private $last_name;
     private $about;
+    private $photo;
 
+    /**
+     * Developer constructor.
+     *
+     * @param  \qk1e\mysite\model\entities\User  $user
+     */
+    public function __construct(User $user=null)
+    {
+        if($user != null)
+        {
+            $DB = new MysqlUsersDatabase();
+            $developer = $DB->getDeveloperByUserId($user->getId());
 
-    public function getImage(){
-        return "<img src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThi6yrm0NAd4yq1FR_uctbzRyNcZsd_CNJOvy2723qxX8zjqnlhA'>";
+            $this->id = $developer->getId();
+            $this->user_id = $developer->getUserId();
+            $this->profile_id = $developer->getProfileId();
+            $this->first_name = $developer->getFirstName();
+            $this->second_name = $developer->getSecondName();
+            $this->about = $developer->getAbout();
+            $this->photo = $developer->getAvatar();
+        }
     }
 
-    public function getImageFile()
+    /**
+     * @param  mixed  $profile_id
+     */
+    public function setProfileId($profile_id): void
+    {
+        $this->profile_id = $profile_id;
+    }
+
+    public function isValid()
+    {
+        return isset($this->user_id);
+    }
+
+    /**
+     * @param  mixed  $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @param  mixed  $user_id
+     */
+    public function setUserId($user_id): void
+    {
+        $this->user_id = $user_id;
+    }
+
+    /**
+     * @param  mixed  $photo
+     */
+    public function setAvatar($photo): void
+    {
+        $this->photo = $photo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProfileId()
+    {
+        return $this->profile_id;
+    }
+
+    public function getProfile()
+    {
+        $DB = new MysqlUsersDatabase();
+        $profile = $DB->getProfileByProfileId($this->profile_id);
+        return $profile;
+    }
+    /**
+     * @return mixed
+     */
+    public function getFirstName()
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSecondName()
+    {
+        return $this->second_name;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    public function getAvatar()
     {
         return "./views/img/indian-developer.jpg";
     }
@@ -38,14 +151,6 @@ class Developer
     }
 
     /**
-     * @param  mixed  $last_name
-     */
-    public function setLastName($last_name): void
-    {
-        $this->last_name = $last_name;
-    }
-
-    /**
      * @param  mixed  $about
      */
     public function setAbout($about): void
@@ -53,11 +158,14 @@ class Developer
         $this->about = $about;
     }
 
-    public function getName(){
+    public function getFullName()
+    {
         return $this->first_name." ".$this->second_name;
     }
 
-    public function getPreview(){
-        return $this->about;
+    public function getAbout()
+    {;
+        $about = $this->getProfile()->getAbout();
+        return $about;
     }
 }
