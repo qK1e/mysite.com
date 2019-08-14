@@ -3,7 +3,6 @@
 
 namespace qk1e\mysite\controllers;
 
-use qk1e\mysite\model\Dummy_Devs_DB_Controller;
 use qk1e\mysite\model\MysqlDevelopersDatabase;
 use qk1e\mysite\Request;
 use qk1e\mysite\security\SecuritySystem;
@@ -30,6 +29,6 @@ class DevsController
     private function getDevs()
     {
         $DB = new MysqlDevelopersDatabase();
-        $this->devs = $DB->getDevs(5);
+        $this->devs = $DB->getPageOfDevelopers(1, 5);
     }
 }

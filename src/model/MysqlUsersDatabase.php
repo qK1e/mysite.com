@@ -129,14 +129,13 @@ class MysqlUsersDatabase
             $result_set = $response->fetchAll();
             $result = $result_set[0];
 
+            //there is an exact duplicate in MySqlDevelopersDatabase
             $developer = new Developer();
             $developer->setId($result["id"]);
             $developer->setUserId($result["user_id"]);
             $developer->setFirstName($result["first_name"]);
             $developer->setSecondName($result["second_name"]);
             $developer->setProfileId($result["profile_id"]);
-            $developer->setAbout($result["about"]);
-            $developer->setAvatar($result["photo"]);
 
             return $developer;
         }
@@ -262,16 +261,21 @@ class MysqlUsersDatabase
 
     public function getProfileByProfileId($profile_id)
     {
-        $result_set = $this->DB->query("
+        $response = $this->DB->query("
             SELECT *
             FROM profiles
             WHERE `id`=".$profile_id."
-        ")->fetchAll();
+        ");
+
+        $result_set = $response->fetchAll();
+
         $result = $result_set[0];
 
         $id = $result["id"];
         $about = $result["about"];
-        $profile = new Profile($id, $about);
+        $dev_id = $result["dev_id"];
+        $photo = $result["photo"];
+        $profile = new Profile($id, $about, $dev_id, $photo);
 
         return $profile;
     }
@@ -296,5 +300,34 @@ class MysqlUsersDatabase
         ");
     }
 
+    public function updatePhoto($profile_id, $photo)
+    {
+        $this->DB->query("
+            UPDATE profiles
+            SET `photo`='".$photo."'
+            WHERE `id`=".$profile_id."
+        ");
+    }
+
+    private function getPhotoByDeveloperId($developer_id)
+    {
+        try
+        {
+            $response = $this->DB->query("
+                SELECT photo
+                FROM profiles
+                WHERE `dev_id`=".$developer_id."
+            ");
+
+            $result_set = $response->fetchAll();
+            $result = $result_set[0]["photo"];
+
+            return $result;
+        }
+        catch (PDOException $e)
+        {
+
+        }
+    }
 
 }

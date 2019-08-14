@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="/views/css/custom.css">
     <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
+
 </head>
 <body>
     <!--Навигационное меню и блок авторизации -->
@@ -39,23 +40,14 @@
                 foreach ($devs as $dev){?>
                 <div class="dev-preview row p-3 mt-2 border-top border-bottom">
                     <div class="col-2">
-                        <img class="img-float float-right img-thumbnail dev-preview-img" src="<?php echo $dev->getImageFile()?>">
+                        <img class="img-float float-right img-thumbnail dev-preview-img" src="<?php echo $dev->getProfile()->getPhoto()?>">
                     </div>
                     <div class="col-9">
-                        <h3><?php echo $dev->getName()?></h3>
-                        <p class="lead"><?php echo $dev->getPreview()?></p>
+                        <h3><?php echo $dev->getFullName()?></h3>
+                        <p class="lead"><?php echo $dev->getProfile()->getAbout()?></p>
                     </div>
                 </div>
                 <?php }?>
-<!--                <nav class="col" aria-label="Page navigation example">-->
-<!--                    <ul class="pagination">-->
-<!--                        <li class="page-item"><a class="page-link text-info" href="#">Previous</a></li>-->
-<!--                        <li class="page-item"><a class="page-link text-info" href="#">1</a></li>-->
-<!--                        <li class="page-item"><a class="page-link text-info" href="#">2</a></li>-->
-<!--                        <li class="page-item"><a class="page-link text-info" href="#">3</a></li>-->
-<!--                        <li class="page-item"><a class="page-link text-info" href="#">Next</a></li>-->
-<!--                    </ul>-->
-<!--                </nav>-->
             </div>
 
             <!--Ads -->

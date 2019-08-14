@@ -22,3 +22,34 @@ body{
 .textarea-height{
     height: 40rem;
 }
+
+.hidden{
+    display: none!important;
+}
+
+.avatar{
+    display: inline-block;
+    max-height: 200px;
+    max-width: 200px;
+}
+
+.edit-photo-button{
+    margin-left: -1rem;
+    border: black;
+    border: 5px!important;
+}
+
+.image-container{
+    display: flex;
+    align-items: flex-start;
+}
+
+.fa-pen-square{
+    color: darkcyan;
+}
+
+.fas{
+    background-color: beige;
+    padding-left: 1px;
+    padding-right: 1px;
+}

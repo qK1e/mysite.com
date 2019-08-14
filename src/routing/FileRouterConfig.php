@@ -62,7 +62,7 @@ class FileRouterConfig
         }
     }
 
-    public function getMappings($path, $http_method, $action)
+    public function getMappings($path, $http_method)
     {
         $return_mappings = array();
 
@@ -70,22 +70,18 @@ class FileRouterConfig
         {
             if($mapping["http"] == "ANY" || $mapping["http"] == $http_method)
             {
-                //should work if both actions are null or equal to each other - just ignore errors
-                if($mapping["action"] == $action)
+                if($path[0] == "/")
                 {
-                    if($path[0] == "/")
-                    {
-                        $path = substr($path, 1, strlen($path)-1);
-                    }
-                    if($mapping["path"][0] == "/")
-                    {
-                        $mapping["path"] = substr($mapping["path"], 1, strlen($mapping["path"])-1);
-                    }
-                    //should work if both path are null(which means it was /) and if they are equals or if it doesn't matter
-                    if($mapping["path"] == "%" || $mapping["path"] == $path)
-                    {
-                        array_push($return_mappings, $mapping);
-                    }
+                    $path = substr($path, 1, strlen($path)-1);
+                }
+                if($mapping["path"][0] == "/")
+                {
+                    $mapping["path"] = substr($mapping["path"], 1, strlen($mapping["path"])-1);
+                }
+                //should work if both path are null(which means it was /) and if they are equals or if it doesn't matter
+                if($mapping["path"] == "%" || $mapping["path"] == $path)
+                {
+                    array_push($return_mappings, $mapping);
                 }
             }
         }

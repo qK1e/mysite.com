@@ -38,7 +38,7 @@
                             <label>Your password:</label>
                             <input class="pl-1" name="password" type="password" placeholder="password"><br>
                         </div>
-                        <input class="btn btn-primary" name="sign-in" type="submit">
+                        <input class="btn btn-primary" name="sign-in" type="submit" value="Login">
                     </form>
                 </div>
             </div>

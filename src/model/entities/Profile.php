@@ -4,11 +4,17 @@
 namespace qk1e\mysite\model\entities;
 
 
+use qk1e\mysite\model\MysqlDevelopersDatabase;
+use qk1e\mysite\storage\LocalStorage;
+
 class Profile
 {
     private $id;
     private $about;
     private $dev_id;
+    private $photo;
+
+    private $DB;
 
     /**
      * Profile constructor.
@@ -16,12 +22,16 @@ class Profile
      * @param $id
      * @param $about
      * @param  null  $dev_id
+     * @param  null  $photo
      */
-    public function __construct($id, $about, $dev_id=null)
+    public function __construct($id, $about, $dev_id=null, $photo=null)
     {
         $this->id = $id;
         $this->about = $about;
         $this->dev_id = $dev_id;
+        $this->photo = $photo;
+
+        $this->DB = new MysqlDevelopersDatabase();
     }
 
     /**
@@ -54,6 +64,22 @@ class Profile
     public function setAbout($about): void
     {
         $this->about = $about;
+    }
+
+    /**
+     * @return null
+     */
+    public function getPhoto()
+    {
+        if($this->photo)
+        {
+            return LocalStorage::getFilePath($this->photo);
+        }
+        else
+        {
+            $file = $this->DB->getProfilePhoto($this->id);
+            return LocalStorage::getFilePath($file);
+        }
     }
 
 

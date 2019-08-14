@@ -15,7 +15,7 @@ class ConfigurableRouter
 
     public function route($path, $method, $args)
     {
-        $mappings = $this->configuration->getMappings($path, $method, $args["action"]);
+        $mappings = $this->configuration->getMappings($path, $method);
 
         foreach ($mappings as $mapping)
         {

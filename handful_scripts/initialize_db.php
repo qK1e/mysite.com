@@ -44,7 +44,8 @@ try
         CREATE TABLE IF NOT EXISTS profiles(
             id INT PRIMARY KEY AUTO_INCREMENT,
             dev_id INT,
-            about TEXT(50000)
+            about TEXT(50000),
+            photo LONGTEXT
         )
     ");
 

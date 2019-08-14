@@ -4,7 +4,9 @@
 namespace qk1e\mysite\model\entities;
 
 
+use qk1e\mysite\model\MysqlDevelopersDatabase;
 use qk1e\mysite\model\MysqlUsersDatabase;
+use qk1e\mysite\storage\LocalStorage;
 
 class Developer
 {
@@ -13,8 +15,8 @@ class Developer
     private $profile_id;
     private $first_name;
     private $second_name;
-    private $about;
-    private $photo;
+
+    private $DB;
 
     /**
      * Developer constructor.
@@ -23,6 +25,8 @@ class Developer
      */
     public function __construct(User $user=null)
     {
+        $this->setDatabase();
+
         if($user != null)
         {
             $DB = new MysqlUsersDatabase();
@@ -33,9 +37,12 @@ class Developer
             $this->profile_id = $developer->getProfileId();
             $this->first_name = $developer->getFirstName();
             $this->second_name = $developer->getSecondName();
-            $this->about = $developer->getAbout();
-            $this->photo = $developer->getAvatar();
         }
+    }
+
+    private function setDatabase()
+    {
+        $this->DB = new MysqlDevelopersDatabase();
     }
 
     /**
@@ -51,6 +58,7 @@ class Developer
         return isset($this->user_id);
     }
 
+
     /**
      * @param  mixed  $id
      */
@@ -65,14 +73,6 @@ class Developer
     public function setUserId($user_id): void
     {
         $this->user_id = $user_id;
-    }
-
-    /**
-     * @param  mixed  $photo
-     */
-    public function setAvatar($photo): void
-    {
-        $this->photo = $photo;
     }
 
     /**
@@ -122,19 +122,6 @@ class Developer
     }
 
     /**
-     * @return mixed
-     */
-    public function getPhoto()
-    {
-        return $this->photo;
-    }
-
-    public function getAvatar()
-    {
-        return "./views/img/indian-developer.jpg";
-    }
-
-    /**
      * @param  mixed  $first_name
      */
     public function setFirstName($first_name): void
@@ -150,13 +137,6 @@ class Developer
         $this->second_name = $second_name;
     }
 
-    /**
-     * @param  mixed  $about
-     */
-    public function setAbout($about): void
-    {
-        $this->about = $about;
-    }
 
     public function getFullName()
     {
@@ -164,7 +144,7 @@ class Developer
     }
 
     public function getAbout()
-    {;
+    {
         $about = $this->getProfile()->getAbout();
         return $about;
     }
