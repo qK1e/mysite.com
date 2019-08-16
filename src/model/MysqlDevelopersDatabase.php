@@ -7,6 +7,7 @@ namespace qk1e\mysite\model;
 use PDO;
 use PDOException;
 use qk1e\mysite\model\entities\Developer;
+use qk1e\mysite\model\entities\DeveloperFilter;
 
 class MysqlDevelopersDatabase
 {
@@ -26,19 +27,76 @@ class MysqlDevelopersDatabase
         $this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
-    public function getPageOfDevelopers($page=1, $page_size=5)
+    private function filterToWhereQueryPart(DeveloperFilter $filter)
     {
+        $where = "";
+
+        if($filter)
+        {
+            $parts = array();
+
+            $first_name = $filter->getFirstName();
+            if($first_name)
+            {
+                if($first_name != "")
+                {
+                    $part = "`first_name` LIKE ".$this->DB->quote($first_name);
+                }
+                else
+                {
+                    $part = "`first_name` LIKE '%'";
+                }
+                array_push($parts, $part);
+            }
+
+            $second_name = $filter->getSecondName();
+            if($second_name)
+            {
+                if($second_name != "")
+                {
+                    $part = "`second_name` LIKE ".$this->DB->quote($second_name);
+                }
+                else
+                {
+                    $part = "`second_name` LIKE '%'";
+                }
+                array_push($parts, $part);
+            }
+        }
+
+        if(!empty($parts))
+        {
+            $where = "WHERE ";
+            foreach ($parts as $part)
+            {
+                $where = $where.$part." AND ";
+            }
+            $last_and_pos = strlen($where) - 4;
+            $where = substr_replace($where, "", $last_and_pos, 4);
+        }
+
+        return $where;
+    }
+
+    public function getPageOfDevelopers($page=1, $page_size=5, DeveloperFilter $filter=null)
+    {
+
+
         $developers = array();
         $from = ($page-1)*$page_size;
+        $where = $this->filterToWhereQueryPart($filter);
 
-        $response = $this->DB->query("
+        $query = "
             SELECT *
-            FROM developers
+            FROM developers 
+            ".$where."
             ORDER BY `id`
             LIMIT ".$from.", ".$page_size."
-        ");
+        ";
 
-        $result_set = $response->fetchAll();
+        $statement = $this->DB->prepare($query);
+        $statement->execute();
+        $result_set = $statement->fetchAll();
 
         foreach ($result_set as $dev)
         {

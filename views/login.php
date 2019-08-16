@@ -30,12 +30,12 @@
                     <form action="sign-in" method="post" name="login">
                         <h1>Sign In</h1>
                         <div class="form-group">
-                            <label>Your login:</label>
+                            <label for="username">Your login:</label>
                             <input class="pl-1" name="username" type="text" placeholder="login"><br>
                         </div>
 
                         <div class="form-group">
-                            <label>Your password:</label>
+                            <label for="password">Your password:</label>
                             <input class="pl-1" name="password" type="password" placeholder="password"><br>
                         </div>
                         <input class="btn btn-primary" name="sign-in" type="submit" value="Login">

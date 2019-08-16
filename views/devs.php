@@ -34,6 +34,34 @@
 
     <!--Developers list -->
     <section class="content content-clr container-flex">
+
+        <!--filter section -->
+        <div class="row border">
+            <div class="col-1 d-flex justify-content-center align-items-center bg-light">
+                <b>Filter</b>
+            </div>
+            <div class="col row">
+                <form class="d-flex align-items-center mb-2 mt-2" action="/devs" method="GET" name="filter">
+                    <div class="input-group d-inline-block col" id="first-name-filter">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="first-name-input">Name</label>
+                        </div>
+                        <textarea name="first-name" id="first-name-input" style="height: 2rem"></textarea>
+                    </div>
+                    <div class="input-group d-inline-block col" id="second-name-filter">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="second-name-input">Surname</label>
+                        </div>
+                        <textarea name="second-name" id="second-name-input" style="height: 2rem"></textarea>
+                    </div>
+                    <div class="d-inline-block col">
+                        <input type="submit" value="Filter">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--filter section -->
+
         <div class="row">
             <div class="col-7 offset-2 container">
                 <?php
@@ -43,7 +71,9 @@
                         <img class="img-float float-right img-thumbnail dev-preview-img" src="<?php echo $dev->getProfile()->getPhoto()?>">
                     </div>
                     <div class="col-9">
-                        <h3><?php echo $dev->getFullName()?></h3>
+                        <a href="/developer?id=<?php echo $dev->getId()?>">
+                            <h3><?php echo $dev->getFullName()?></h3>
+                        </a>
                         <p class="lead"><?php echo $dev->getProfile()->getAbout()?></p>
                     </div>
                 </div>
@@ -54,6 +84,8 @@
             <div class="ads col-3 mt-5">
                 <p>This could be your ads!</p>
             </div>
+            <!--Ads -->
+
         </div>
     </section>
 

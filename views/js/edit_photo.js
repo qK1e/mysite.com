@@ -14,8 +14,7 @@ function displayPhoto(files)
         let img = document.getElementById("photo");
         img.file = file;
 
-        //ya ne ebu kak eto rabotaet
-        reader.onload = (function(aImg) { return function(e) { aImg.src = e.target.result; }; })(img);
+        reader.onload = ( function(aImg) { return function(e) { aImg.src = e.target.result; }; } )(img);
 
         reader.readAsDataURL(file);
     }

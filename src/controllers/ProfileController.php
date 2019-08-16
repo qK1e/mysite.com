@@ -47,6 +47,16 @@ class ProfileController
         }
     }
 
+    public function getDeveloperPage(Request $request)
+    {
+        $id = $request->getArgument("id");
+
+        $ss = new SecuritySystem();
+        $user_role = $ss->currentUserRole();
+
+        $view = new View();
+    }
+
     public function saveProfile(Request $request)
     {
         $full_name = $request->getArgument("full-name");

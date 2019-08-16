@@ -116,5 +116,12 @@
     "controller": "ProfileController",
     "method": "saveProfile",
     "http": "POST"
+},
+
+{
+    "path": "developer",
+    "controller": "ProfileController",
+    "method": "getDeveloperProfilePage",
+    "http": "GET"
 }
 ]

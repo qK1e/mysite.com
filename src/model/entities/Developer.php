@@ -6,7 +6,6 @@ namespace qk1e\mysite\model\entities;
 
 use qk1e\mysite\model\MysqlDevelopersDatabase;
 use qk1e\mysite\model\MysqlUsersDatabase;
-use qk1e\mysite\storage\LocalStorage;
 
 class Developer
 {
