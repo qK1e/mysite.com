@@ -1,6 +1,0 @@
-{
-    "host" : "mysite.com",
-    "database" : "mysite",
-    "user" : "root",
-    "password" : "root"
-}
