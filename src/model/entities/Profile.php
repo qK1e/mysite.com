@@ -24,12 +24,24 @@ class Profile
      * @param  null  $dev_id
      * @param  null  $photo
      */
-    public function __construct($id, $about, $dev_id=null, $photo=null)
+    public function __construct($id=null, $about=null, $dev_id=null, $photo=null)
     {
-        $this->id = $id;
-        $this->about = $about;
-        $this->dev_id = $dev_id;
-        $this->photo = $photo;
+        if(isset($id))
+        {
+            $this->id = $id;
+        }
+        if(isset($about))
+        {
+            $this->about = $about;
+        }
+        if(isset($dev_id))
+        {
+            $this->dev_id = $dev_id;
+        }
+        if(isset($photo))
+        {
+            $this->photo = $photo;
+        }
 
         $this->DB = MysqlDevelopersDatabase::getInstance();
     }

@@ -32,11 +32,14 @@ class Developer extends User
             $DB = MysqlUsersDatabase::getInstance();
             $developer = $DB->getDeveloperByUserId($user->getId());
 
-            $this->id = $developer->getId();
-            $this->user_id = $developer->getUserId();
-            $this->profile_id = $developer->getProfileId();
-            $this->first_name = $developer->getFirstName();
-            $this->second_name = $developer->getSecondName();
+            if($developer)
+            {
+                $this->id = $developer->getId();
+                $this->user_id = $developer->getUserId();
+                $this->profile_id = $developer->getProfileId();
+                $this->first_name = $developer->getFirstName();
+                $this->second_name = $developer->getSecondName();
+            }
         }
     }
 

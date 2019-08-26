@@ -24,7 +24,7 @@ session_start();
 
 
 
-$router = new ConfigurableRouter("config/router-config");
+$router = ConfigurableRouter::getInstance();
 $path = $_SERVER["REDIRECT_URL"];
 $args = $_REQUEST;
 $method = $_SERVER["REQUEST_METHOD"];

@@ -4,8 +4,10 @@
 namespace qk1e\mysite\controllers;
 
 use qk1e\mysite\Request;
+use qk1e\mysite\routing\ConfigurableRouter;
 use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\view\View;
+use Yaf\Router;
 
 class AuthenticationController
 {
@@ -38,7 +40,8 @@ class AuthenticationController
         }
 
         SecuritySystem::register($request->getArgument("username"), $request->getArgument("password"));
-        header("Location: /");
+        $router = ConfigurableRouter::getInstance();
+        $router->route("/", "GET", array());
     }
 
     public function newUser(Request $request)
@@ -58,7 +61,8 @@ class AuthenticationController
             SecuritySystem::register($username, $password, $role);
         }
 
-        header("Location: /admin");
+        $router = ConfigurableRouter::getInstance();
+        $router->route("/admin", "GET", array());
     }
 
     public function getLoginPage(Request $request)
@@ -76,6 +80,7 @@ class AuthenticationController
     public function logout(Request $request)
     {
         SecuritySystem::logout();
-        header("Location: /");
+        $router = ConfigurableRouter::getInstance();
+        $router->route("/", "GET", array());
     }
 }

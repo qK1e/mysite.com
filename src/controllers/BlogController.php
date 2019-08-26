@@ -6,6 +6,7 @@ namespace qk1e\mysite\controllers;
 use qk1e\mysite\model\entities\Article;
 use qk1e\mysite\model\entities\User;
 use qk1e\mysite\model\MysqlBlogDatabase;
+use qk1e\mysite\routing\ConfigurableRouter;
 use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\view\View;
 use qk1e\mysite\Request;
@@ -65,7 +66,8 @@ class BlogController
 
         $DB->addArticle($article);
 
-        header("Location: /blog");
+        $router = ConfigurableRouter::getInstance();
+        $router->route("/blog", "GET", array());
     }
 
     public function getArticle(Request $request)

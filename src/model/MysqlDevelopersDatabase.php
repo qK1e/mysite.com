@@ -119,7 +119,9 @@ class MysqlDevelopersDatabase extends MysqlDatabase
             ";
 
             $statement = $this->DB->prepare($query);
-            $statement->execute(array($file_id, $profile_id));
+            $statement->bindParam(1, $file_id, PDO::PARAM_STR);
+            $statement->bindParam(2, $profile_id, PDO::PARAM_INT);
+            $statement->execute();
         }
         catch (PDOException $e)
         {
@@ -138,7 +140,8 @@ class MysqlDevelopersDatabase extends MysqlDatabase
             ";
 
             $statement = $this->DB->prepare($query);
-            $statement->execute(array($profile_id));
+            $statement->bindParam(1, $profile_id, PDO::PARAM_INT);
+            $statement->execute();
             return $statement->fetch(PDO::FETCH_ASSOC)["photo"];
         }
         catch (PDOException $e)
@@ -158,8 +161,8 @@ class MysqlDevelopersDatabase extends MysqlDatabase
             ";
 
             $statement = $this->DB->prepare($query);
-
-            $statement->execute(array($id));
+            $statement->bindParam(1, $id, PDO::PARAM_INT);
+            $statement->execute();
             $statement->setFetchMode(PDO::FETCH_CLASS, Developer::class);
             $developer = $statement->fetch();
 
@@ -181,7 +184,10 @@ class MysqlDevelopersDatabase extends MysqlDatabase
         ";
 
         $statement = $this->DB->prepare($query);
-        $statement->execute(array($first_name, $second_name, $developer_id));
+        $statement->bindParam(1, $first_name, PDO::PARAM_STR);
+        $statement->bindParam(2, $second_name, PDO::PARAM_STR);
+        $statement->bindParam(3, $developer_id, PDO::PARAM_INT);
+        $statement->execute();
     }
 
     public function updateProfile($id, $about)
@@ -193,7 +199,9 @@ class MysqlDevelopersDatabase extends MysqlDatabase
         ";
 
         $statement = $this->DB->prepare($query);
-        $statement->execute(array($id, $about));
+        $statement->bindParam(1, $about, PDO::PARAM_STR);
+        $statement->bindParam(2, $id, PDO::PARAM_INT);
+        $statement->execute();
     }
 
 }

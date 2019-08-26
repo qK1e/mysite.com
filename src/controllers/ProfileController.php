@@ -7,6 +7,7 @@ use qk1e\mysite\model\entities\Developer;
 use qk1e\mysite\model\MysqlDevelopersDatabase;
 use qk1e\mysite\model\MysqlUsersDatabase;
 use qk1e\mysite\Request;
+use qk1e\mysite\routing\ConfigurableRouter;
 use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\storage\LocalStorage;
 use qk1e\mysite\view\View;
@@ -89,7 +90,9 @@ class ProfileController
         $first_name = $ex_full_name[0];
         $second_name = $ex_full_name[1];
         $DB->updateDeveloperFullName($first_name, $second_name, $developer_id);
-        header("Location: /profile");
+
+        $router = ConfigurableRouter::getInstance();
+        $router->route("/profile", "GET", array());
     }
 
     //

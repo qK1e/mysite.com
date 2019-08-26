@@ -42,7 +42,7 @@ class MysqlUsersDatabase extends MysqlDatabase
         ";
 
         $statement = $this->DB->prepare($query);
-        $statement->execute($login);
+        $statement->execute(array($login));
         $id = $statement->fetch(PDO::FETCH_ASSOC)["id"];
 
         return $id;
@@ -57,8 +57,10 @@ class MysqlUsersDatabase extends MysqlDatabase
         ";
 
         $statement = $this->DB->prepare($query);
-        $statement->execute($id);
-        $login = $statement->fetch(PDO::FETCH_ASSOC)["id"];
+        $statement->bindParam(1, $id, PDO::PARAM_INT );
+        $statement->execute();
+        $row = $statement->fetch(PDO::FETCH_ASSOC);
+        $login = $row["login"];
 
         return $login;
     }
@@ -111,7 +113,7 @@ class MysqlUsersDatabase extends MysqlDatabase
         }
     }
 
-    public function getDeveloperByUserId($id): Developer
+    public function getDeveloperByUserId($id)
     {
         try
         {
@@ -122,11 +124,19 @@ class MysqlUsersDatabase extends MysqlDatabase
             ";
 
             $statement = $this->DB->prepare($query);
-            $statement->execute(array($id));
-            $statement->setFetchMode(PDO::FETCH_CLASS);
+            $statement->bindParam(1, $id, PDO::PARAM_INT);
+            $statement->execute();
+            $statement->setFetchMode(PDO::FETCH_CLASS, Developer::class);
             $developer = $statement->fetch();
 
-            return $developer;
+            if($developer)
+            {
+                return $developer;
+            }
+            else
+            {
+                return null;
+            }
         }
         catch (PDOException $e)
         {
@@ -163,7 +173,9 @@ class MysqlUsersDatabase extends MysqlDatabase
                     VALUES (?,?,?)
                 ";
                 $statement = $this->DB->prepare($query);
-                $statement->execute(array($user_id, $first_name, $second_name));
+                $statement->bindParam(1, $user_id, PDO::PARAM_INT);
+                $statement->bindParam(2, $first_name, PDO::PARAM_STR);
+                $statement->bindParam(3, $second_name, PDO::PARAM_STR);
 
                 $dev_id = $this->getDeveloperByUserId($user_id)->getId(); //probably it's better to make a function that requests a dev_id
 
@@ -173,7 +185,9 @@ class MysqlUsersDatabase extends MysqlDatabase
                 ";
                 $statement = $this->DB->prepare($query);
                 $default_about = "I have nothing to tell. Just love my job!";
-                $statement->execute(array($default_about, $dev_id));
+                $statement->bindParam(1, $default_about, PDO::PARAM_STR);
+                $statement->bindParam(2, $dev_id, PDO::PARAM_INT);
+                $statement->execute();
 
                 $query = "
                     SELECT id
@@ -181,7 +195,8 @@ class MysqlUsersDatabase extends MysqlDatabase
                     WHERE `dev_id` = ?
                 ";
                 $statement = $this->DB->prepare($query);
-                $statement->execute($dev_id);
+                $statement->bindParam(1, $dev_id, PDO::PARAM_INT);
+                $statement->execute();
                 $profile_id = $statement->fetch(PDO::FETCH_ASSOC)["id"];
 
                 $query = "
@@ -190,7 +205,9 @@ class MysqlUsersDatabase extends MysqlDatabase
                     WHERE `user_id` = ?
                 ";
                 $statement = $this->DB->prepare($query);
-                $statement->execute(array($profile_id, $user_id));
+                $statement->bindParam(1, $profile_id, PDO::PARAM_INT);
+                $statement->bindParam(2, $user_id, PDO::PARAM_INT);
+                $statement->execute();
             }
 
             return true;
@@ -263,7 +280,8 @@ class MysqlUsersDatabase extends MysqlDatabase
         ";
 
         $statement = $this->DB->prepare($query);
-        $statement->execute(array($profile_id));
+        $statement->bindParam(1, $profile_id, PDO::PARAM_INT);
+        $statement->execute();
         $statement->setFetchMode(PDO::FETCH_CLASS, Profile::class);
         $profile = $statement->fetch();
 
@@ -318,7 +336,8 @@ class MysqlUsersDatabase extends MysqlDatabase
             ";
 
             $statement = $this->DB->prepare($query);
-            $statement->execute(array($developer_id));
+            $statement->bindParam(1, $developer_id, PDO::PARAM_INT);
+            $statement->execute();
 
             $photo = $statement->fetch(PDO::FETCH_ASSOC)["photo"];
 

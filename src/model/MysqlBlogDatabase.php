@@ -42,11 +42,13 @@ class MysqlBlogDatabase extends MysqlDatabase
             SELECT *
             FROM blogs
             ORDER BY `date`
-            LIMIT ?, ?
+            LIMIT ?,?
         ";
 
         $statement = $this->DB->prepare($query);
-        $statement->execute(array($from, $page_size));
+        $statement->bindParam(1, $from, PDO::PARAM_INT);
+        $statement->bindParam(2, $page_size, PDO::PARAM_INT);
+        $statement->execute();
         $statement->setFetchMode(PDO::FETCH_CLASS, Article::class);
         $articles = $statement->fetchAll();
 
@@ -68,7 +70,11 @@ class MysqlBlogDatabase extends MysqlDatabase
             ";
 
             $statement = $this->DB->prepare($query);
-            $statement->execute(array($header, $content, $author_id, $date));
+            $statement->bindParam(1, $header, PDO::PARAM_STR);
+            $statement->bindParam(2, $content, PDO::PARAM_STR);
+            $statement->bindParam(3, $author_id, PDO::PARAM_INT);
+            $statement->bindParam(4, $date, PDO::PARAM_STR);
+            $statement->execute();
 
         }
         catch (PDOException $e)
@@ -107,7 +113,8 @@ class MysqlBlogDatabase extends MysqlDatabase
         ";
 
         $statement = $this->DB->prepare($query);
-        $statement->execute(array($id));
+        $statement->bindParam(1, $id, PDO::PARAM_INT);
+        $statement->execute();
         $statement->setFetchMode(PDO::FETCH_CLASS, Article::class);
 
         $article = $statement->fetch();

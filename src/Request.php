@@ -42,6 +42,13 @@ class Request
 
     public function getArgument($argument_name)
     {
-        return $this->arguments[$argument_name];
+        if(isset($this->arguments[$argument_name]))
+        {
+            return $this->arguments[$argument_name];
+        }
+        else
+        {
+            return null;
+        }
     }
 }
