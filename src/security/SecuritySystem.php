@@ -5,42 +5,47 @@ use qk1e\mysite\model\MysqlUsersDatabase as MysqlUsersDatabase;
 
 class SecuritySystem
 {
-
-    public function __construct()
+    public static function authenticate($login, $password)
     {
-    }
-
-    public function authenticate($login, $password)
-    {
-        $DB = new MysqlUsersDatabase();
-
-        if ($DB->verifyUser($login, $password)) {
+        if (SecuritySystem::verifyUser($login, $password)) {
             $_SESSION["user"] = $login;
             $_SESSION["authenticated"] = true;
             return true;
         }
+        else
+        {
+            return false;
+        }
     }
 
-    public function logout()
+    private static function verifyUser($login, $password)
+    {
+        $DB = MysqlUsersDatabase::getInstance();
+        $hash = $DB->getPasswordByLogin($login);
+        return password_verify($password, $hash);
+
+    }
+
+    public static function logout()
     {
         $_SESSION["authenticated"] = false;
         unset($_SESSION["user"]);
     }
 
-    public function register($login, $password, $role=ROLE_READER, $first_name=null, $second_name=null)
+    public static function register($login, $password, $role=ROLE_READER, $first_name=null, $second_name=null)
     {
-        $DB = new MysqlUsersDatabase();
+        $DB = MysqlUsersDatabase::getInstance();
 
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
         $DB->registerUser($login, $hashed_password, $role, $first_name, $second_name);
-        if(!$this->isAuthenticated())
+        if(!SecuritySystem::isAuthenticated())
         {
-            $this->authenticate($login, $password);
+            SecuritySystem::authenticate($login, $password);
         }
     }
 
-    public function isAuthenticated()
+    public static function isAuthenticated()
     {
         if(isset($_SESSION["authenticated"]))
         {
@@ -51,9 +56,9 @@ class SecuritySystem
         }
     }
 
-    public function currentUserRole()
+    public static function currentUserRole()
     {
-        $DB = new MysqlUsersDatabase();
+        $DB = MysqlUsersDatabase::getInstance();
         if(isset($_SESSION["user"]))
         {
             return $DB->getRole($_SESSION["user"]);
@@ -64,7 +69,7 @@ class SecuritySystem
 
     }
 
-    public function currentUserLogin()
+    public static function currentUserLogin()
     {
         if(isset($_SESSION["user"]))
         {
@@ -76,9 +81,9 @@ class SecuritySystem
         }
     }
 
-    public function currentUser()
+    public static function currentUser()
     {
-        $DB = new MysqlUsersDatabase();
+        $DB = MysqlUsersDatabase::getInstance();
         return $DB->getUserByLogin($_SESSION["user"]);
     }
 

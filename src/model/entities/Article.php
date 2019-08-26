@@ -75,7 +75,7 @@ class Article
 
     public function getAuthorLogin()
     {
-        $DB = new MysqlUsersDatabase();
+        $DB = MysqlUsersDatabase::getInstance();
         return $DB->loginById($this->author_id);
     }
 
@@ -108,7 +108,7 @@ class Article
         }
         else
         {
-            $DB = new MysqlBlogDatabase();
+            $DB = MysqlBlogDatabase::getInstance();
             return $DB->getIdByHeader($this->header);
         }
     }

@@ -121,7 +121,7 @@
 {
     "path": "developer",
     "controller": "ProfileController",
-    "method": "getDeveloperProfilePage",
+    "method": "getDeveloperPage",
     "http": "GET"
 }
 ]

@@ -86,6 +86,7 @@
                         <li class="page-item"><a class="page-link  text-info" href="blog?page=<?php echo $blog_page+1?>">Next</a></li>
                     </ul>
                 </nav>
+                <!--blog pagination -->
             </div>
             <!--Ads -->
             <div class="ads col-3 mt-5">

@@ -15,6 +15,8 @@ class DevsController
 
     public function getDevsPage(Request $request)
     {
+        $args = array();
+
         $filter = new DeveloperFilter();
         if($request->getArgument("first-name"))
         {
@@ -24,21 +26,28 @@ class DevsController
         {
             $filter->setSecondName($request->getArgument("second-name"));
         }
-        $this->getDevs($filter);
 
-        $args = array();
+
+        $page = $request->getArgument("page");
+        if(!isset($page) || $page == 0)
+        {
+            $page = 1;
+        }
+        $args["devs_page"] = $page;
+        $this->getDevs($filter, $page);
         $args["devs"] = $this->devs;
 
-        $ss = new SecuritySystem();
-        $args["user_role"] = $ss->currentUserRole();
+        $args["user_role"] = SecuritySystem::currentUserRole();
+
+
 
         $view = new View();
         $view->getPage("devs", $args);
     }
 
-    private function getDevs($filter)
+    private function getDevs($filter, $page)
     {
-        $DB = new MysqlDevelopersDatabase();
-        $this->devs = $DB->getPageOfDevelopers(1, 5, $filter);
+        $DB = MysqlDevelopersDatabase::getInstance();
+        $this->devs = $DB->getPageOfDevelopers($page, 5, $filter);
     }
 }

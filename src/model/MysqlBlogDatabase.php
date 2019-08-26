@@ -3,60 +3,52 @@
 
 namespace qk1e\mysite\model;
 
-
 use PDO;
 use PDOException;
 use qk1e\mysite\model\entities\Article;
 
-class MysqlBlogDatabase
+class MysqlBlogDatabase extends MysqlDatabase
 {
+    private static $instance;
 
-    private static $url = "mysql:host=localhost;dbname=mysite";
 
-    private static $user = "root";
-
-    private static $password = "root";
-
-    private $DB;
-
-    /**
-     * MysqlBlogDatabase constructor.
-     */
-    public function __construct()
+    private function __construct()
     {
-
-        $this->DB = new PDO(MysqlBlogDatabase::$url, MysqlBlogDatabase::$user,
-          MysqlBlogDatabase::$password);
-        $this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        parent::__construct();
     }
+
+    public static function getInstance(): MysqlBlogDatabase
+    {
+        if(MysqlBlogDatabase::$instance)
+        {
+            return MysqlBlogDatabase::$instance;
+        }
+        else
+        {
+            MysqlBlogDatabase::$instance = new MysqlBlogDatabase();
+            return MysqlBlogDatabase::$instance;
+        }
+    }
+
+
 
     public function getPageOfArticles($page, $page_size)
     {
         $articles = [];
 
         $from = ($page - 1) * $page_size;
-        $response = $this->DB->query("
-        SELECT * FROM blogs 
-        ORDER BY `date` DESC 
-        LIMIT ".$from.", ".$page_size
-        );
 
-        $result_set = $response->fetchAll();
+        $query = "
+            SELECT *
+            FROM blogs
+            ORDER BY `date`
+            LIMIT ?, ?
+        ";
 
-        for ($i = 0; $i < $page_size; $i++) {
-            if (isset($result_set[$i])) {
-                $article = new Article();
-                $article->setHeader($result_set[$i]["header"]);
-                $article->setDate($result_set[$i]["date"]);
-                $article->setAuthorId($result_set[$i]["author_id"]);
-                $article->setContent($result_set[$i]["content"]);
-                $article->setVisibility($result_set[$i]["visibility"]);
-                $article->setId($result_set[$i]["id"]);
-                array_push($articles, $article);
-            } else {
-                break;
-            }
-        }
+        $statement = $this->DB->prepare($query);
+        $statement->execute(array($from, $page_size));
+        $statement->setFetchMode(PDO::FETCH_CLASS, Article::class);
+        $articles = $statement->fetchAll();
 
         return $articles;
     }
@@ -68,53 +60,57 @@ class MysqlBlogDatabase
         $author_id = $article->getAuthorId();
         $date = $article->getDate();
 
-
-        try {
-            $response = $this->DB->query("
+        try
+        {
+            $query = "
                 INSERT INTO blogs(header, content, author_id, `date`, visibility)
-                VALUES (
-                        ".$this->DB->quote($header).",
-                        ".$this->DB->quote($content).",
-                        ".$this->DB->quote($author_id).",
-                        '".$date."',
-                           TRUE
-                )
-            ");
-        } catch (PDOException $e) {
+                VALUES (?, ?, ?, ?, TRUE)
+            ";
+
+            $statement = $this->DB->prepare($query);
+            $statement->execute(array($header, $content, $author_id, $date));
+
+        }
+        catch (PDOException $e)
+        {
             echo $e->getMessage();
         }
     }
 
     public function getIdByHeader($header)
     {
-        $response = $this->DB->query("
-            SELECT id
-            FROM blogs
-            WHERE header = '".$header."'
-        ");
+        try
+        {
+            $query = "
+                SELECT id
+                FROM blogs
+                WHERE header = ?
+            ";
 
-        $result_set = $response->fetchAll();
+            $statement = $this->DB->prepare($query);
+            $statement->execute(array($header));
 
-        return $result_set[0]["id"];
+            return $statement->fetch(PDO::FETCH_ASSOC)["id"];
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+        }
     }
 
     public function getArticleById($id)
     {
-        $response = $this->DB->query("
+        $query = "
             SELECT *
             FROM blogs
-            WHERE `id`= ".$this->DB->quote($id)
-        );
+            WHERE `id` = ?
+        ";
 
-        $result_set = $response->fetchAll();
+        $statement = $this->DB->prepare($query);
+        $statement->execute(array($id));
+        $statement->setFetchMode(PDO::FETCH_CLASS, Article::class);
 
-        $article = new Article();
-        $article->setHeader($result_set[0]["header"]);
-        $article->setDate($result_set[0]["date"]);
-        $article->setAuthorId($result_set[0]["author_id"]);
-        $article->setContent($result_set[0]["content"]);
-        $article->setVisibility($result_set[0]["visibility"]);
-        $article->setId($result_set[0]["id"]);
+        $article = $statement->fetch();
 
         return $article;
     }

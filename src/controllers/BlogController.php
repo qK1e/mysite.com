@@ -35,8 +35,7 @@ class BlogController
         $args["recent_articles"] = $this->recent_articles;
         $args["blog_page"] = $page;
 
-        $ss = new SecuritySystem();
-        $user_role = $ss->currentUserRole();
+        $user_role = SecuritySystem::currentUserRole();
         $args["user_role"] = $user_role;
 
         $view = new View();
@@ -51,11 +50,10 @@ class BlogController
 
     public function submitBlog(Request $request)
     {
-        $ss = new SecuritySystem();
         $article = new Article();
 
-        $user_login = $ss->currentUser();
-        $user_id = User::idByLogin($user_login);
+        $user = SecuritySystem::currentUser();
+        $user_id = $user->getId();
 
         $article->setAuthorId($user_id);
         $article->setHeader($request->getArgument("header"));
@@ -63,7 +61,7 @@ class BlogController
         $article->setDate(date("j-n-Y"));
         $article->setVisibility(true);
 
-        $DB = new MysqlBlogDatabase();
+        $DB = MysqlBlogDatabase::getInstance();
 
         $DB->addArticle($article);
 
@@ -72,13 +70,12 @@ class BlogController
 
     public function getArticle(Request $request)
     {
-        $ss = new SecuritySystem();
-        $role = $ss->currentUserRole();
+        $role = SecuritySystem::currentUserRole();
 
         $id = $request->getArgument("id");
         $args = array();
 
-        $DB = new MysqlBlogDatabase();
+        $DB = MysqlBlogDatabase::getInstance();
         $article = $DB->getArticleById($id);
         $args["article"] = $article;
         $args["user_role"] = $role;
@@ -89,7 +86,7 @@ class BlogController
 
     private function getArticles($page)
     {
-        $DB = new MysqlBlogDatabase();
+        $DB = MysqlBlogDatabase::getInstance();
         $this->recent_articles = $DB->getPageOfArticles($page, $this->page_size);
     }
 }

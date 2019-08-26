@@ -12,6 +12,17 @@ class User
     private $password;
     private $role;
 
+    public function __construct(User $user=null)
+    {
+        if($user)
+        {
+            $this->id = $user->getId();
+            $this->login = $user->getLogin();
+            $this->password = $user->getPassword();
+            $this->role = $user->getRole();
+        }
+    }
+
     /**
      * @param  mixed  $id
      */
@@ -55,7 +66,7 @@ class User
         {
             try
             {
-                $DB = new MysqlUsersDatabase();
+                $DB = MysqlUsersDatabase::getInstance();
                 $id = $DB->idByLogin($this->login);
             }
             catch (PDOException $e)
@@ -65,9 +76,29 @@ class User
         }
     }
 
-    public static function idByLogin($login)
+    /**
+     * @return mixed
+     */
+    public function getLogin()
     {
-        $DB = new MysqlUsersDatabase();
-        return $DB->idByLogin($login);
+        return $this->login;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    public function getUserId()
+    {
+        $this->getId();
+    }
+
+    private function getPassword()
+    {
+        return $this->password;
     }
 }

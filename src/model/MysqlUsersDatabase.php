@@ -9,107 +9,101 @@ use qk1e\mysite\model\entities\Developer;
 use qk1e\mysite\model\entities\Profile;
 use qk1e\mysite\model\entities\User;
 
-class MysqlUsersDatabase
+class MysqlUsersDatabase extends MysqlDatabase
 {
-    private static $url = "mysql:host=localhost;dbname=mysite";
-    private static $user = "root";
-    private static $password = "root";
+    private static $instance;
 
-    private $DB;
 
-    /**
-     * MysqlUsersDatabase constructor.
-     */
-    public function __construct()
+    private function __construct()
     {
-
-
-        $this->DB = new PDO(MysqlUsersDatabase::$url, MysqlUsersDatabase::$user, MysqlUsersDatabase::$password);
-        $this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        parent::__construct();
     }
 
-    public function idByLogin($login)
+    public static function getInstance(): MysqlUsersDatabase
     {
-        $response = $this->DB->query("
-        SELECT id
-        FROM users
-        WHERE login = '".$login."'
-        ");
-
-        $result_set = $response->fetchAll()[0];
-        if(isset($result_set))
+        if(MysqlUsersDatabase::$instance)
         {
-            return $result_set["id"];
+            return MysqlUsersDatabase::$instance;
         }
         else
         {
-            return null;
+            MysqlUsersDatabase::$instance = new MysqlUsersDatabase();
+            return MysqlUsersDatabase::$instance;
         }
     }
 
-    public function loginById($id)
+
+    public function idByLogin($login): int
     {
-        $response = $this->DB->query("
-        SELECT login
-        FROM users
-        WHERE id = '".$id."'
-        ");
+        $query = "
+            SELECT id
+            FROM users
+            WHERE login = ?
+        ";
 
-        $result_set = $response->fetchAll()[0];
-        if(isset($result_set))
-        {
-            return $result_set["login"];
-        }
-        else
-        {
-            return null;
-        }
+        $statement = $this->DB->prepare($query);
+        $statement->execute($login);
+        $id = $statement->fetch(PDO::FETCH_ASSOC)["id"];
+
+        return $id;
     }
 
-    //returns type User with all field like in DB
-    public function getUserByLogin($user)
+    public function loginById($id): string
+    {
+        $query = "
+            SELECT login
+            FROM users
+            WHERE id = ?
+        ";
+
+        $statement = $this->DB->prepare($query);
+        $statement->execute($id);
+        $login = $statement->fetch(PDO::FETCH_ASSOC)["id"];
+
+        return $login;
+    }
+
+    public function getUserByLogin(String $login): User
     {
         try
         {
-            $response = $this->DB->query("
+            $query = "
                 SELECT *
                 FROM users
-                WHERE `login`=".$this->DB->quote($user)
-            );
+                WHERE login = ?
+            ";
 
-            $result_set = $response->fetchAll();
+            $statement = $this->DB->prepare($query);
+            $statement->execute(array($login));
+            $statement->setFetchMode(PDO::FETCH_CLASS, User::class);
 
-            $user = $result_set[0];
+            $user = $statement->fetch();
 
-            $return_user = new User();
-            $return_user->setId($user["id"]);
-            $return_user->setLogin($user["login"]);
-            $return_user->setPassword($user["password"]);
-            $return_user->setRole($user["role"]);
-
-            return $return_user;
+            return $user;
         }
         catch (PDOException $e)
         {
             echo $e->getMessage();
+            return null;
         }
     }
 
 
     //creates model structure
-    public function initialize_users()
+    public function initialize_users(): void
     {
         try
         {
-            $this->DB->query("
-            CREATE TABLE IF NOT EXISTS users(
-                id INT PRIMARY KEY AUTO_INCREMENT,
-                login VARCHAR(30) NOT NULL,
-                password VARCHAR(255) NOT NULL,
-                role VARCHAR(15) DEFAULT 'reader'
-            )
-            ");
+            $query = "
+                CREATE TABLE IF NOT EXISTS users(
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    login VARCHAR(30) NOT NULL,
+                    password VARCHAR(255) NOT NULL,
+                    role VARCHAR(15) DEFAULT 'reader'  
+                )
+            ";
 
+            $this->DB->query($query);
         }
         catch (PDOException $e)
         {
@@ -117,25 +111,20 @@ class MysqlUsersDatabase
         }
     }
 
-    public function getDeveloperByUserId($id)
+    public function getDeveloperByUserId($id): Developer
     {
         try
         {
-            $response = $this->DB->query("
-                SELECT * FROM developers
-                WHERE `user_id`=".$id
-            );
+            $query = "
+                SELECT *
+                FROM developers
+                WHERE `user_id` = ?
+            ";
 
-            $result_set = $response->fetchAll();
-            $result = $result_set[0];
-
-            //there is an exact duplicate in MySqlDevelopersDatabase
-            $developer = new Developer();
-            $developer->setId($result["id"]);
-            $developer->setUserId($result["user_id"]);
-            $developer->setFirstName($result["first_name"]);
-            $developer->setSecondName($result["second_name"]);
-            $developer->setProfileId($result["profile_id"]);
+            $statement = $this->DB->prepare($query);
+            $statement->execute(array($id));
+            $statement->setFetchMode(PDO::FETCH_CLASS);
+            $developer = $statement->fetch();
 
             return $developer;
         }
@@ -146,187 +135,199 @@ class MysqlUsersDatabase
         }
     }
 
-    public function registerUser($login, $password, $role, $first_name=null, $second_name=null)
+    private function insertUser($login, $password, $role): void
+    {
+        $query = "
+                INSERT INTO users(`login`, `password`, `role`)
+                VALUES (?, ?, ?)
+            ";
+
+        $statement = $this->DB->prepare($query);
+        $statement->execute(array($login, $password, $role));
+    }
+
+    //insert into users table. if user is a developer -> insert into developers table and create profile then set profile id to devepers table
+    public function registerUser($login, $password, $role, $first_name=null, $second_name=null): bool
     {
         try
         {
-            $response = $this->DB->query("
-                INSERT INTO users(`login`, `password`, `role`)
-                VALUES ('".$login."', '".$password."','".$role."')
-                ");
+            $this->insertUser($login, $password, $role);
 
-            //ebatt govnocode
+            //If user is a developer or admin -> insert into developers and create profile
             if($role === ROLE_DEVELOPER || $role === ROLE_ADMIN)
             {
+                $user_id = $this->idByLogin($login);
 
-                $user_id = $this->DB->query("
-                SELECT id FROM users
-                WHERE `login`=".$this->DB->quote($login)
-                )->fetchAll()[0]["id"];
+                $query = "
+                    INSERT INTO developers(`user_id`, `first_name`, `second_name`)
+                    VALUES (?,?,?)
+                ";
+                $statement = $this->DB->prepare($query);
+                $statement->execute(array($user_id, $first_name, $second_name));
 
-                $this->DB->query("
-                INSERT INTO developers(`user_id`, `first_name`, `second_name`)
-                VALUES (
-                        ".$this->DB->quote($user_id).",
-                        ".$this->DB->quote($first_name).",
-                        ".$this->DB->quote($second_name)."
-                )
-                ");
-                $dev_id = $this->getDeveloperByUserId($user_id)->getId();
+                $dev_id = $this->getDeveloperByUserId($user_id)->getId(); //probably it's better to make a function that requests a dev_id
 
-                $this->DB->query("
+                $query = "
                     INSERT INTO profiles(`about`, `dev_id`)
-                    VALUES ('I have nothing to tell. Just love my job!',
-                            ".$dev_id.")
-                ");
+                    VALUES (?,?)
+                ";
+                $statement = $this->DB->prepare($query);
+                $default_about = "I have nothing to tell. Just love my job!";
+                $statement->execute(array($default_about, $dev_id));
 
-                $profile_id = null;
-                $response = $this->DB->query("
+                $query = "
                     SELECT id
                     FROM profiles
-                    WHERE `dev_id`=".$dev_id."
-                ");
-                $result_set = $response->fetchAll();
-                $profile_id = $result_set[0]["id"];
+                    WHERE `dev_id` = ?
+                ";
+                $statement = $this->DB->prepare($query);
+                $statement->execute($dev_id);
+                $profile_id = $statement->fetch(PDO::FETCH_ASSOC)["id"];
 
-                $this->DB->query("
+                $query = "
                     UPDATE developers
-                    SET `profile_id`=".$profile_id."
-                    WHERE `user_id`=".$user_id."
-                ");
+                    SET `profile_id` = ?
+                    WHERE `user_id` = ?
+                ";
+                $statement = $this->DB->prepare($query);
+                $statement->execute(array($profile_id, $user_id));
             }
+
+            return true;
         }
         catch (PDOException $e)
         {
             echo $e->getMessage();
+            return false;
         }
     }
 
-    /**
-     * @param $login
-     * @param $password
-     *
-     * @return bool
-     */
-    public function verifyUser($login, $password)
-    {
-        //LOOOK HERE! PASSWORD VERIFY SHOULDN'T BE HERE
-        try{
-            $response = $this->DB->query("
-            SELECT password
-            FROM users
-            WHERE login= '".$login."'"
-            );
 
-            $result_set = $response->fetchAll();
-            if(!empty($result_set))
-            {
-                $hash = $result_set[0]["password"];
-                return password_verify($password, $hash);
-            }
-            else{
-                return false;
-            }
-
-        }
-        catch(PDOException $e)
-        {
-            echo $e->getMessage();
-        }
-    }
-
-    public function getRole($login)
+    public function getPasswordByLogin($login): string
     {
         try
         {
-            $response = $this->DB->query("
-            SELECT role
-            FROM users
-            WHERE login= '".$login."'
-            ");
+            $query = "
+                SELECT password
+                FROM users
+                WHERE login = ?
+            ";
 
-            $result = $response->fetchAll()[0];
-
-            if(!empty($result))
-            {
-               return $result["role"];
-            }
-            else return "unauthorized";
+            $statement = $this->DB->prepare($query);
+            $statement->execute(array($login));
+            return $statement->fetch(PDO::FETCH_ASSOC)["password"];
         }
         catch (PDOException $e)
         {
             echo $e->getMessage();
+            return null;
         }
     }
 
-    public function getProfileByProfileId($profile_id)
+    public function getRole($login): string
     {
-        $response = $this->DB->query("
-            SELECT *
+        try
+        {
+            $query = "
+            SELECT role
+            FROM users
+            WHERE login = ?
+            ";
+
+            $statement = $this->DB->prepare($query);
+            $statement->execute(array($login));
+            $role = $statement->fetch(PDO::FETCH_ASSOC)["role"];
+
+            if($role)
+            {
+                return $role;
+            }
+            else
+            {
+                return "unauthorized";
+            }
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+            return null;
+        }
+    }
+
+    public function getProfileByProfileId($profile_id): Profile
+    {
+        $query = "
+            SELECT * 
             FROM profiles
-            WHERE `id`=".$profile_id."
-        ");
+            WHERE `id` = ?
+        ";
 
-        $result_set = $response->fetchAll();
-
-        $result = $result_set[0];
-
-        $id = $result["id"];
-        $about = $result["about"];
-        $dev_id = $result["dev_id"];
-        $photo = $result["photo"];
-        $profile = new Profile($id, $about, $dev_id, $photo);
+        $statement = $this->DB->prepare($query);
+        $statement->execute(array($profile_id));
+        $statement->setFetchMode(PDO::FETCH_CLASS, Profile::class);
+        $profile = $statement->fetch();
 
         return $profile;
     }
 
-    public function updateProfile($id, $about)
-    {
-        $this->DB->query("
-            UPDATE profiles
-            SET `about`=".$this->DB->quote($about)."
-            WHERE `id`=".$id."
-        ");
-    }
-
-    //SHOULD BE IN DEVELOPERS DATABASE
-    public function updateDeveloperFullName($first_name, $second_name, $developer_id)
-    {
-        $this->DB->query("
-            UPDATE developers
-            SET `first_name`=".$this->DB->quote($first_name).",
-                `second_name`=".$this->DB->quote($second_name)."
-            WHERE `id`=".$developer_id."
-        ");
-    }
-
-    public function updatePhoto($profile_id, $photo)
-    {
-        $this->DB->query("
-            UPDATE profiles
-            SET `photo`='".$photo."'
-            WHERE `id`=".$profile_id."
-        ");
-    }
-
-    private function getPhotoByDeveloperId($developer_id)
+    public function getUsers(): array
     {
         try
         {
-            $response = $this->DB->query("
-                SELECT photo
-                FROM profiles
-                WHERE `dev_id`=".$developer_id."
-            ");
+            $query = "
+            SELECT * FROM users;
+            ";
 
-            $result_set = $response->fetchAll();
-            $result = $result_set[0]["photo"];
+            $statement = $this->DB->prepare($query);
+            $statement->setFetchMode(PDO::FETCH_CLASS, User::class);
+            $statement->execute();
 
-            return $result;
+            $users = array();
+            while($user = $statement->fetch())
+            {
+                if($user->getRole() == ROLE_DEVELOPER || $user->getRole() == ROLE_ADMIN)
+                {
+                    $developer = new Developer($user);
+                    array_push($users, $developer);
+                }
+                else
+                {
+                    array_push($users, $user);
+                }
+            }
+
+            return $users;
+
         }
         catch (PDOException $e)
         {
+            echo $e->getMessage();
+            return null;
+        }
 
+    }
+
+    private function getPhotoByDeveloperId($developer_id): string
+    {
+        try
+        {
+            $query = "
+                SELECT photo
+                FROM profiles
+                WHERE `dev_id` = ?
+            ";
+
+            $statement = $this->DB->prepare($query);
+            $statement->execute(array($developer_id));
+
+            $photo = $statement->fetch(PDO::FETCH_ASSOC)["photo"];
+
+            return $photo;
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+            return null;
         }
     }
 

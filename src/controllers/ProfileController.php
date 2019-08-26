@@ -16,10 +16,9 @@ class ProfileController
 {
     public function getProfilePage(Request $request)
     {
-        $ss = new SecuritySystem();
 
-        $user_role = $ss->currentUserRole();
-        $user = $ss->currentUser(); //must be User type with id and stuff
+        $user_role = SecuritySystem::currentUserRole();
+        $user = SecuritySystem::currentUser(); //must be User type with id and stuff
         if($user_role == ROLE_UNAUTHORIZED)
         {
             header("/login");
@@ -49,12 +48,19 @@ class ProfileController
 
     public function getDeveloperPage(Request $request)
     {
+        $args = array();
+
         $id = $request->getArgument("id");
 
-        $ss = new SecuritySystem();
-        $user_role = $ss->currentUserRole();
+        $DB = MysqlDevelopersDatabase::getInstance();
+        $developer =  $DB->getDeveloperById($id);
+        $args["developer"] = $developer;
+
+        $user_role = SecuritySystem::currentUserRole();
+        $args["user_role"] = $user_role;
 
         $view = new View();
+        $view->getPage("developer_profile", $args);
     }
 
     public function saveProfile(Request $request)
@@ -70,13 +76,13 @@ class ProfileController
             if($this->validatePhoto($photo))
             {
                 $file_id = LocalStorage::saveImage($photo);
-                $DB = new MysqlDevelopersDatabase();
+                $DB = MysqlDevelopersDatabase::getInstance();
                 $DB->updateProfilePhoto($profile_id, $file_id);
             }
         }
 
 
-        $DB = new MysqlUsersDatabase();
+        $DB = MysqlDevelopersDatabase::getInstance();
         $DB->updateProfile($profile_id, $about);
 
         $ex_full_name = explode(" ", $full_name, 2);
@@ -104,6 +110,6 @@ class ProfileController
 
     private function validatePhoto($photo)
     {
-        return true;
+        return !$photo["error"];
     }
 }

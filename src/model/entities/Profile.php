@@ -31,7 +31,7 @@ class Profile
         $this->dev_id = $dev_id;
         $this->photo = $photo;
 
-        $this->DB = new MysqlDevelopersDatabase();
+        $this->DB = MysqlDevelopersDatabase::getInstance();
     }
 
     /**

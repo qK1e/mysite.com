@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="views/css/custom.css">
     <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
 </head>
+
 <body>
 <!--навигационное меню и блок авторизации -->
 <header class="container-fluid hdr-clr">
@@ -33,15 +34,18 @@
 
 
 <?php $profile = $developer->getProfile() ?>
-<div class="profile-content">
-    <div class="image-container">
-        <img src="<?php echo $profile->getPhoto()?>" class="avatar" id="photo" alt="Pretty face:)" >
+<div class="container-flex">
+    <div class="profile-content row mt-3">
+        <div class="image-container d-flex align-items-center justify-content-center col-3">
+            <img src="<?php echo $profile->getPhoto()?>" class="avatar" id="photo" alt="Pretty face:)" >
+        </div>
+        <div class="about col">
+            <h1 class="dev-name"><?php echo $developer->getFullName() ?></h1>
+            <p id="about"><?php echo $profile->getAbout() ?></p>
+        </div>
     </div>
-    <h1 class="dev-name"><?php echo $developer->getFullName() ?></h1>
-
-    <h2>About</h2>
-    <p id="about"><?php echo $profile->getAbout() ?></p>
 </div>
+
 
 
 

@@ -6,8 +6,9 @@
     <link href="https://fonts.googleapis.com/css?family=PT+Sans" rel="stylesheet">
     <script src="https://kit.fontawesome.com/f8e07077e5.js"></script>
 </head>
+
 <body>
-    <!--Навигационное меню и блок авторизации -->
+    <!--Navigation and authorization block-->
     <header class="container-fluid hdr-clr">
         <div class="row align-items-center">
             <div class="col">
@@ -30,26 +31,35 @@
         </div>
     </header>
     <hr class="m-0">
-
+    <!--Navigation and authorization block-->
 
 
     <?php $profile = $developer->getProfile() ?>
-    <form name="profile-info" action="/profile" id="profile-info" method="post" enctype="multipart/form-data">
-        <input name="profile-id" form="profile-info" value="<?php echo $developer->getProfileId() ?>" type="hidden">
-        <input name="developer-id" form="profile-info" value="<?php echo $developer->getId() ?>" type="hidden">
-        <div class="profile-content">
-            <div class="image-container">
-                <img src="<?php echo $profile->getPhoto()?>" class="avatar" id="photo" alt="Pretty face:)" >
-                <label for="photo-input" class="edit-photo-button"><i class="fas fa-pen-square "></i></label>
-                <input type="file" accept="image/*" class="hidden" name="photo" id="photo-input" onchange="displayPhoto(this.files)">
-            </div>
-            <textarea form="profile-info" name="full-name" class="dev-name" wrap="off"><?php echo $developer->getFullName() ?></textarea>
+    <!--Profile-->
+    <div class="container-flex mt-3">
+        <form name="profile-info" action="/profile" id="profile-info" method="post" enctype="multipart/form-data">
+            <input name="profile-id" form="profile-info" value="<?php echo $developer->getProfileId() ?>" type="hidden">
+            <input name="developer-id" form="profile-info" value="<?php echo $developer->getId() ?>" type="hidden">
+            <div class="profile-content row">
+                <div class="image-container d-flex justify-content-center col-3">
+                    <img src="<?php echo $profile->getPhoto()?>" class="avatar" id="photo" alt="Pretty face:)" >
+                    <label for="photo-input" class="edit-photo-button">
+                        <i class="fas fa-pen-square"></i>
+                    </label>
+                    <input type="file" accept="image/*" class="hidden" name="photo" id="photo-input" onchange="displayPhoto(this.files)">
+                </div>
+                <div class="col">
+                    <textarea form="profile-info" name="full-name" class="dev-name h1 d-block hidden-textarea"><?php echo $developer->getFullName() ?></textarea>
+                    <textarea form="profile-info" name="about" class="p d-block w-75 hidden-textarea"><?php echo $profile->getAbout() ?></textarea>
+                    <input form="profile-info" name="submit" type="submit" class="d-block" value="Save"/>
+                </div>
 
-            <h2>About</h2>
-            <textarea form="profile-info" name="about"><?php echo $profile->getAbout() ?></textarea>
-            <input form="profile-info" name="submit" type="submit" value="Save"/>
-        </div>
-    </form>
+
+            </div>
+        </form>
+    </div>
+
+    <!--Profile-->
 
     <!--Page javascript -->
     <script src="/views/js/edit_photo.js"></script>

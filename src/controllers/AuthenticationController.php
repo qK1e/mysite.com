@@ -3,7 +3,6 @@
 
 namespace qk1e\mysite\controllers;
 
-use qk1e\mysite\model\MysqlUsersDatabase;
 use qk1e\mysite\Request;
 use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\view\View;
@@ -12,12 +11,10 @@ class AuthenticationController
 {
     public function signIn(Request $request)
     {
-        $ss = new SecuritySystem();
-
         $username = $request->getArgument("username");
         $password = $request->getArgument("password");
 
-        if($ss->authenticate($username, $password))
+        if(SecuritySystem::authenticate($username, $password))
         {
             header("Location: /");
         }
@@ -33,15 +30,14 @@ class AuthenticationController
 
     public function register(Request $request)
     {
-        $ss = new SecuritySystem();
         $role = strtolower($request->getArgument("role"));
 
         if(isset($role))
         {
-            $ss->register($request->getArgument("username"), $request->getArgument("password"), $role);
+            SecuritySystem::register($request->getArgument("username"), $request->getArgument("password"), $role);
         }
 
-        $ss->register($request->getArgument("username"), $request->getArgument("password"));
+        SecuritySystem::register($request->getArgument("username"), $request->getArgument("password"));
         header("Location: /");
     }
 
@@ -55,13 +51,11 @@ class AuthenticationController
             $first_name = $request->getArgument("first-name");
             $second_name = $request->getArgument("second-name");
 
-            $ss = new SecuritySystem();
-            $ss->register($username, $password, $role, $first_name, $second_name);
+            SecuritySystem::register($username, $password, $role, $first_name, $second_name);
         }
         else
         {
-            $ss = new SecuritySystem();
-            $ss->register($username, $password, $role);
+            SecuritySystem::register($username, $password, $role);
         }
 
         header("Location: /admin");
@@ -81,8 +75,7 @@ class AuthenticationController
 
     public function logout(Request $request)
     {
-        $ss = new SecuritySystem();
-        $ss->logout();
+        SecuritySystem::logout();
         header("Location: /");
     }
 }

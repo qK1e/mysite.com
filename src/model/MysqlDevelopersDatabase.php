@@ -9,23 +9,30 @@ use PDOException;
 use qk1e\mysite\model\entities\Developer;
 use qk1e\mysite\model\entities\DeveloperFilter;
 
-class MysqlDevelopersDatabase
+class MysqlDevelopersDatabase extends MysqlDatabase
 {
-    private static $url = "mysql:host=localhost;dbname=mysite";
-    private static $user = "root";
-    private static $password = "root";
-
-    private $DB;
+    private static $instance;
 
 
-    /**
-     * MysqlBlogDatabase constructor.
-     */
-    public function __construct()
+    private function __construct()
     {
-        $this->DB = new PDO(MysqlDevelopersDatabase::$url, MysqlDevelopersDatabase::$user, MysqlDevelopersDatabase::$password);
-        $this->DB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        parent::__construct();
     }
+
+    public static function getInstance(): MysqlDevelopersDatabase
+    {
+        if(MysqlDevelopersDatabase::$instance)
+        {
+            return MysqlDevelopersDatabase::$instance;
+        }
+        else
+        {
+            MysqlDevelopersDatabase::$instance = new MysqlDevelopersDatabase();
+            return MysqlDevelopersDatabase::$instance;
+        }
+    }
+
+
 
     private function filterToWhereQueryPart(DeveloperFilter $filter)
     {
@@ -80,9 +87,6 @@ class MysqlDevelopersDatabase
 
     public function getPageOfDevelopers($page=1, $page_size=5, DeveloperFilter $filter=null)
     {
-
-
-        $developers = array();
         $from = ($page-1)*$page_size;
         $where = $this->filterToWhereQueryPart($filter);
 
@@ -96,20 +100,8 @@ class MysqlDevelopersDatabase
 
         $statement = $this->DB->prepare($query);
         $statement->execute();
-        $result_set = $statement->fetchAll();
-
-        foreach ($result_set as $dev)
-        {
-            //should be as a function? duplicate in MySqlUsersDatabase
-            $developer = new Developer();
-            $developer->setId($dev["id"]);
-            $developer->setUserId($dev["user_id"]);
-            $developer->setFirstName($dev["first_name"]);
-            $developer->setSecondName($dev["second_name"]);
-            $developer->setProfileId($dev["profile_id"]);
-
-            array_push($developers, $developer);
-        }
+        $statement->setFetchMode(PDO::FETCH_CLASS, Developer::class);
+        $developers = $statement->fetchAll();
 
         return $developers;
 
@@ -120,12 +112,14 @@ class MysqlDevelopersDatabase
     {
         try
         {
-            $this->DB->query("
+            $query = "
                 UPDATE profiles
-                SET `photo`=".$this->DB->quote($file_id)."
-                WHERE `id`=$profile_id
-                "
-            );
+                SET `photo`=?
+                WHERE `id`=?
+            ";
+
+            $statement = $this->DB->prepare($query);
+            $statement->execute(array($file_id, $profile_id));
         }
         catch (PDOException $e)
         {
@@ -137,18 +131,69 @@ class MysqlDevelopersDatabase
     {
         try
         {
-            $response = $this->DB->query("
+            $query = "
                 SELECT photo
                 FROM profiles
-                WHERE `id`=$profile_id
-            ");
+                WHERE `id`=?
+            ";
 
-            $result_set = $response->fetchAll();
-            return $result_set[0]["photo"];
+            $statement = $this->DB->prepare($query);
+            $statement->execute(array($profile_id));
+            return $statement->fetch(PDO::FETCH_ASSOC)["photo"];
         }
         catch (PDOException $e)
         {
             echo $e->getMessage();
         }
     }
+
+    public function getDeveloperById($id)
+    {
+        try
+        {
+            $query = "
+                SELECT *
+                FROM developers
+                WHERE `id`=?
+            ";
+
+            $statement = $this->DB->prepare($query);
+
+            $statement->execute(array($id));
+            $statement->setFetchMode(PDO::FETCH_CLASS, Developer::class);
+            $developer = $statement->fetch();
+
+            return $developer;
+        }
+        catch (PDOException $e)
+        {
+            echo $e->getMessage();
+        }
+    }
+
+    public function updateDeveloperFullName($first_name, $second_name, $developer_id)
+    {
+        $query = "
+            UPDATE developers
+            SET `first_name` = ?,
+                `second_name` = ?
+            WHERE `id` = ?
+        ";
+
+        $statement = $this->DB->prepare($query);
+        $statement->execute(array($first_name, $second_name, $developer_id));
+    }
+
+    public function updateProfile($id, $about)
+    {
+        $query = "
+            UPDATE profiles
+            SET `about` = ?
+            WHERE `id` = ?
+        ";
+
+        $statement = $this->DB->prepare($query);
+        $statement->execute(array($id, $about));
+    }
+
 }

@@ -46,13 +46,13 @@
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="first-name-input">Name</label>
                         </div>
-                        <textarea name="first-name" id="first-name-input" style="height: 2rem"></textarea>
+                        <textarea name="first-name" id="first-name-input" style="height: 2rem; resize: none"></textarea>
                     </div>
                     <div class="input-group d-inline-block col" id="second-name-filter">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="second-name-input">Surname</label>
                         </div>
-                        <textarea name="second-name" id="second-name-input" style="height: 2rem"></textarea>
+                        <textarea name="second-name" id="second-name-input" style="height: 2rem; resize: none"></textarea>
                     </div>
                     <div class="d-inline-block col">
                         <input type="submit" value="Filter">
@@ -65,6 +65,11 @@
         <div class="row">
             <div class="col-7 offset-2 container">
                 <?php
+                if(empty($devs))
+                {?>
+                    <h1 class="text-warning">No developers found:(</h1>
+                    <?php
+                }
                 foreach ($devs as $dev){?>
                 <div class="dev-preview row p-3 mt-2 border-top border-bottom">
                     <div class="col-2">
@@ -79,14 +84,18 @@
                 </div>
                 <?php }?>
             </div>
-
-            <!--Ads -->
-            <div class="ads col-3 mt-5">
-                <p>This could be your ads!</p>
-            </div>
-            <!--Ads -->
-
         </div>
+        <!-- blog pagination -->
+        <?php if(!isset($devs_page)){ $devs_page = 1;}?>
+        <nav aria-label="Page navigation example" class="row m-2">
+            <ul class="pagination ml-4">
+                <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page-1?>">Previous</a></li>
+                <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page?>"><?php echo $devs_page?></a></li>
+                <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page+1?>"><?php echo $devs_page+1?></a></li>
+                <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page+2?>"><?php echo $devs_page+2?></a></li>
+                <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page+1?>">Next</a></li>
+            </ul>
+        </nav>
     </section>
 
 

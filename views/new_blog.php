@@ -44,8 +44,7 @@
                         <textarea class="w-100 textarea-height" name="content" placeholder="Content"></textarea>
                     </div>
 
-                    <input class="btn btn-success" type="submit">
-
+                    <input class="btn btn-success" type="submit" value="POST">
                 </form>
             </div>
         </div>

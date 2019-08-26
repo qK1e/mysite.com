@@ -32,9 +32,8 @@ class View
 
     private function prepareLoginBlock()
     {
-        $ss = new SecuritySystem();
 
-        if($ss->isAuthenticated())
+        if(SecuritySystem::isAuthenticated())
         {
             return ROOTDIR."/views/assets/login-block-authorized.php";
         }
