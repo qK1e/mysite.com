@@ -22,7 +22,8 @@ class ProfileController
         $user = SecuritySystem::currentUser(); //must be User type with id and stuff
         if($user_role == ROLE_UNAUTHORIZED)
         {
-            header("/login");
+            $router = ConfigurableRouter::getInstance();
+            $router->route("/login", "GET", array());
         }
         elseif($user_role == ROLE_READER)
         {
