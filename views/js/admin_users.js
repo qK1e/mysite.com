@@ -1,28 +1,28 @@
-function edit_role() {
-    showUserEditingPopup();
+function init() {
+    $(".edit-user-button").click(edit_role);
+    $(".close-user-edit").click(closeEditUserModal);
+    $("#save-user-info-button").click(saveUserInfo);
+}
+
+function saveUserInfo() {
 
 }
 
-function showUserEditingPopup() {
-    document.getElementById("editUserModal").style.display = "block";
+function edit_role() {
+
+    id = $(this).parents(".user-container").find(".id").html();
+
+    showUserEditingModal(id);
+}
+
+function showUserEditingModal(id) {
+
+    $("#editUserModal").find("input[name='user-id']").attr('value', id);
+    $("#editUserModal").css('display', 'block' );
 }
 
 function closeEditUserModal() {
-    document.getElementById("editUserModal").style.display = "none";
+    $("#editUserModal").css('display', 'none');
 }
 
-function change_visibility() {
-    alert("changing visibility");
-}
-
-function delete_user() {
-    alert("deleting user");
-}
-
-let modal = document.getElementById("editUserModal");
-
-window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
-}
+$(document).ready(init());

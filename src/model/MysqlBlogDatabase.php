@@ -30,9 +30,7 @@ class MysqlBlogDatabase extends MysqlDatabase
         }
     }
 
-
-
-    public function getPageOfArticles($page, $page_size)
+    public function getPageOfArticles($page, $page_size): array
     {
         $articles = [];
 
@@ -55,7 +53,7 @@ class MysqlBlogDatabase extends MysqlDatabase
         return $articles;
     }
 
-    public function addArticle(Article $article)
+    public function addArticle(Article $article): void
     {
         $header = $article->getHeader();
         $content = $article->getContent();
@@ -83,7 +81,7 @@ class MysqlBlogDatabase extends MysqlDatabase
         }
     }
 
-    public function getIdByHeader($header)
+    public function getIdByHeader($header): int
     {
         try
         {
