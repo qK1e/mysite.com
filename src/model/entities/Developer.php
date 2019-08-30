@@ -30,7 +30,15 @@ class Developer extends User
         {
             parent::__construct($user);
             $DB = MysqlUsersDatabase::getInstance();
-            $developer = $DB->getDeveloperByUserId($user->getId());
+            $developer = $DB->getDeveloperByUserId($user->getUserId());
+
+            if(!$developer)
+            {
+                if($user->getRole() == ROLE_DEVELOPER || $user->getRole() == ROLE_ADMIN)
+                {
+                    $this->DB->createDeveloperFromUserId($user->getUserId());
+                }
+            }
 
             if($developer)
             {
@@ -81,7 +89,7 @@ class Developer extends User
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -89,7 +97,7 @@ class Developer extends User
     /**
      * @return mixed
      */
-    public function getUserId()
+    public function getUserId(): int
     {
         return $this->user_id;
     }

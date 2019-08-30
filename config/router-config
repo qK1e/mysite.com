@@ -123,5 +123,12 @@
     "controller": "ProfileController",
     "method": "getDeveloperPage",
     "http": "GET"
+},
+
+{
+    "path": "admin/update-user",
+    "controller": "AdminController",
+    "method": "updateUser",
+    "http": "POST"
 }
 ]

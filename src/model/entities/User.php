@@ -16,7 +16,7 @@ class User
     {
         if($user)
         {
-            $this->id = $user->getId();
+            $this->id = $user->getUserId();
             $this->login = $user->getLogin();
             $this->password = $user->getPassword();
             $this->role = $user->getRole();
@@ -56,26 +56,6 @@ class User
         $this->role = $role;
     }
 
-    public function getId()
-    {
-        if(isset($this->id))
-        {
-            return $this->id;
-        }
-        else
-        {
-            try
-            {
-                $DB = MysqlUsersDatabase::getInstance();
-                $id = $DB->idByLogin($this->login);
-            }
-            catch (PDOException $e)
-            {
-                echo $e->getMessage();
-            }
-        }
-    }
-
     /**
      * @return mixed
      */
@@ -92,9 +72,9 @@ class User
         return $this->role;
     }
 
-    public function getUserId()
+    public function getUserId(): int
     {
-        $this->getId();
+        return $this->id;
     }
 
     private function getPassword()

@@ -25,7 +25,14 @@ class AdminController
 
         $view = new View();
 
-        $view->getPage("admin", $args);
+        if($role == ROLE_UNAUTHORIZED)
+        {
+            $view->getPage("login", $args);
+        }
+        else
+        {
+            $view->getPage("admin", $args);
+        }
     }
 
     public function newUser(Request $request): void
@@ -37,5 +44,70 @@ class AdminController
         $view = new View();
 
         $view->getPage("new_user",  $args);
+    }
+
+    public function updateUser(Request $request)
+    {
+        //get arguments
+        $id = $request->getArgument("id");
+        $role = $request->getArgument("role");
+
+        //validate arguments
+        $validated = true;
+        if(!is_int($id))
+        {
+            //if string - try to get int
+            if(is_string($id))
+            {
+                $id = trim($id);
+                $id = intval($id);
+
+                if(!$id)
+                {
+                    //not succeed - error
+                    $validated = false;
+                    $this->error("Request parameter type error!");
+                }
+            }
+            //else - error
+            else
+            {
+                $validated = false;
+                $this->error("Request parameter type error!");
+            }
+        }
+        if(is_string($role))
+        {
+            if( !($role == ROLE_READER || $role == ROLE_DEVELOPER || $role == ROLE_ADMIN) )
+            {
+                $validated = false;
+                $this->error("Request parameter type error");
+            }
+        }
+        else
+        {
+            $validated = false;
+        }
+
+        if($validated)
+        {
+            //update data in db
+            $DB = MysqlUsersDatabase::getInstance();
+            if( !($DB->updateUserRole($id, $role)) )
+            {
+                $this->error("Database error");
+            }
+            else
+            {
+                //send result back
+                echo json_encode(array( 'success' => true ));
+            }
+
+        }
+    }
+
+    private function error($message)
+    {
+        echo json_encode(array('error' => $message) );
     }
 }

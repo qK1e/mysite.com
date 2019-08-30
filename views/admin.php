@@ -50,10 +50,10 @@
     <div class="container">
 
         <?php foreach ($users as $user){ ?>
-        <div class="row pt-1 pb-1 border align-items-center user-container">
+        <div class="row pt-1 pb-1 border align-items-center user-container" id="user-<?php echo $user->getUserId()?>">
             <!--user info -->
             <div class="col-1" id="user_id">
-                <p class="user-info-item"><b>id:</b> <span class="id"> <?php echo $user->getUserId()?> </span> </p>
+                <p class="user-info-item"><b>id:</b> <span class="id"><?php echo $user->getUserId()?></span> </p>
             </div>
             <div class="col-2" id="login">
                 <p class="user-info-item"><b>login:</b> <span class="login"> <?php echo $user->getLogin() ?>  </span> </p>
@@ -109,13 +109,13 @@
 
 
             <form action="" name="user-info" method="post">
-                <input name="user-id" type="hidden">
-                <select name="role">
-                    <option>Reader</option>
-                    <option>Developer</option>
-                    <option>Admin</option>
+                <input name="user-id" id="edited-user-id" type="hidden">
+                <select name="role" id="edited-user-role">
+                    <option selected value="reader">Reader</option>
+                    <option value="developer">Developer</option>
+                    <option value="admin">Admin</option>
                 </select>
-                <input type="button" value="Save">
+                <input type="button" value="Save" id="save-user-info-button">
             </form>
         </div>
     </div>
@@ -125,7 +125,7 @@
 
 
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="/views/js/admin_users.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

@@ -65,7 +65,7 @@ class MysqlUsersDatabase extends MysqlDatabase
         return $login;
     }
 
-    public function getUserByLogin(String $login): User
+    public function getUserByLogin(String $login): ?User
     {
         try
         {
@@ -113,7 +113,7 @@ class MysqlUsersDatabase extends MysqlDatabase
         }
     }
 
-    public function getDeveloperByUserId($id)
+    public function getDeveloperByUserId($id): ?Developer
     {
         try
         {
@@ -220,7 +220,7 @@ class MysqlUsersDatabase extends MysqlDatabase
     }
 
 
-    public function getPasswordByLogin($login): string
+    public function getPasswordByLogin($login): ?string
     {
         try
         {
@@ -241,7 +241,7 @@ class MysqlUsersDatabase extends MysqlDatabase
         }
     }
 
-    public function getRole($login): string
+    public function getRole($login): ?string
     {
         try
         {
@@ -271,7 +271,7 @@ class MysqlUsersDatabase extends MysqlDatabase
         }
     }
 
-    public function getProfileByProfileId($profile_id): Profile
+    public function getProfileByProfileId($profile_id): ?Profile
     {
         $query = "
             SELECT * 
@@ -288,7 +288,7 @@ class MysqlUsersDatabase extends MysqlDatabase
         return $profile;
     }
 
-    public function getUsers(): array
+    public function getUsers(): ?array
     {
         try
         {
@@ -325,7 +325,102 @@ class MysqlUsersDatabase extends MysqlDatabase
 
     }
 
-    private function getPhotoByDeveloperId($developer_id): string
+    //not transaction safe
+    public function updateUserRole(?int $id, ?string $role): bool
+    {
+
+        try
+        {
+            //update `users` database
+            $query = "
+            UPDATE users
+            SET `role` = ?
+            WHERE `id` = ?
+        ";
+
+            $statement = $this->DB->prepare($query);
+            $statement->bindParam(1, $role, PDO::PARAM_STR);
+            $statement->bindParam(2, $id, PDO::PARAM_INT);
+            $statement->execute();
+
+            //if `role` is a developer or admin
+            //  update `developers`
+
+            if($role == ROLE_ADMIN || $role == ROLE_DEVELOPER)
+            {
+                $query = "
+                SELECT count(user_id)
+                FROM developers
+                WHERE user_id = ?
+                GROUP BY user_id
+            ";
+                $statement = $this->DB->prepare($query);
+                $statement->bindParam(1, $id, PDO::PARAM_INT);
+                $statement->execute();
+
+                $count = $statement->fetchColumn(0);
+
+                if(!$count)
+                {
+                    //  create an entry in `developers` and create profile
+
+                    $query = "
+                        INSERT INTO developers(`user_id`, `first_name`, `second_name`)
+                        VALUES (?,?,?)
+                    ";
+
+                    $default_name = "John";
+                    $default_surname = "Doe";
+
+                    $statement = $this->DB->prepare($query);
+                    $statement->bindParam(1, $id, PDO::PARAM_INT);
+                    $statement->bindParam(2, $default_name, PDO::PARAM_STR);
+                    $statement->bindParam(3, $default_surname, PDO::PARAM_STR);
+                    $statement->execute();
+
+
+                    $dev = $this->getDeveloperByUserId($id);
+
+                    $query = "
+                        INSERT INTO profiles(`dev_id`, `about`)
+                        values (?,?)
+                    ";
+
+                    $default_about = "I have nothing to tell. Just love my job!";
+
+                    $statement =  $this->DB->prepare($query);
+                    $statement->bindParam(1, $dev->getId(), PDO::PARAM_INT);
+                    $statement->bindParam(2, $default_about, PDO::PARAM_STR);
+                    $statement->execute();
+
+                    $query = "
+                        SELECT SCOPE_IDENTITY() as `id`
+                    ";
+                    $statement = $this->DB->prepare($query);
+                    $statement->execute();
+                    $profile_id = $statement->fetchColumn(0);
+
+                    $query = "
+                        UPDATE developers
+                        SET `profile_id` = ?
+                        WHERE `id` = ?
+                    ";
+
+                    $statement = $this->DB->prepare($query);
+                    $statement->bindParam(1, $profile_id, PDO::PARAM_INT);
+                    $statement->bindParam(2, $dev->getId(), PDO::PARAM_INT);
+                    $statement->execute();
+                }
+            }
+            return true;
+        }
+        catch (PDOException $e)
+        {
+            return false;
+        }
+    }
+
+    private function getPhotoByDeveloperId($developer_id): ?string
     {
         try
         {
@@ -350,4 +445,28 @@ class MysqlUsersDatabase extends MysqlDatabase
         }
     }
 
+    public function getUserById(int $id): ?User
+    {
+        try
+        {
+            $query = "
+                SELECT *
+                FROM users
+                WHERE `id` = ?
+            ";
+
+            $statement = $this->DB->prepare($query);
+            $statement->bindParam(1, $id, PDO::PARAM_INT);
+            $statement->execute();
+            $statement->setFetchMode(PDO::FETCH_CLASS, User::class);
+
+            $user = $statement->fetch();
+
+            return $user;
+        }
+        catch (PDOException $e)
+        {
+            return null;
+        }
+    }
 }

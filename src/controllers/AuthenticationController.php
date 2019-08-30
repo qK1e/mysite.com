@@ -7,7 +7,6 @@ use qk1e\mysite\Request;
 use qk1e\mysite\routing\ConfigurableRouter;
 use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\view\View;
-use Yaf\Router;
 
 class AuthenticationController
 {

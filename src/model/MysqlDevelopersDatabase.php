@@ -204,4 +204,83 @@ class MysqlDevelopersDatabase extends MysqlDatabase
         $statement->execute();
     }
 
+
+    //not transaction safe
+    public function createDeveloperFromUserId($id): bool
+    {
+        try
+        {
+            $query = "
+                INSERT INTO developers(`user_id`, `first_name`, `second_name`)
+                VALUES (?,?,?)
+            ";
+
+            $default_name = "Name";
+            $default_surname = "Surname";
+
+            $statement = $this->DB->prepare($query);
+            $statement->bindParam(1, $id, PDO::PARAM_INT);
+            $statement->bindParam(2, $default_name, PDO::PARAM_STR);
+            $statement->bindParam(1, $default_surname, PDO::PARAM_STR);
+            $statement->execute();
+
+            $query = "
+                        SELECT SCOPE_IDENTITY() as `id`
+                    ";
+            $statement = $this->DB->prepare($query);
+            $statement->execute();
+            $dev_id = $statement->fetchColumn(0);
+
+            $this->createProfileFromDevId($dev_id);
+
+            $statement->execute();
+            $profile_id = $statement->fetchColumn(0);
+
+            if($profile_id)
+            {
+                $query = "
+                UPDATE developers
+                SET `profile_id` = ?
+                WHERE `user_id` = ?
+            ";
+
+                $statement = $this->DB->prepare($query);
+                $statement->bindParam(1, $profile_id, PDO::PARAM_INT);
+                $statement->bindParam(2, $id, PDO::PARAM_INT);
+                $statement->execute();
+            }
+            else
+            {
+                throw new PDOException();
+            }
+        }
+        catch (PDOException $e)
+        {
+            return false;
+        }
+    }
+
+    private function createProfileFromDevId($dev_id): bool
+    {
+        try
+        {
+            $query = "
+            INSERT INTO profiles(`dev_id`, `about`)
+            VALUES (?,?)
+            ";
+
+            $default_about = "I have nothing to tell. Just love my job!";
+
+            $statement  = $this->DB->prepare($query);
+            $statement->bindParam(1, $dev_id, PDO::PARAM_INT);
+            $statement->bindParam(2, $default_about, PDO::PARAM_STR);
+            $statement->execute();
+        }
+        catch (PDOException $e)
+        {
+            return false;
+        }
+
+    }
+
 }
