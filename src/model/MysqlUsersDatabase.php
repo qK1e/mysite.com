@@ -420,6 +420,82 @@ class MysqlUsersDatabase extends MysqlDatabase
         }
     }
 
+    private function deleteFromUserTable($id)
+    {
+        $query = "
+            DELETE FROM users
+            WHERE `id`=?
+            ";
+
+        $statement = $this->DB->prepare($query);
+        $statement->bindParam(1, $id, PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    private function deleteProfile($profile_id)
+    {
+        $query = "
+                DELETE FROM profiles
+                WHERE id=?
+                ";
+
+        $statement = $this->DB->prepare($query);
+        $statement->bindParam(1, $profile_id, PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    public function deleteUser(int $id): bool
+    {
+        try
+        {
+            //getUserRole
+            $role = $this->getUserById($id)->getRole();
+
+            //if role is developer or admin
+            if(in_array($role, array(ROLE_DEVELOPER, ROLE_ADMIN)))
+            {
+                //get profile id
+                $query = "
+                SELECT profile_id
+                FROM developers
+                WHERE `user_id` = ?
+                ";
+
+                $statement = $this->DB->prepare($query);
+                $statement->bindParam(1, $id, PDO::PARAM_INT);
+                $statement->execute();
+
+                $profile_id = $statement->fetchColumn(0);
+
+                //  delete profile
+                $this->deleteProfile($profile_id);
+
+                //  delete from developers
+                $query = "
+                    DELETE FROM developers
+                    WHERE user_id=?
+                ";
+
+                $statement = $this->DB->prepare($query);
+                $statement->bindParam(1, $id, PDO::PARAM_INT);
+                $statement->execute();
+
+            }
+
+            //delete user
+            $this->deleteFromUserTable($id);
+
+            return true;
+
+
+        }
+        catch (PDOException $e)
+        {
+            return false;
+        }
+
+    }
+
     private function getPhotoByDeveloperId($developer_id): ?string
     {
         try

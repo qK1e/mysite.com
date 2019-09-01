@@ -2,6 +2,28 @@ function init() {
     $(".edit-user-button").click(edit_role);
     $(".close-user-edit").click(closeEditUserModal);
     $("#save-user-info-button").click(saveUserInfo);
+    $(".delete-user-button").click(deleteUser);
+}
+
+function deleteUser() {
+    id = $(this).parents(".user-container").find(".id").html();
+    $.ajax({
+        url: "/admin/delete-user",
+        data: {
+            id: id
+        },
+        type: "POST",
+        dataType: "json",
+        success: function (json) {
+            //get json with id of user
+            let id = json.id;
+            //delete user from page
+            $("#user-"+id).remove();
+        },
+        error: function () {
+            alert("Couldn't remove user");
+        }
+    });
 }
 
 function saveUserInfo() {

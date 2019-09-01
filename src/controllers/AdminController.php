@@ -48,6 +48,8 @@ class AdminController
 
     public function updateUser(Request $request)
     {
+        //check permissions
+
         //get arguments
         $id = $request->getArgument("id");
         $role = $request->getArgument("role");
@@ -103,6 +105,24 @@ class AdminController
                 echo json_encode(array( 'success' => true ));
             }
 
+        }
+    }
+
+    public function deleteUser(Request $request)
+    {
+        $user_role = SecuritySystem::currentUserRole();
+        if($user_role != ROLE_ADMIN)
+        {
+            $this->error("access denied");
+        }
+        else
+        {
+            $id = $request->getArgument("id");
+            $DB = MysqlUsersDatabase::getInstance();
+
+            $DB->deleteUser($id);
+
+            echo json_encode(array('success' => true, 'id' => $id));
         }
     }
 

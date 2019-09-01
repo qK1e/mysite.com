@@ -80,13 +80,13 @@
                 </div>
 
                 <div>
-                    <button id="change-visibility-button">
+                    <button class="change-visibility-button" id="change-visibility-button">
                         <i class="fas fa-eye-slash"></i>
                     </button>
                 </div>
 
                 <div>
-                    <button id="delete-user-button">
+                    <button class="delete-user-button" id="delete-user-button">
                         <i class="fas fa-user-slash"></i>
                     </button>
                 </div>

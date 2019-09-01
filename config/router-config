@@ -130,5 +130,12 @@
     "controller": "AdminController",
     "method": "updateUser",
     "http": "POST"
+},
+
+{
+    "path": "admin/delete-user",
+    "controller": "AdminController",
+    "method": "deleteUser",
+    "http": "POST"
 }
 ]
