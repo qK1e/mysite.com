@@ -283,4 +283,26 @@ class MysqlDevelopersDatabase extends MysqlDatabase
 
     }
 
+    public function changeVisibility($user_id): bool
+    {
+        try
+        {
+            $query = "
+            UPDATE developers 
+            SET `visibility` = NOT `visibility`
+            WHERE `user_id` = ?
+        ";
+
+            $statement = $this->DB->prepare($query);
+            $statement->bindParam(1, $user_id, PDO::PARAM_INT);
+            $statement->execute();
+
+            return true;
+        }
+        catch (PDOException $e)
+        {
+            return false;
+        }
+    }
+
 }

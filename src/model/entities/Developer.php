@@ -14,6 +14,7 @@ class Developer extends User
     private $profile_id;
     private $first_name;
     private $second_name;
+    private $visibility;
 
     private $DB;
 
@@ -43,12 +44,18 @@ class Developer extends User
             if($developer)
             {
                 $this->id = $developer->getId();
+                $this->visibility = $developer->isVisible();
                 $this->user_id = $developer->getUserId();
                 $this->profile_id = $developer->getProfileId();
                 $this->first_name = $developer->getFirstName();
                 $this->second_name = $developer->getSecondName();
             }
         }
+    }
+
+    public function isVisible()
+    {
+        return $this->visibility;
     }
 
     private function setDatabase()

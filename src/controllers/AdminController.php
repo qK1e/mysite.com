@@ -4,6 +4,7 @@
 namespace qk1e\mysite\controllers;
 
 
+use qk1e\mysite\model\MysqlDevelopersDatabase;
 use qk1e\mysite\model\MysqlUsersDatabase;
 use qk1e\mysite\Request;
 use qk1e\mysite\security\SecuritySystem;
@@ -123,6 +124,29 @@ class AdminController
             $DB->deleteUser($id);
 
             echo json_encode(array('success' => true, 'id' => $id));
+        }
+    }
+
+    public function changeVisibility(Request $request)
+    {
+        $user_role = SecuritySystem::currentUserRole();
+        if($user_role != ROLE_ADMIN)
+        {
+            $this->error("access denied");
+        }
+        else
+        {
+            $id = $request->getArgument("id");
+            $DB = MysqlDevelopersDatabase::getInstance();
+
+            if( $DB->changeVisibility($id) )
+            {
+                echo json_encode(array('success' => true, 'id' => $id));
+            }
+            else
+            {
+                $this->error("database error");
+            }
         }
     }
 

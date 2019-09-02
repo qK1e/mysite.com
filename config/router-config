@@ -137,5 +137,12 @@
     "controller": "AdminController",
     "method": "deleteUser",
     "http": "POST"
+},
+
+{
+    "path": "admin/change-visibility",
+    "controller": "AdminController",
+    "method": "changeVisibility",
+    "http": "POST"
 }
 ]

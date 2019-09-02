@@ -3,6 +3,35 @@ function init() {
     $(".close-user-edit").click(closeEditUserModal);
     $("#save-user-info-button").click(saveUserInfo);
     $(".delete-user-button").click(deleteUser);
+    $(".change-visibility-button").click(changeVisibility);
+}
+
+function changeVisibility() {
+    id = $(this).parents(".user-container").find(".id").html();
+
+    $.ajax({
+        url: "/admin/change-visibility",
+        data: {
+            id: id
+        },
+        type: "POST",
+        dataType: "json",
+        success: function (json) {
+            //get id from json
+            let id = json.id;
+            //toggle icons
+
+            let toggle = $("#user-" + id + " .fa-eye");
+            if(toggle.length)
+            {
+                $("#user-" + id + " .fa-eye").addClass("fa-eye-slash").removeClass("fa-eye");
+            }
+            else
+            {
+                $("#user-" + id + " .fa-eye-slash").addClass("fa-eye").removeClass("fa-eye-slash");
+            }
+        }
+    });
 }
 
 function deleteUser() {

@@ -9,8 +9,6 @@ try
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 login VARCHAR(30) NOT NULL,
                 password VARCHAR(255) NOT NULL,
-                first_name VARCHAR(20),
-                second_name VARCHAR(20),
                 role VARCHAR(15) DEFAULT 'reader'
             )
             ");
@@ -32,10 +30,9 @@ try
             id INT PRIMARY KEY AUTO_INCREMENT,
             user_id INT NOT NULL,
             profile_id INT,
-            first_name VARCHAR(30),
-            second_name VARCHAR(30),
-            about TEXT(65000),
-            photo BINARY(255),
+            first_name VARCHAR(30) DEFAULT 'John',
+            second_name VARCHAR(30) DEFAULT 'Doe',
+            visibility BOOL DEFAULT true,
             FOREIGN KEY (user_id) REFERENCES users(id)
         )
     ");
@@ -46,6 +43,16 @@ try
             dev_id INT,
             about TEXT(50000),
             photo LONGTEXT
+        )
+    ");
+
+    $DB->query("
+        CREATE TABLE IF NOT EXISTS comments(
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            blog_id INT NOT NULL,
+            author_id INT NOT NULL,
+            to_id INT,
+            content TEXT(5000)
         )
     ");
 

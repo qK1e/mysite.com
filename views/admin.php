@@ -80,9 +80,19 @@
                 </div>
 
                 <div>
+                    <?php if($role == ROLE_DEVELOPER || $role == ROLE_ADMIN){ ?>
                     <button class="change-visibility-button" id="change-visibility-button">
-                        <i class="fas fa-eye-slash"></i>
+
+                        <?php $visible = $user->isVisible(); ?>
+
+                        <?php if($visible){?>
+                        <i class="fas fa-eye" ></i>
+                        <?php }
+                        else {?>
+                        <i class="fas fa-eye-slash" ></i>
+                        <?php }?>
                     </button>
+                    <?php } ?>
                 </div>
 
                 <div>
@@ -93,10 +103,7 @@
             </div>
             <!--actions -->
         </div>
-
-
-        <?php
-        }?>
+        <?php }?>
     </div>
 
     <!--Modals -->
