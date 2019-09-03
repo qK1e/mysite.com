@@ -6,6 +6,7 @@ namespace qk1e\mysite\model;
 use PDO;
 use PDOException;
 use qk1e\mysite\model\entities\Article;
+use qk1e\mysite\model\entities\Comment;
 
 class MysqlBlogDatabase extends MysqlDatabase
 {
@@ -118,6 +119,91 @@ class MysqlBlogDatabase extends MysqlDatabase
         $article = $statement->fetch();
 
         return $article;
+    }
+
+    public function postComment($blog_id, $user_id, $text, $answer_to=null):bool
+    {
+        try
+        {
+            //validate input
+            if(!$blog_id || !$user_id || !$text)
+            {
+                return false;
+            }
+            //put comment in db
+            if(!$answer_to)
+            {
+                $answer_to = 0;
+            }
+            $query = "
+                INSERT INTO comments(`blog_id`, `author_id`, `to_id`, `content`)
+                VALUES (?,?,?,?)
+            ";
+
+            $statement = $this->DB->prepare($query);
+            $statement->bindParam(1, $blog_id, PDO::PARAM_INT);
+            $statement->bindParam(2, $user_id, PDO::PARAM_INT);
+            $statement->bindParam(3, $answer_to, PDO::PARAM_INT);
+            $statement->bindParam(4, $text, PDO::PARAM_STR);
+            $statement->execute();
+
+            return true;
+        }
+        catch (PDOException $e)
+        {
+            return false;
+        }
+    }
+
+    public function getComments($blog_id): ?array
+    {
+        try
+        {
+            $query = "
+            SELECT * 
+            FROM comments
+            WHERE `blog_id`=?
+        ";
+
+            $statement = $this->DB->prepare($query);
+            $statement->bindParam(1, $blog_id, PDO::PARAM_INT);
+            $statement->execute();
+            $statement->setFetchMode(PDO::FETCH_CLASS, Comment::class);
+
+            $comments = $statement->fetchAll();
+
+            return $comments;
+        }
+        catch (PDOException $e)
+        {
+            return null;
+        }
+
+    }
+
+    public function getCommentById($id): ?Comment
+    {
+        try
+        {
+            $query = "
+                SELECT * 
+                FROM comments
+                WHERE `id`=?
+            ";
+
+            $statement = $this->DB->prepare($query);
+            $statement->bindParam(1, $id, PDO::PARAM_INT);
+            $statement->setFetchMode(PDO::FETCH_CLASS, Comment::class);
+            $statement->execute();
+
+            $comment = $statement->fetch();
+
+            return $comment;
+        }
+        catch (PDOException $e)
+        {
+            return null;
+        }
     }
 
 

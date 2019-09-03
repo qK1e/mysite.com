@@ -74,14 +74,14 @@
             <!--actions -->
             <div class="col d-flex justify-content-end">
                 <div>
-                    <button class="edit-user-button" id="edit-user-button">
+                    <button class="edit-user-button btn btn-outline-dark" id="edit-user-button">
                         <i class="fas fa-user-tag"></i>
                     </button>
                 </div>
 
                 <div>
                     <?php if($role == ROLE_DEVELOPER || $role == ROLE_ADMIN){ ?>
-                    <button class="change-visibility-button" id="change-visibility-button">
+                    <button class="change-visibility-button btn btn-outline-dark" id="change-visibility-button">
 
                         <?php $visible = $user->isVisible(); ?>
 
@@ -96,7 +96,7 @@
                 </div>
 
                 <div>
-                    <button class="delete-user-button" id="delete-user-button">
+                    <button class="delete-user-button btn btn-outline-dark" id="delete-user-button">
                         <i class="fas fa-user-slash"></i>
                     </button>
                 </div>

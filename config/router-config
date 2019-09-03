@@ -144,5 +144,19 @@
     "controller": "AdminController",
     "method": "changeVisibility",
     "http": "POST"
+},
+
+{
+    "path": "blog/article/post-comment",
+    "controller": "BlogController",
+    "method": "postComment",
+    "http": "POST"
+},
+
+{
+    "path": "blog/article/comment-section",
+    "controller": "BlogController",
+    "method": "getCommentSection",
+    "http": "GET"
 }
 ]

@@ -37,7 +37,7 @@ class View
         {
             return ROOTDIR."/views/assets/login-block-authorized.php";
         }
-        else{
+        else {
             return ROOTDIR."/views/assets/login-block.php";
         }
     }
@@ -73,5 +73,19 @@ class View
         $args["nav_admin"] = $nav_admin;
 
         return $args;
+    }
+
+    public function getAsset(string $asset, array $args)
+    {
+        $path = ROOTDIR."/views/assets/".$asset.".php";
+
+        if(file_exists($path))
+        {
+            include($path);
+        }
+        else
+        {
+            echo "";
+        }
     }
 }

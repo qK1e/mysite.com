@@ -13,7 +13,9 @@ use qk1e\mysite\Request;
 
 class BlogController
 {
-    private $recent_articles = array();
+
+    private $recent_articles = [];
+
     private $page_size = 5;
 
 
@@ -25,14 +27,13 @@ class BlogController
     {
         $page = $request->getArgument("page");
 
-        if (!isset($page) || $page == 0)
-        {
+        if (!isset($page) || $page == 0) {
             $page = 1;
         }
 
         $this->getArticles($page);
 
-        $args = array();
+        $args = [];
         $args["recent_articles"] = $this->recent_articles;
         $args["blog_page"] = $page;
 
@@ -54,7 +55,7 @@ class BlogController
         $article = new Article();
 
         $user = SecuritySystem::currentUser();
-        $user_id = $user->getId();
+        $user_id = $user->getUserId();
 
         $article->setAuthorId($user_id);
         $article->setHeader($request->getArgument("header"));
@@ -67,7 +68,7 @@ class BlogController
         $DB->addArticle($article);
 
         $router = ConfigurableRouter::getInstance();
-        $router->route("/blog", "GET", array());
+        $router->route("/blog", "GET", []);
     }
 
     public function getArticle(Request $request)
@@ -75,7 +76,7 @@ class BlogController
         $role = SecuritySystem::currentUserRole();
 
         $id = $request->getArgument("id");
-        $args = array();
+        $args = [];
 
         $DB = MysqlBlogDatabase::getInstance();
         $article = $DB->getArticleById($id);
@@ -84,6 +85,54 @@ class BlogController
 
         $view = new View();
         $view->getPage("article", $args);
+    }
+
+    public function postComment(Request $request)
+    {
+        $blog_id = $request->getArgument("blog");
+        $answer_to = $request->getArgument("answer_to");
+        $text = $request->getArgument("text");
+        $user = SecuritySystem::currentUser();
+        $user_role = SecuritySystem::currentUserRole();
+
+        if($user_role == ROLE_UNAUTHORIZED)
+        {
+            $this->ajaxError("Not authorized!");
+        }
+        else
+        {
+            $DB = MysqlBlogDatabase::getInstance();
+            if($DB->postComment($blog_id, $user->getUserId(), $text, $answer_to))
+            {
+               echo json_encode(array('success' => true));
+            }
+            else
+            {
+                $this->ajaxError("Couldn't post a comment");
+            }
+
+        }
+
+
+    }
+
+    public function getCommentSection(Request $request)
+    {
+        $blog_id = $request->getArgument("id");
+
+        $DB = MysqlBlogDatabase::getInstance();
+        $comments = $DB->getComments($blog_id);
+
+        $args = array();
+        $args["comments"] = $comments;
+
+        $view = new View();
+        $view->getAsset("comment-section", $args);
+    }
+
+    private function ajaxError($message)
+    {
+        echo json_encode(array('error' => $message) );
     }
 
     private function getArticles($page)

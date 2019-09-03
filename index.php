@@ -27,7 +27,7 @@ session_start();
 
 $router = ConfigurableRouter::getInstance();
 $uri = $_SERVER["REQUEST_URI"];
-$path = explode("?", $uri, 1)[0];
+$path = explode("?", $uri)[0];
 $args = $_REQUEST;
 $method = $_SERVER["REQUEST_METHOD"];
 $router->route($path, $method, $args);

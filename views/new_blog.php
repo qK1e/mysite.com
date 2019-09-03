@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="form-group w-100">
-                        <textarea class="w-100 textarea-height" name="content" placeholder="Content"></textarea>
+                        <textarea class="w-100 textarea-height" name="content" placeholder="Content" style="resize: none"></textarea>
                     </div>
 
                     <input class="btn btn-success" type="submit" value="POST">
