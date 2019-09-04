@@ -5,6 +5,7 @@ namespace qk1e\mysite\model\entities;
 
 
 use qk1e\mysite\model\MysqlBlogDatabase;
+use qk1e\mysite\model\MysqlUsersDatabase;
 
 class Comment
 {
@@ -22,7 +23,7 @@ class Comment
      */
     public function __construct()
     {
-        $DB = MysqlBlogDatabase::getInstance();
+        $this->DB = MysqlBlogDatabase::getInstance();
     }
 
 
@@ -72,6 +73,22 @@ class Comment
     public function setAuthorId($author_id): void
     {
         $this->author_id = $author_id;
+    }
+
+    public function getAuthorlogin(): string
+    {
+        $DB = MysqlUsersDatabase::getInstance();
+        $login = $DB->getUserById($this->author_id)->getLogin();
+
+        if($login)
+        {
+            return $login;
+        }
+        else
+        {
+            return "anonymous";
+        }
+
     }
 
     /**

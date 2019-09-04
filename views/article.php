@@ -59,7 +59,7 @@
             <!--comment form -->
 
             <!--comment container -->
-            <div id="comment-section">
+            <div id="comment-section" class="row">
 
             </div>
             <!--comment container -->

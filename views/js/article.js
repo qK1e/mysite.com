@@ -2,7 +2,7 @@ function init() {
     $("#send-comment-btn").click(sendComment);
 
     refreshCommentSection();
-    setInterval(refreshCommentSection, 5000);
+    setInterval(refreshCommentSection, 1000*60);
 }
 
 function sendComment()
@@ -22,7 +22,7 @@ function sendComment()
             type: "POST",
             dataType: "json",
             success: function (json) {
-                $("#comment-textarea").val("");
+                let text = $("#comment-textarea").val("");
                 alert("Comment posted successfully!");
             },
             error: function () {

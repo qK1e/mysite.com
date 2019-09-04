@@ -198,7 +198,14 @@ class MysqlBlogDatabase extends MysqlDatabase
 
             $comment = $statement->fetch();
 
-            return $comment;
+            if($comment)
+            {
+                return $comment;
+            }
+            else
+            {
+                return null;
+            }
         }
         catch (PDOException $e)
         {

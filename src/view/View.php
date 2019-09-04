@@ -78,6 +78,7 @@ class View
     public function getAsset(string $asset, array $args)
     {
         $path = ROOTDIR."/views/assets/".$asset.".php";
+        extract($args);
 
         if(file_exists($path))
         {
