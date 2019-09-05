@@ -45,21 +45,20 @@
         </div>
 
         <!--comment section -->
-        <div class="row container justify-content-center mt-4">
-
+        <div class="row justify-content-center mt-4">
             <!--comment form -->
-            <div class="row d-flex w-75 mt-2">
-                <form class="col row justify-content-center">
+            <div class="col-12 d-flex w-75 mt-2" id="comment-form">
+                <form class="row w-100 justify-content-center comment-form">
                     <input id="blog-id" type="hidden" value="<?php echo $article->getId();?>">
                     <input id="answer-to" name="answer-to" type="hidden">
-                    <textarea id="comment-textarea" class="d-flex col pt-2 rounded-pill" name="comment" style="resize: none; height: 3rem; word-wrap: break-word"></textarea>
-                    <button class="btn btn-info col-3 rounded-pill" type="button" name="send" value="send" id="send-comment-btn">Send</button>
+                    <textarea id="comment-textarea" class="d-flex col pt-2 rounded-left" name="comment" style="resize: none; height: 3rem; word-wrap: break-word"></textarea>
+                    <button class="btn btn-info col-3 rounded" type="button" name="send" value="send" id="send-comment-btn">Send</button>
                 </form>
             </div>
             <!--comment form -->
 
             <!--comment container -->
-            <div id="comment-section" class="row">
+            <div id="comment-section" class="col-12 px-0">
 
             </div>
             <!--comment container -->

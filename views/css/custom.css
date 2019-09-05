@@ -103,3 +103,13 @@ body{
 .media{
     margin-left: 2rem;
 }
+
+.comment-form{
+    height: 3rem;
+}
+
+.close:hover{
+    cursor: pointer;
+}
+
+

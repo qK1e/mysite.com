@@ -65,7 +65,7 @@ class Profile
     /**
      * @return mixed
      */
-    public function getAbout(): string
+    public function getAbout(): ?string
     {
         return $this->about;
     }

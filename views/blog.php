@@ -50,14 +50,22 @@
                     if(isset($recent_articles)) {
                         foreach ($recent_articles as $article) {
                             ?>
-                            <div class="blog-article col-12 m-1 p-1 pl-4 py-3 border border-light shadow-sm row">
-                                <a class="article-header text-capitalize ml-2 text-secondary col-12" href="blog/article?id=<?php echo $article->getId()?>">
-                                    <h3><?php echo $article->getHeader() ?></h3>
-                                    <hr class="m-0 mb-2">
-                                </a>
+                            <!--article -->
+                            <div class="blog-article col-12 m-1 p-1 pl-4 py-3 border border-light shadow-sm row" id="article-<?php echo $article->getId()?>">
+                                <span class="article-id" style="display: none"><?php echo $article->getId()?></span>
+                                <div class="col-12 row article-header border-bottom">
+                                    <a class="text-capitalize ml-2 text-secondary col" href="blog/article?id=<?php echo $article->getId()?>">
+                                        <h3><?php echo $article->getHeader() ?></h3>
+                                    </a>
+                                    <?php if($user_role == ROLE_ADMIN){ ?>
+                                        <span class="close col-1 d-flex justify-content-end delete-blog">x</span>
+                                    <?php } ?>
+                                </div>
+
                                 <p class="article-content ml-2 col-12 lead"><?php echo $article->getContent() ?></p>
                                 <small class="article-author col-12 mt-0 ml-2">Submitted by <?php echo "<i>".$article->getAuthorLogin()."</i>"?> in <?php echo $article->getDate() ?></small>
                             </div>
+                            <!--article -->
                             <?php
                         }
                     }
@@ -88,10 +96,6 @@
                 </nav>
                 <!--blog pagination -->
             </div>
-            <!--Ads -->
-            <div class="ads col-3 mt-5">
-                <p>This could be your ads!</p>
-            </div>
         </div>
 
     </section>
@@ -102,7 +106,10 @@
 
 
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script src="/views/js/blog.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 

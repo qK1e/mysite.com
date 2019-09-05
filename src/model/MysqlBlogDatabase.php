@@ -213,5 +213,48 @@ class MysqlBlogDatabase extends MysqlDatabase
         }
     }
 
+    public function deleteComment($id): bool
+    {
+        try
+        {
+            $query = "
+                DELETE FROM comments
+                WHERE `id`=?
+            ";
 
+            $statement = $this->DB->prepare($query);
+            $statement->bindParam(1, $id, PDO::PARAM_INT);
+            $statement->execute();
+
+            return true;
+        }
+        catch (PDOException $e)
+        {
+            return false;
+        }
+    }
+
+    public function deleteArticle($id): bool
+    {
+        try
+        {
+            $query = "
+            DELETE FROM blogs
+            WHERE id=?
+            ";
+
+            $statement = $this->DB->prepare($query);
+            $statement->bindParam(1, $id, PDO::PARAM_INT);
+            $statement->execute();
+
+            return true;
+
+
+        }
+        catch (PDOException $e)
+        {
+            return false;
+        }
+
+    }
 }

@@ -126,8 +126,59 @@ class BlogController
         $args = array();
         $args["comments"] = $comments;
 
+        $user = SecuritySystem::currentUser();
+        if($user)
+        {
+            $args["user"] = $user;
+        }
+
+
         $view = new View();
         $view->getAsset("comment-section", $args);
+    }
+
+    public function deleteComment(Request $request)
+    {
+        $role = SecuritySystem::currentUserRole();
+        if($role != ROLE_ADMIN)
+        {
+            $this->ajaxError("No permissions");
+        }
+        else
+        {
+            $id = $request->getArgument("id");
+
+            $DB = MysqlBlogDatabase::getInstance();
+            if($DB->deleteComment($id))
+            {
+                echo json_encode(array('success' => true, 'id' => $id));
+            }
+            else
+            {
+                $this->ajaxError("Couln't delete comment");
+            }
+
+        }
+    }
+
+    public function deleteBlog(Request $request)
+    {
+        $role = SecuritySystem::currentUserRole();
+        if($role != ROLE_ADMIN)
+        {
+            $this->ajaxError("No permissions!");
+        }
+        else
+        {
+            $id = $request->getArgument("id");
+
+            $DB = MysqlBlogDatabase::getInstance();
+            if($DB->deleteArticle($id))
+            {
+                echo json_encode(array('success' => true, 'id' => $id));
+            }
+
+        }
     }
 
     private function ajaxError($message)

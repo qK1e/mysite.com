@@ -1,7 +1,5 @@
 function init() {
     $("#send-comment-btn").click(sendComment);
-    $("#comment-form").focusout(resetCommentForm);
-    $(".delete-comment").click(deleteComment);
 
     refreshCommentSection();
     setInterval(refreshCommentSection, 1000*60);
@@ -9,10 +7,30 @@ function init() {
 
 function deleteComment(event) {
     event.stopPropagation();
-    alert("DELETING COMMENT!");
+    //get id
+    let id = $(this).parents(".comment").find(".comment-id").html();
+    //send request
+    $.ajax({
+        url: "article/delete-comment",
+        type: "POST",
+        data: {
+            id: id
+        },
+        dataType: "json",
+        success: function (json) {
+            let id = json.id;
+            $("#comment-" + id).remove();
+        },
+        error: function () {
+            alert("couldn't delete comment!");
+        }
+    });
+
+
+    //refresh comment section
 }
 
-function resetCommentForm() {
+function resetCommentForm(event) {
     $(this).find("#answer-to").val(0);
     $(this).find("#comment-textarea").val("");
 }
@@ -71,6 +89,7 @@ function refreshCommentSection()
             success: function (html) {
                 $("#comment-section").html(html);
                 $(".comment").click(reply);
+                $(".delete-comment").click(deleteComment);
             }
         });
 }

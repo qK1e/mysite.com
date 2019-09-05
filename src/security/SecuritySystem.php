@@ -1,6 +1,7 @@
 <?php
 namespace qk1e\mysite\security;
 
+use qk1e\mysite\model\entities\User;
 use qk1e\mysite\model\MysqlUsersDatabase as MysqlUsersDatabase;
 
 class SecuritySystem
@@ -81,10 +82,21 @@ class SecuritySystem
         }
     }
 
-    public static function currentUser()
+    public static function currentUser(): ?User
     {
-        $DB = MysqlUsersDatabase::getInstance();
-        return $DB->getUserByLogin($_SESSION["user"]);
+        $login = SecuritySystem::currentUserLogin();
+        if($login)
+        {
+            $DB = MysqlUsersDatabase::getInstance();
+
+            $user = $DB->getUserByLogin($login);
+
+            return $user;
+        }
+        else
+        {
+            return null;
+        }
     }
 
 }

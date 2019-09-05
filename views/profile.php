@@ -51,10 +51,8 @@
                 <div class="col">
                     <textarea form="profile-info" name="full-name" class="dev-name h1 d-block hidden-textarea"><?php echo $developer->getFullName() ?></textarea>
                     <textarea form="profile-info" name="about" class="p d-block w-75 hidden-textarea"><?php echo $profile->getAbout() ?></textarea>
-                    <input form="profile-info" name="submit" type="submit" class="d-block" value="Save"/>
+                    <input form="profile-info" name="submit" type="submit" class="d-block" value="Save">
                 </div>
-
-
             </div>
         </form>
     </div>

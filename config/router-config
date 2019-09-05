@@ -158,5 +158,19 @@
     "controller": "BlogController",
     "method": "getCommentSection",
     "http": "GET"
+},
+
+{
+    "path": "blog/article/delete-comment",
+    "controller": "BlogController",
+    "method": "deleteComment",
+    "http": "POST"
+},
+
+{
+    "path": "blog/delete-article",
+    "controller": "BlogController",
+    "method": "deleteBlog",
+    "http": "POST"
 }
 ]

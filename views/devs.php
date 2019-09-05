@@ -43,15 +43,15 @@
             <div class="col row">
                 <form class="d-flex align-items-center mb-2 mt-2" action="/devs" method="GET" name="filter">
                     <div class="input-group d-inline-block col" id="first-name-filter">
-                        <div class="input-group-prepend">
+                        <span class="input-group-prepend">
                             <label class="input-group-text" for="first-name-input">Name</label>
-                        </div>
+                        </span>
                         <textarea name="first-name" id="first-name-input" style="height: 2rem; resize: none"></textarea>
                     </div>
                     <div class="input-group d-inline-block col" id="second-name-filter">
-                        <div class="input-group-prepend">
-                            <label class="input-group-text" for="second-name-input">Surname</label>
-                        </div>
+                        <span class="input-group-prepend">
+                            <label class="input-group-text input-group-prepend" for="second-name-input">Surname</label>
+                        </span>
                         <textarea name="second-name" id="second-name-input" style="height: 2rem; resize: none"></textarea>
                     </div>
                     <div class="d-inline-block col">
