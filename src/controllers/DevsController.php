@@ -26,6 +26,7 @@ class DevsController
         {
             $filter->setSecondName($request->getArgument("second-name"));
         }
+        $filter->setVisibility(true);
 
 
         $page = $request->getArgument("page");

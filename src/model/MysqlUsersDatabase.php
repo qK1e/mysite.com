@@ -8,6 +8,7 @@ use PDO;
 use qk1e\mysite\model\entities\Developer;
 use qk1e\mysite\model\entities\Profile;
 use qk1e\mysite\model\entities\User;
+use qk1e\mysite\storage\LocalStorage;
 
 class MysqlUsersDatabase extends MysqlDatabase
 {
@@ -145,15 +146,25 @@ class MysqlUsersDatabase extends MysqlDatabase
         }
     }
 
-    private function insertUser($login, $password, $role): void
+    private function insertUser($login, $password, $role): bool
     {
-        $query = "
+        try
+        {
+            $query = "
                 INSERT INTO users(`login`, `password`, `role`)
                 VALUES (?, ?, ?)
             ";
 
-        $statement = $this->DB->prepare($query);
-        $statement->execute(array($login, $password, $role));
+            $statement = $this->DB->prepare($query);
+            $statement->execute(array($login, $password, $role));
+
+            return true;
+        }
+        catch (PDOException $e)
+        {
+            return false;
+        }
+
     }
 
     //insert into users table. if user is a developer -> insert into developers table and create profile then set profile id to devepers table
@@ -161,60 +172,67 @@ class MysqlUsersDatabase extends MysqlDatabase
     {
         try
         {
-            $this->insertUser($login, $password, $role);
+            $this->DB->beginTransaction();
+            $user_created = $this->insertUser($login, $password, $role);
 
-            //If user is a developer or admin -> insert into developers and create profile
-            if($role === ROLE_DEVELOPER || $role === ROLE_ADMIN)
+            if(!$user_created)
             {
-                $user_id = $this->idByLogin($login);
+                $this->DB->rollBack();
+                return false;
+            }
+            else
+            {
+                //If user is a developer or admin -> insert into developers and create profile
+                if($role === ROLE_DEVELOPER || $role === ROLE_ADMIN)
+                {
+                    $user_id = $this->idByLogin($login);
 
-                $query = "
+                    $query = "
                     INSERT INTO developers(`user_id`, `first_name`, `second_name`)
                     VALUES (?,?,?)
+                    ";
+
+                    $statement = $this->DB->prepare($query);
+                    $statement->bindParam(1, $user_id, PDO::PARAM_INT);
+                    $statement->bindParam(2, $first_name, PDO::PARAM_STR);
+                    $statement->bindParam(3, $second_name, PDO::PARAM_STR);
+                    $statement->execute();
+
+                    $dev_id = $this->DB->lastInsertId();
+
+                    $query = "
+                    INSERT INTO profiles(`about`, `dev_id`, `photo`)
+                    VALUES (?,?,?)
                 ";
-                $statement = $this->DB->prepare($query);
-                $statement->bindParam(1, $user_id, PDO::PARAM_INT);
-                $statement->bindParam(2, $first_name, PDO::PARAM_STR);
-                $statement->bindParam(3, $second_name, PDO::PARAM_STR);
+                    $statement = $this->DB->prepare($query);
+                    $default_photo = LocalStorage::getDefaultPhoto();
+                    $default_about = "I have nothing to tell. Just love my job!";
+                    $statement->bindParam(1, $default_about, PDO::PARAM_STR);
+                    $statement->bindParam(2, $dev_id, PDO::PARAM_INT);
+                    $statement->bindParam(3, $default_photo, PDO::PARAM_STR);
+                    $statement->execute();
 
-                $dev_id = $this->getDeveloperByUserId($user_id)->getId(); //probably it's better to make a function that requests a dev_id
+                    $profile_id = $this->DB->lastInsertId();
 
-                $query = "
-                    INSERT INTO profiles(`about`, `dev_id`)
-                    VALUES (?,?)
-                ";
-                $statement = $this->DB->prepare($query);
-                $default_about = "I have nothing to tell. Just love my job!";
-                $statement->bindParam(1, $default_about, PDO::PARAM_STR);
-                $statement->bindParam(2, $dev_id, PDO::PARAM_INT);
-                $statement->execute();
-
-                $query = "
-                    SELECT id
-                    FROM profiles
-                    WHERE `dev_id` = ?
-                ";
-                $statement = $this->DB->prepare($query);
-                $statement->bindParam(1, $dev_id, PDO::PARAM_INT);
-                $statement->execute();
-                $profile_id = $statement->fetch(PDO::FETCH_ASSOC)["id"];
-
-                $query = "
+                    $query = "
                     UPDATE developers
                     SET `profile_id` = ?
                     WHERE `user_id` = ?
                 ";
-                $statement = $this->DB->prepare($query);
-                $statement->bindParam(1, $profile_id, PDO::PARAM_INT);
-                $statement->bindParam(2, $user_id, PDO::PARAM_INT);
-                $statement->execute();
+                    $statement = $this->DB->prepare($query);
+                    $statement->bindParam(1, $profile_id, PDO::PARAM_INT);
+                    $statement->bindParam(2, $user_id, PDO::PARAM_INT);
+                    $statement->execute();
+                }
+
+                $this->DB->commit();
+                return true;
             }
 
-            return true;
         }
         catch (PDOException $e)
         {
-            echo $e->getMessage();
+            $this->DB->rollBack();
             return false;
         }
     }
@@ -273,19 +291,27 @@ class MysqlUsersDatabase extends MysqlDatabase
 
     public function getProfileByProfileId($profile_id): ?Profile
     {
-        $query = "
+        try
+        {
+            $query = "
             SELECT * 
             FROM profiles
             WHERE `id` = ?
         ";
 
-        $statement = $this->DB->prepare($query);
-        $statement->bindParam(1, $profile_id, PDO::PARAM_INT);
-        $statement->execute();
-        $statement->setFetchMode(PDO::FETCH_CLASS, Profile::class);
-        $profile = $statement->fetch();
+            $statement = $this->DB->prepare($query);
+            $statement->bindParam(1, $profile_id, PDO::PARAM_INT);
+            $statement->execute();
+            $statement->setFetchMode(PDO::FETCH_CLASS, Profile::class);
+            $profile = $statement->fetch();
 
-        return $profile;
+            return $profile;
+        }
+        catch (PDOException $e)
+        {
+            return null;
+        }
+
     }
 
     public function getUsers(): ?array

@@ -8,6 +8,7 @@ class DeveloperFilter
 {
     private $first_name;
     private $second_name;
+    private $visibility;
 
     /**
      * @param  mixed  $first_name
@@ -25,6 +26,16 @@ class DeveloperFilter
         $this->second_name = $second_name;
     }
 
+    public function setVisibility(bool $visibility)
+    {
+        $this->visibility = $visibility;
+    }
+
+    public function getVisibility(): bool
+    {
+        return $this->visibility;
+    }
+
     /**
      * @return mixed
      */
@@ -40,6 +51,8 @@ class DeveloperFilter
     {
         return $this->second_name;
     }
+
+
 
 
 }

@@ -8,6 +8,7 @@ use PDO;
 use PDOException;
 use qk1e\mysite\model\entities\Developer;
 use qk1e\mysite\model\entities\DeveloperFilter;
+use qk1e\mysite\storage\LocalStorage;
 
 class MysqlDevelopersDatabase extends MysqlDatabase
 {
@@ -69,6 +70,15 @@ class MysqlDevelopersDatabase extends MysqlDatabase
                 }
                 array_push($parts, $part);
             }
+
+            $visibility = $filter->getVisibility();
+            if($visibility)
+            {
+                $part = "`visibility` = ".$visibility;
+                array_push($parts, $part);
+            }
+
+
         }
 
         if(!empty($parts))
@@ -204,7 +214,6 @@ class MysqlDevelopersDatabase extends MysqlDatabase
         $statement->execute();
     }
 
-
     //not transaction safe
     public function createDeveloperFromUserId($id): bool
     {
@@ -265,8 +274,8 @@ class MysqlDevelopersDatabase extends MysqlDatabase
         try
         {
             $query = "
-            INSERT INTO profiles(`dev_id`, `about`)
-            VALUES (?,?)
+            INSERT INTO profiles(`dev_id`, `about`, `photo`)
+            VALUES (?,?,?)
             ";
 
             $default_about = "I have nothing to tell. Just love my job!";
@@ -274,6 +283,7 @@ class MysqlDevelopersDatabase extends MysqlDatabase
             $statement  = $this->DB->prepare($query);
             $statement->bindParam(1, $dev_id, PDO::PARAM_INT);
             $statement->bindParam(2, $default_about, PDO::PARAM_STR);
+            $statement->bindParam(3, LocalStorage::getDefaultPhoto(), PDO::PARAM_STR);
             $statement->execute();
         }
         catch (PDOException $e)

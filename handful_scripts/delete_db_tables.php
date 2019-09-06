@@ -7,6 +7,7 @@ try{
     $DB->query("DROP TABLE profiles");
     $DB->query("DROP TABLE developers");
     $DB->query("DROP TABLE users");
+    $DB->query("DROP TABLE comments");
 }
 catch (PDOException $e)
 {

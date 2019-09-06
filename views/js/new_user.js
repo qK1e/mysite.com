@@ -27,15 +27,15 @@ function roleSelectHandle(event)
 
 function addDeveloperForm()
 {
-    let form = document.getElementById("user-info-form");
+    let form = document.getElementById("user-info-fields");
     form.insertAdjacentHTML("beforeend", "" +
-        "<div class='form-group d-flex justify-content-center col-12'>" +
-        "   <label for='first-name'>First name:</label> " +
-        "   <input id='first-name' type='text' name='first-name'/>" +
+        "<div class='form-group d-flex justify-content-center col-12 row'>" +
+        "   <label for='first-name' class='col-2  d-flex justify-content-end'>First name:</label> " +
+        "   <input id='first-name' type='text' name='first-name' class='col-3'/>" +
         "</div>" +
-        "<div class='form-group d-flex justify-content-center col-12'>" +
-        "   <label for='second-name'>Second name:</label>" +
-        "   <input id='second-name' type='text' name='second-name'/>" +
+        "<div class='form-group d-flex justify-content-center col-12 row'>" +
+        "   <label for='second-name' class='col-2 d-flex justify-content-end'>Second name:</label>" +
+        "   <input id='second-name' type='text' name='second-name' class='col-3'/>" +
         "</div>");
 }
 

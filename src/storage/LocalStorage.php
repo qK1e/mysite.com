@@ -5,6 +5,8 @@ class LocalStorage
 {
     private static $path = "/storage";
 
+    private static $def_photo = "default/def-avatar.png";
+
     public static function saveImage($file)
     {
         $destination = ROOTDIR.self::$path;
@@ -20,6 +22,10 @@ class LocalStorage
         return self::$path."/".$file_id;
     }
 
+    public static function getDefaultPhoto(): string
+    {
+        return self::$def_photo;
+    }
     private static function generateUniqueId($file_name)
     {
         $name_exploded = explode(".", $file_name);
@@ -36,4 +42,6 @@ class LocalStorage
              mkdir(self::$path, 0777, true);
          }
     }
+
+
 }

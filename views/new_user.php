@@ -37,24 +37,35 @@
 
     <section class="container">
         <div class="row mt-2">
-            <form class="col row d-flex justify-content-center" id="user-info-form" action="new-user" method="post">
-                <div class="form-group d-flex justify-content-center col-12">
-                    <label for="username">Username:</label>
-                    <input id="username" name="username" type="text">
+            <form class="col row d-flex justify-content-center p-2 pl-0 ml-0" id="user-info-form" action="new-user" method="post">
+                <div id="user-info-fields" class="w-100">
+                    <div class="form-group d-flex justify-content-center col-12 row">
+                        <label for="username" class="col-2 d-flex justify-content-end">Username:</label>
+                        <input id="username" name="username" type="text" class="col-3">
+                    </div>
+                    <div class="form-group d-flex justify-content-center col-12 row">
+                        <label for="password" class="col-2 d-flex justify-content-end">Password:</label>
+                        <input id="password" name="password" type="password" class="col-3">
+                    </div>
+                    <div class="form-group d-flex justify-content-center col-12 w-100 row">
+                        <label for="role_select" class="col-2 d-flex justify-content-end">Role:</label>
+                        <select id="role_select" name="role" class="col-3">
+                            <option>Reader</option>
+                            <option>Developer</option>
+                            <option>Admin</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group d-flex justify-content-center col-12">
-                    <label for="password">Password:</label>
-                    <input id="password" name="password" type="password">
+                <div class="w-100">
+                    <div class="form-group col-12 d-flex row justify-content-center w-100">
+                        <div class="col-2 d-flex"></div>
+                        <div class="col-3 d-flex justify-content-end pr-0">
+                            <button class="btn btn-success" type="submit">Submit</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group d-flex justify-content-center col-12">
-                    <label for="role_select">Role:</label>
-                    <select id="role_select" name="role">
-                        <option>Reader</option>
-                        <option>Developer</option>
-                        <option>Admin</option>
-                    </select>
-                </div>
-                <button class="btn btn-success" type="submit">Submit</button>
+
+
             </form>
         </div>
 
