@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/views/css/custom.css">
 </head>
 <body>
-    <!--Навигационное меню и блок авторизации -->
+    <!--navigation and authorization block -->
     <header class="container-fluid hdr-clr">
         <div class="row align-items-center">
             <div class="col">

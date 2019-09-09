@@ -1,5 +1,7 @@
 function init() {
     $(".delete-blog").click(deleteBlog);
+    $(".search__textarea").on("keypress", search);
+
 }
 
 function deleteBlog()
@@ -22,6 +24,15 @@ function deleteBlog()
         }
 
     });
+}
+
+function search(event)
+{
+    if(event.which === 13)
+    {
+        event.preventDefault();
+        $("#search-form").submit();
+    }
 }
 
 $(document).ready(init());

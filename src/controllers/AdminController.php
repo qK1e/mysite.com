@@ -4,6 +4,7 @@
 namespace qk1e\mysite\controllers;
 
 
+use qk1e\mysite\model\entities\UserFilter;
 use qk1e\mysite\model\MysqlDevelopersDatabase;
 use qk1e\mysite\model\MysqlUsersDatabase;
 use qk1e\mysite\Request;
@@ -15,24 +16,51 @@ class AdminController
 
     public function getAdminPage(Request $request): void
     {
-        $args = array();
-
+        //check permissions
         $role = SecuritySystem::currentUserRole();
-        $args["user_role"] = $role;
 
-        $DB = MysqlUsersDatabase::getInstance();
-        $users = $DB->getUsers();
-        $args["users"] = $users;
-
-        $view = new View();
-
-        if($role == ROLE_UNAUTHORIZED)
+        if($role == ROLE_ADMIN)
         {
-            $view->getPage("login", $args);
+            $args = array();
+            $args["user_role"] = $role;
+
+            //create user filter
+            $filter = new UserFilter();
+            if($role = $request->getArgument("role"))
+            {
+                $filter->setRole();
+            }
+            if($username = $request->getArgument("username"))
+            {
+                $filter->setLogin($username);
+            }
+            if($first_name = $request->getArgument("first-name"))
+            {
+                $filter->setFirstName($first_name);
+            }
+            if($second_name = $request->getArgument("second-name"))
+            {
+                $filter->setSecondName($second_name);
+            }
+
+            //get users
+            $DB = MysqlUsersDatabase::getInstance();
+            $users = $DB->getUsers($filter);
+            $args["users"] = $users;
+
+            //show page
+            $view = new View();
+            $view->getPage("admin", $args);
+        }
+        elseif ($role == ROLE_UNAUTHORIZED)
+        {
+            $view = new View();
+            $view->getPage("login", array());
         }
         else
         {
-            $view->getPage("admin", $args);
+            $view = new View();
+            $view->show404();
         }
     }
 

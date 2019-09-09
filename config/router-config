@@ -172,5 +172,12 @@
     "controller": "BlogController",
     "method": "deleteBlog",
     "http": "POST"
+},
+
+{
+    "path": "search",
+    "controller": "SearchController",
+    "method": "search",
+    "http": "GET"
 }
 ]

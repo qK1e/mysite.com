@@ -16,8 +16,7 @@ body{
     display: none!important;
 }
 
-.avatar{
-    display: inline-block;
+.profile__avatar{
     max-height: 200px;
     max-width: 200px;
 }
@@ -29,23 +28,41 @@ body{
     width: 150px;
 }
 
-.edit-photo-button{
-    margin-left: -3rem;
-    margin-right: 0;
-    background-color: beige;
-    border-radius: 50%;
-    font-size: 3rem;
-    height: 2.5rem;
+.profile__icon-container{
+    display: flex;
+    position: absolute;
+    align-self: start;
+    justify-content: end;
+    width: 100%;
 }
 
-.image-container{
+.profile__edit-photo-button{
     display: flex;
-    align-items: flex-start;
+    border-radius: 0px 0px 0px 4px;
+    align-items: center;
+    justify-content: center;
+    align-self: start;
+    float: right;
+    margin-bottom: 0;
+    height: 2rem;
+    width: 2rem;
+    border: 3px solid #16768b;
+    background-color: #d0ff34;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: 0;
+    font-size: 2rem;
+}
+
+.profile__image-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #aaaaaa;
 }
 
 .fa-pen-square{
-    margin-top: -3px;
-    color: darkcyan;
+    color: #17a2b8;
 }
 
 .fa-filter{
@@ -68,6 +85,10 @@ body{
 
 .user-info-item{
     margin-bottom: 0;
+}
+
+.navigation{
+    white-space: nowrap;
 }
 
 .modal{
@@ -117,6 +138,49 @@ body{
 
 .close:hover{
     cursor: pointer;
+}
+
+.search{
+    border: #aaaaaa;
+    border-radius: 2px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 0;
+    font-family: "Century Schoolbook L", SansSerif, sans-serif;
+}
+
+.search__input:hover{
+    box-shadow: 0 0 10px grey;
+}
+
+.search__form{
+    margin-bottom: 0;
+    width: auto;
+}
+
+.search__input{
+    width: 100%;
+}
+
+.search__textarea{
+    resize: none;
+    height: 2rem;
+    width: 100%;
+    border-radius: 3px;
+}
+
+.search__search-icon{
+    height: 2rem;
+    width: 2rem;
+    background-color: rgb(239, 240, 241);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-right: 1.1rem;
+    padding-left: 1.2rem;
+    border-radius: 6px 0 0 6px;
 }
 
 

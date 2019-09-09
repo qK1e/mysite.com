@@ -8,12 +8,12 @@ use PDO;
 use qk1e\mysite\model\entities\Developer;
 use qk1e\mysite\model\entities\Profile;
 use qk1e\mysite\model\entities\User;
+use qk1e\mysite\model\entities\UserFilter;
 use qk1e\mysite\storage\LocalStorage;
 
 class MysqlUsersDatabase extends MysqlDatabase
 {
     private static $instance;
-
 
     private function __construct()
     {
@@ -88,29 +88,6 @@ class MysqlUsersDatabase extends MysqlDatabase
         {
             echo $e->getMessage();
             return null;
-        }
-    }
-
-
-    //creates model structure
-    public function initialize_users(): void
-    {
-        try
-        {
-            $query = "
-                CREATE TABLE IF NOT EXISTS users(
-                    id INT PRIMARY KEY AUTO_INCREMENT,
-                    login VARCHAR(30) NOT NULL,
-                    password VARCHAR(255) NOT NULL,
-                    role VARCHAR(15) DEFAULT 'reader'  
-                )
-            ";
-
-            $this->DB->query($query);
-        }
-        catch (PDOException $e)
-        {
-            echo $e->getMessage();
         }
     }
 
@@ -314,12 +291,14 @@ class MysqlUsersDatabase extends MysqlDatabase
 
     }
 
-    public function getUsers(): ?array
+    public function getUsers($filter): ?array
     {
         try
         {
             $query = "
-            SELECT * FROM users;
+            SELECT users.*, developers.first_name as `first_name`, developers.second_name as `second_name`
+            FROM users JOIN developers ON(developers.user_id = users.id)
+            ".$this->whereQueryFromUsersFilter($filter)."
             ";
 
             $statement = $this->DB->prepare($query);
@@ -349,6 +328,69 @@ class MysqlUsersDatabase extends MysqlDatabase
             return null;
         }
 
+    }
+
+    private function whereQueryFromUsersFilter(UserFilter $filter): string
+    {
+        $where = "";
+
+        if($filter)
+        {
+            $parts = array();
+
+            $role = $filter->getRole();
+            if($role)
+            {
+                if($role != "any");
+                {
+                    $part = "`role` LIKE $role";
+                    array_push($parts, $part);
+                }
+            }
+
+            $login = $filter->getLogin();
+            if($login)
+            {
+                if($login != "")
+                {
+                    $part = "`login` LIKE ".$this->DB->quote($login);
+                    array_push($parts, $part);
+                }
+            }
+
+            $first_name = $filter->getFirstName();
+            if($first_name)
+            {
+                if($first_name != "")
+                {
+                    $part = "`first_name` LIKE".$this->DB->quote($first_name);
+                    array_push($parts, $part);
+                }
+            }
+
+            $second_name = $filter->getSecondName();
+            if($second_name)
+            {
+                if($second_name != "")
+                {
+                    $part = "`second_name` LIKE".$this->DB->quote($second_name);
+                    array_push($parts, $part);
+                }
+            }
+        }
+
+        if(!empty($parts))
+        {
+            $where = "WHERE ";
+            foreach ($parts as $part)
+            {
+                $where = $where.$part." AND ";
+            }
+            $last_and_pos = strlen($where) - 4;
+            $where = substr_replace($where, "", $last_and_pos, 4);
+        }
+
+        return $where;
     }
 
     //not transaction safe

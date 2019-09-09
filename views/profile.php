@@ -20,6 +20,11 @@
                 ;
                 ?>
             </div>
+            <div class="search col">
+                <div class="search__search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
             <div class="col justify-content-end">
                 <?php //register sign-in buttons
                 if(isset($login_block))
@@ -36,23 +41,31 @@
 
     <?php $profile = $developer->getProfile() ?>
     <!--Profile-->
-    <div class="container-flex mt-3">
+    <div class="profile container mt-3">
         <form name="profile-info" action="/profile" id="profile-info" method="post" enctype="multipart/form-data">
             <input name="profile-id" form="profile-info" value="<?php echo $developer->getProfileId() ?>" type="hidden">
             <input name="developer-id" form="profile-info" value="<?php echo $developer->getId() ?>" type="hidden">
-            <div class="profile-content row">
-                <div class="image-container d-flex justify-content-center col-3">
-                    <img src="<?php echo $profile->getPhoto()?>" class="avatar" id="photo" alt="Pretty face:)" >
-                    <label for="photo-input" class="edit-photo-button">
-                        <i class="fas fa-pen-square"></i>
-                    </label>
+            <div class="profile__header row w-100 justify-content-center">
+                <div class="profile__image-container col-3">
+                    <img src="<?php echo $profile->getPhoto()?>" class="profile__avatar" id="photo" alt="Pretty face:)" >
+                    <div class="profile__icon-container">
+                        <label for="photo-input" class="profile__edit-photo-button">
+                            <i class="profile__edit-icon fas fa-pen-square"></i>
+                        </label>
+                    </div>
+
                     <input type="file" accept="image/*" class="hidden" name="photo" id="photo-input" onchange="displayPhoto(this.files)">
                 </div>
                 <div class="col">
-                    <textarea form="profile-info" name="full-name" class="dev-name h1 d-block hidden-textarea"><?php echo $developer->getFullName() ?></textarea>
-                    <textarea form="profile-info" name="about" class="p d-block w-75 hidden-textarea"><?php echo $profile->getAbout() ?></textarea>
-                    <input form="profile-info" name="submit" type="submit" class="d-block" value="Save">
+                    <textarea form="profile-info" name="full-name" class="profile__dev-name h1 d-block hidden-textarea"><?php echo $developer->getFullName() ?></textarea>
+                    <textarea form="profile-info" name="about" class="profile__about p d-block w-75 hidden-textarea"><?php echo $profile->getAbout() ?></textarea>
                 </div>
+            </div>
+            <div class="profile__portfolio">
+
+            </div>
+            <div class="profile__footer row w-100 justify-content-center">
+                <input form="profile-info" name="submit" type="submit" class="d-block" value="Save">
             </div>
         </form>
     </div>

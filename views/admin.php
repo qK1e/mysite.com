@@ -22,6 +22,11 @@
                 ;
                 ?>
             </div>
+            <div class="search col">
+                <div class="search__search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
             <div class="col justify-content-end">
                 <?php //register sign-in buttons
                 if(isset($login_block))
@@ -58,7 +63,7 @@
                     <span class="input-group-prepend" style="height: 2.5rem">
                         <label class="input-group-text" for="role-input">Role</label>
                     </span>
-                    <select class="form-control custom-select" style="height: 2.5rem">
+                    <select name="role" class="form-control custom-select" style="height: 2.5rem">
                         <option>
                             <p>any</p>
                         </option>

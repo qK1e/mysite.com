@@ -7,7 +7,7 @@
 
 </head>
 <body>
-    <!--Навигационное меню и блок авторизации -->
+    <!--navigation and authorization block -->
     <header class="container-fluid hdr-clr">
         <div class="row align-items-center">
             <div class="col">
@@ -18,6 +18,11 @@
                 }
                 ;
                 ?>
+            </div>
+            <div class="search col">
+                <div class="search__search-icon">
+                    <i class="fas fa-search"></i>
+                </div>
             </div>
             <div class="col justify-content-end">
                 <?php //register sign-in buttons
