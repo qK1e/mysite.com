@@ -7,6 +7,9 @@ use PDO;
 use PDOException;
 use qk1e\mysite\model\entities\Article;
 use qk1e\mysite\model\entities\Comment;
+use qk1e\mysite\model\entities\Developer;
+use qk1e\mysite\search\SearchItemCollection;
+use qk1e\mysite\search\SearchQuery;
 
 class MysqlBlogDatabase extends MysqlDatabase
 {
@@ -256,5 +259,47 @@ class MysqlBlogDatabase extends MysqlDatabase
             return false;
         }
 
+    }
+
+    public function search(SearchQuery $search_query): SearchItemCollection
+    {
+        $text = $search_query->getSearchText();
+        $collection = new SearchItemCollection();
+
+        //search for developers
+        $query = "
+            SELECT *
+            FROM developers
+            WHERE concat(`first_name`, ' ', `second_name`) LIKE concat('%', :text, '%')";
+
+        $statement = $this->DB->prepare($query);
+        $statement->bindParam(':text', $text, PDO::PARAM_STR);
+        $statement->execute();
+        $statement->setFetchMode(PDO::FETCH_CLASS, Developer::class);
+
+        $result = $statement->fetchAll();
+
+        //add developers to collection
+        $collection->add($result);
+
+        //search for blogs
+        $query = "
+            SELECT blogs.*, users.login
+            FROM blogs JOIN users ON blogs.author_id=users.id
+            WHERE `header` LIKE concat('%', :text, '%')
+                OR `content` LIKE concat('%', :text, '%')
+                OR users.login LIKE concat('%', :text, '%')";
+
+        $statement = $this->DB->prepare($query);
+        $statement->bindParam(':text', $text, PDO::PARAM_STR);
+        $statement->execute();
+        $statement->setFetchMode(PDO::FETCH_CLASS, Article::class);
+
+        $result = $statement->fetchAll();
+
+        //add blogs to collection
+        $collection->add($result);
+
+        return $collection;
     }
 }

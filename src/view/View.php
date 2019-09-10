@@ -18,6 +18,8 @@ class View
 
         $login_block = $this->prepareLoginBlock();
 
+        $search = ROOTDIR."/views/assets/search.php";
+
         $page_file = ROOTDIR."/views/".$page.".php";
 
         if(file_exists($page_file))

@@ -20,16 +20,9 @@
                 ;
                 ?>
             </div>
-            <div class="search col">
-                <div class="search__search-icon">
-                    <i class="fas fa-search text-info"></i>
-                </div>
-                <div class="search__input">
-                    <form class="search__form" action="/search" method="get" id="search-form">
-                        <textarea class="search__textarea" rows="1" wrap="hard" name="search-text"></textarea>
-                    </form>
-                </div>
-            </div>
+            <?php if(isset($search))
+                include($search);
+            ?>
             <div class="col-3 justify-content-end">
                 <?php //register sign-in buttons
                 if(isset($login_block))
@@ -114,14 +107,10 @@
     </section>
 
 
-
-
-
-
-
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
     <script src="/views/js/blog.js"></script>
+    <script src="/views/js/search.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
