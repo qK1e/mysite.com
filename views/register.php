@@ -19,6 +19,17 @@
                 ;
                 ?>
             </div>
+            <?php if(isset($search))
+                include($search);
+            ?>
+            <div class="col justify-content-end">
+                <?php //register sign-in buttons
+                if(isset($login_block))
+                {
+                    include($login_block);
+                }
+                ?>
+            </div>
         </div>
     </header>
     <hr class="m-0">
@@ -36,7 +47,7 @@
                         <label>Enter your password:</label>
                         <input class="pl-1" name="password" type="password" placeholder="password">
                     </div>
-                    <input class="btn btn-primary" name="register" type="submit">
+                    <input class="btn btn-primary" name="register" type="submit" value="Register">
                 </form>
             </div>
         </div>

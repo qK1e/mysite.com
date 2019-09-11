@@ -268,9 +268,11 @@ class MysqlBlogDatabase extends MysqlDatabase
 
         //search for developers
         $query = "
-            SELECT *
-            FROM developers
-            WHERE concat(`first_name`, ' ', `second_name`) LIKE concat('%', :text, '%')";
+            SELECT developers.*, users.login
+            FROM developers JOIN users ON developers.user_id=users.id
+            WHERE concat(`first_name`, ' ', `second_name`) LIKE concat('%', :text, '%')
+                OR users.login LIKE concat('%', :text, '%')
+                ";
 
         $statement = $this->DB->prepare($query);
         $statement->bindParam(':text', $text, PDO::PARAM_STR);

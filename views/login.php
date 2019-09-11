@@ -23,6 +23,14 @@
             <?php if(isset($search))
                 include($search);
             ?>
+            <div class="col justify-content-end">
+                <?php //register sign-in buttons
+                if(isset($login_block))
+                {
+                    include($login_block);
+                }
+                ?>
+            </div>
         </div>
     </header>
     <hr class="m-0">

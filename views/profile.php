@@ -44,26 +44,28 @@
             <input name="profile-id" form="profile-info" value="<?php echo $developer->getProfileId() ?>" type="hidden">
             <input name="developer-id" form="profile-info" value="<?php echo $developer->getId() ?>" type="hidden">
             <div class="profile__header row w-100 justify-content-center">
+
                 <div class="profile__image-container col-3">
                     <img src="<?php echo $profile->getPhoto()?>" class="profile__avatar" id="photo" alt="Pretty face:)" >
                     <div class="profile__icon-container">
                         <label for="photo-input" class="profile__edit-photo-button">
-                            <i class="profile__edit-icon fas fa-pen-square"></i>
+                            <i class="profile__edit-icon fas fa-pen-square text-info"></i>
                         </label>
                     </div>
-
                     <input type="file" accept="image/*" class="hidden" name="photo" id="photo-input" onchange="displayPhoto(this.files)">
                 </div>
-                <div class="col">
-                    <textarea form="profile-info" name="full-name" class="profile__dev-name h1 d-block hidden-textarea"><?php echo $developer->getFullName() ?></textarea>
-                    <textarea form="profile-info" name="about" class="profile__about p d-block w-75 hidden-textarea"><?php echo $profile->getAbout() ?></textarea>
-                </div>
-            </div>
-            <div class="profile__portfolio">
 
-            </div>
-            <div class="profile__footer row w-100 justify-content-center">
-                <input form="profile-info" name="submit" type="submit" class="d-block" value="Save">
+
+                <div class="profile__info col">
+                    <textarea form="profile-info" name="full-name" class="profile__dev-name hidden-textarea"><?php echo $developer->getFullName() ?></textarea>
+                    <textarea form="profile-info" name="about" class="profile__about hidden-textarea"><?php echo $profile->getAbout() ?></textarea>
+
+                    <div class="profile__portfolio">
+
+                    </div>
+
+                    <input form="profile-info" name="submit" type="submit" class="d-block ml-2" value="Save">
+                </div>
             </div>
         </form>
     </div>

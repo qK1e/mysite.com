@@ -1,4 +1,4 @@
-<div class="search col">
+<div class="search col pl-0">
     <div class="search__search-icon">
         <i class="fas fa-search text-info"></i>
     </div>

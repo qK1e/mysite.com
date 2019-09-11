@@ -64,7 +64,7 @@ class SearchItemCollection implements Iterator
      * @return mixed Can return any type.
      * @since 5.0.0
      */
-    public function next(): ?SearchItem
+    public function next()
     {
         ++$this->position;
     }
@@ -101,5 +101,10 @@ class SearchItemCollection implements Iterator
     public function rewind()
     {
         $this->position = 0;
+    }
+
+    public function empty()
+    {
+        return empty($this->collection);
     }
 }

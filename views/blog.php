@@ -8,10 +8,10 @@
     <script src="https://kit.fontawesome.com/f8e07077e5.js"></script>
 </head>
 <body>
-    <header class="container-fluid hdr-clr">
+    <header class="container-fluid">
         <div class="row align-items-center">
             <!-- navigation block -->
-            <div class="navigation mr-2">
+            <div class="navigation col">
                 <?php
                 if(isset($nav_block))
                 {
@@ -23,7 +23,7 @@
             <?php if(isset($search))
                 include($search);
             ?>
-            <div class="col-3 justify-content-end">
+            <div class="col justify-content-end">
                 <?php //register sign-in buttons
                 if(isset($login_block))
                 {

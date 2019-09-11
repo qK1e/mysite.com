@@ -34,7 +34,7 @@
     </div>
 </header>
 <hr class="m-0">
-<!--навигационное меню и блок авторизации -->
+<!--navigation and authorization block -->
 
 
 <?php $profile = $developer->getProfile() ?>
