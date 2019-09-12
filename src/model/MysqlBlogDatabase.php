@@ -269,9 +269,12 @@ class MysqlBlogDatabase extends MysqlDatabase
         //search for developers
         $query = "
             SELECT developers.*, users.login
-            FROM developers JOIN users ON developers.user_id=users.id
+            FROM developers JOIN (users, profiles) 
+                ON developers.user_id=users.id 
+                    AND developers.profile_id=profiles.id
             WHERE concat(`first_name`, ' ', `second_name`) LIKE concat('%', :text, '%')
                 OR users.login LIKE concat('%', :text, '%')
+                OR profiles.about LIKE concat('%', :text, '%')
                 ";
 
         $statement = $this->DB->prepare($query);

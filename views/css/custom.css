@@ -32,9 +32,9 @@ body{
 
 .profile__avatar{
     display: block;
-    border: 1px solid black;
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    border-radius: 4px 4px 4px 4px;
     width: 100%;
-    background: url(https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif) no-repeat center;
 
 }
 
@@ -245,10 +245,61 @@ body{
     color: #17A2B8;
 }
 
+.search-result__dev-avatar{
+    width: 100%;
+}
+
 .search-result__message{
     font-size: 30px;
     text-align: center;
     padding-top: 3rem;
+}
+
+.dev-list{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.dev-list__dev{
+    border: 1px solid #e7ecf3;
+}
+
+.dev-list__info a{
+    text-decoration: none;
+    color: #494949;
+}
+
+.comment__reply-button{
+    border-radius: 4px;
+}
+
+
+.comment__content{
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    font-size: 25px;
+}
+
+.comment__login{
+    font-size: 20px;
+}
+
+.comment__reply-x{
+    display: block;
+    visibility: hidden;
+}
+
+.comment__x-text{
+    margin-right: 2px;
+    float: left;
+    color: #aaaaaa;
+}
+
+.comment__x{
+    float: left;
 }
 
 

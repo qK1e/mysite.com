@@ -40,9 +40,9 @@
     <section class="container">
         <div class="row">
             <!--Main content -->
-            <div class="col-9">
-                <div class="article pl-4 pt-4">
-                    <h3 class="text-center text-secondary mb-4"><?php echo $article->getHeader() ?></h3>
+            <div class="col">
+                <div class="article pt-4">
+                    <h3 class="text-center text-secondary mb-2"><?php echo $article->getHeader() ?></h3>
                     <p class="text-left "><?php echo $article->getContent()?></p>
                     <small class="text-right">Submitted by <i><?php echo $article->getAuthorLogin() ?></i> in <?php echo $article->getDate() ?></small>
                 </div>
@@ -52,7 +52,11 @@
         <!--comment section -->
         <div class="row justify-content-center mt-4">
             <!--comment form -->
-            <div class="col-12 d-flex w-75 mt-2" id="comment-form">
+            <div id="reply" class="comment__reply-x col-12">
+                <span class="comment__x-text">reply</span>
+                <span class="comment__x close">&times;</span>
+            </div>
+            <div class="col-12 d-flex w-75" id="comment-form">
                 <form class="row w-100 justify-content-center comment-form">
                     <input id="blog-id" type="hidden" value="<?php echo $article->getId();?>">
                     <input id="answer-to" name="answer-to" type="hidden">
@@ -64,11 +68,8 @@
 
             <!--comment container -->
             <div id="comment-section" class="col-12 px-0">
-
             </div>
             <!--comment container -->
-
-
         </div>
         <!--comment section -->
     </section>

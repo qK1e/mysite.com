@@ -123,7 +123,7 @@ class MysqlUsersDatabase extends MysqlDatabase
         }
     }
 
-    private function insertUser($login, $password, $role): bool
+    private function insertUser($login, $password, $role=ROLE_READER): bool
     {
         try
         {
@@ -145,7 +145,7 @@ class MysqlUsersDatabase extends MysqlDatabase
     }
 
     //insert into users table. if user is a developer -> insert into developers table and create profile then set profile id to devepers table
-    public function registerUser($login, $password, $role, $first_name=null, $second_name=null): bool
+    public function registerUser($login, $password, $role = ROLE_READER, $first_name=null, $second_name=null): bool
     {
         try
         {

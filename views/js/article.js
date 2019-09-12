@@ -1,6 +1,12 @@
 function init() {
     $("#send-comment-btn").click(sendComment);
-
+    $("#comment-textarea").on("keypress", function (e) {
+        if(e.ctrlKey && e.which === 13)
+        {
+            sendComment();
+        }
+    });
+    $("#reply").click(dontReply);
     refreshCommentSection();
     setInterval(refreshCommentSection, 1000*60);
 }
@@ -30,12 +36,19 @@ function deleteComment(event) {
     //refresh comment section
 }
 
+function dontReply() {
+    $("#reply").css('visibility', 'hidden');
+    $(document).find("#answer-to").val(0);
+}
+
 function resetCommentForm(event) {
-    $(this).find("#answer-to").val(0);
-    $(this).find("#comment-textarea").val("");
+    $(document).find("#answer-to").val(0);
+    $(document).find("#comment-textarea").val("");
 }
 
 function reply() {
+
+    $("#reply").css('visibility', 'visible');
     $("HTML, BODY").animate({
         scrollTop: $("#comment-form").offset().top - 500
     },
@@ -43,8 +56,8 @@ function reply() {
 
     $("#comment-textarea").focus();
 
-    let comment_id = $(this).find(".comment-id").html();
-    let login = $(this).find(".login").html();
+    let comment_id = $(this).parents(".comment").find(".comment-id").html();
+    let login = $(this).parents(".comment").find(".login").html();
     $("#answer-to").val(comment_id);
     $("#comment-textarea").val(login + ", ");
 }
@@ -66,7 +79,8 @@ function sendComment()
             type: "POST",
             dataType: "json",
             success: function (json) {
-                let text = $("#comment-textarea").val("");
+                $("#comment-textarea").val("");
+                $("#reply").css('visibility', 'hidden');
                 refreshCommentSection();
             },
             error: function () {
@@ -88,7 +102,7 @@ function refreshCommentSection()
             dataType: "html",
             success: function (html) {
                 $("#comment-section").html(html);
-                $(".comment").click(reply);
+                $(".comment__reply-button").click(reply);
                 $(".delete-comment").click(deleteComment);
             }
         });

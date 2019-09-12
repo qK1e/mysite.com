@@ -41,7 +41,7 @@
 <!-- Profile -->
 <div class="profile container mt-3">
     <div class="profile__header row w-100 justify-content-center">
-        <div class="profile__image-container  col-sm-12 col-lg-3 mb-3">
+        <div class="profile__image-container col-sm-12 col-lg-3 mb-3">
             <img src="<?php echo $profile->getPhoto()?>" class="profile__avatar" id="photo" alt="Pretty face:)" >
         </div>
         <div class="profile__info col">

@@ -67,8 +67,8 @@
                     if($item->getType() === 'dev'){?>
                       <div class="search-result__item-container col mt-2 py-2">
                           <div class="row">
-                              <div class="search-result__dev-avatar col-2">
-                                  <img class="img-float float-right img-thumbnail dev-preview-img" src="<?php echo $item->getObject()->getProfile()->getPhoto()?>">
+                              <div class="col-3">
+                                  <img class="search-result__dev-avatar img-thumbnail" src="<?php echo $item->getObject()->getProfile()->getPhoto()?>">
                               </div>
                               <div class="search-result__dev-info col">
                                   <a href="/developer?id=<?php echo $item->getObject()->getId()?>">

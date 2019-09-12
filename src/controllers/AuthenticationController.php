@@ -33,7 +33,7 @@ class AuthenticationController
     {
         $role = strtolower($request->getArgument("role"));
 
-        if(isset($role))
+        if(isset($role) && $role!="")
         {
             SecuritySystem::register($request->getArgument("username"), $request->getArgument("password"), $role);
         }

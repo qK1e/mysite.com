@@ -67,28 +67,26 @@
         <!--filter section -->
 
         <!-- developers section -->
-        <div class="row">
-            <div class="row col container-fluid flex-column">
+        <div class="dev-list row container flex-column">
+            <?php
+            if(empty($devs))
+            {?>
+                <h1 class="text-warning col ml-5 pl-5">No developers found:(</h1>
                 <?php
-                if(empty($devs))
-                {?>
-                    <h1 class="text-warning col ml-5 pl-5">No developers found:(</h1>
-                    <?php
-                }
-                foreach ($devs as $dev){?>
-                <div class="dev-preview col-12 row p-3 mt-2 border-top border-bottom">
-                    <div class="col-3">
-                        <img class="img-float float-right img-thumbnail dev-preview-img" src="<?php echo $dev->getProfile()->getPhoto()?>">
-                    </div>
-                    <div class="col-9">
-                        <a href="/developer?id=<?php echo $dev->getId()?>">
-                            <h3><?php echo $dev->getFullName()?></h3>
-                        </a>
-                        <p class="lead"><?php echo $dev->getProfile()->getAbout()?></p>
-                    </div>
+            }
+            foreach ($devs as $dev){?>
+            <div class="dev-list__dev row p-3 mt-2">
+                <div class="col-3">
+                    <img class="dev-list__photo img-thumbnail" src="<?php echo $dev->getProfile()->getPhoto()?>">
                 </div>
-                <?php }?>
+                <div class="dev-list__info col-9">
+                    <a href="/developer?id=<?php echo $dev->getId()?>">
+                        <h3><?php echo $dev->getFullName()?></h3>
+                    </a>
+                    <p class="lead"><?php echo $dev->getProfile()->getAbout()?></p>
+                </div>
             </div>
+            <?php }?>
         </div>
         <!-- developers section -->
 

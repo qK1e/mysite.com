@@ -34,8 +34,7 @@ class MysqlDevelopersDatabase extends MysqlDatabase
     }
 
 
-
-    private function filterToWhereQueryPart(DeveloperFilter $filter)
+    private function filterToWhereQueryPartDevsOnly(DeveloperFilter $filter)
     {
         $where = "";
 
@@ -98,13 +97,15 @@ class MysqlDevelopersDatabase extends MysqlDatabase
     public function getPageOfDevelopers($page=1, $page_size=5, DeveloperFilter $filter=null)
     {
         $from = ($page-1)*$page_size;
-        $where = $this->filterToWhereQueryPart($filter);
+        $where = $this->filterToWhereQueryPartDevsOnly($filter);
 
         $query = "
             SELECT *
-            FROM developers 
+            FROM developers INNER JOIN users
+                ON (developers.user_id=users.id 
+                    AND (users.role NOT LIKE ".$this->DB->quote(ROLE_READER).") )
             ".$where."
-            ORDER BY `id`
+            ORDER BY users.id
             LIMIT ".$from.", ".$page_size."
         ";
 
