@@ -26,9 +26,9 @@ class AdminController
 
             //create user filter
             $filter = new UserFilter();
-            if($role = $request->getArgument("role"))
+            if($filter_role = $request->getArgument("role"))
             {
-                $filter->setRole();
+                $filter->setRole($filter_role);
             }
             if($username = $request->getArgument("username"))
             {

@@ -297,9 +297,8 @@ class MysqlUsersDatabase extends MysqlDatabase
         {
             $query = "
             SELECT users.*, developers.first_name as `first_name`, developers.second_name as `second_name`
-            FROM users JOIN developers ON(developers.user_id = users.id)
-            ".$this->whereQueryFromUsersFilter($filter)."
-            ";
+            FROM users JOIN developers ON (developers.user_id = users.id)
+            ".$this->whereQueryFromUsersFilter($filter);
 
             $statement = $this->DB->prepare($query);
             $statement->setFetchMode(PDO::FETCH_CLASS, User::class);
@@ -324,7 +323,6 @@ class MysqlUsersDatabase extends MysqlDatabase
         }
         catch (PDOException $e)
         {
-            echo $e->getMessage();
             return null;
         }
 
@@ -341,9 +339,9 @@ class MysqlUsersDatabase extends MysqlDatabase
             $role = $filter->getRole();
             if($role)
             {
-                if($role != "any");
+                if($role !== "any")
                 {
-                    $part = "`role` LIKE $role";
+                    $part = "`role` LIKE ".$this->DB->quote($role);
                     array_push($parts, $part);
                 }
             }

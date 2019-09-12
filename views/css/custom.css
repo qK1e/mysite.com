@@ -172,6 +172,7 @@ body{
 .search__form{
     margin-bottom: 0;
     width: auto;
+    height: 2rem;
 }
 
 .search__input{
@@ -273,6 +274,8 @@ body{
 
 .comment__reply-button{
     border-radius: 4px;
+    padding-top: 5px;!important;
+    padding-bottom: 5px;!important;
 }
 
 

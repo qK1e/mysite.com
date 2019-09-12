@@ -26,7 +26,7 @@
                     </div>
                 <?php }?>
                 <p class="comment__content" style="font-family: "PT Sans", SansSerif "><?php echo $comment->getContent() ?></p>
-                <button class="comment__reply-button btn-info mb-1 ">reply</button>
+                <button class="comment__reply-button btn btn-info mb-2 ">reply</button>
             </div>
         </div>
         <?php } ?>
