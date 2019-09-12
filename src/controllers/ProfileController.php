@@ -78,8 +78,11 @@ class ProfileController
             if($this->validatePhoto($photo))
             {
                 $file_id = LocalStorage::saveImage($photo);
-                $DB = MysqlDevelopersDatabase::getInstance();
-                $DB->updateProfilePhoto($profile_id, $file_id);
+                if($file_id)
+                {
+                    $DB = MysqlDevelopersDatabase::getInstance();
+                    $DB->updateProfilePhoto($profile_id, $file_id);
+                }
             }
         }
 

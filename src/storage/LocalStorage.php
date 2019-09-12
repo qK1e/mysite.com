@@ -13,8 +13,14 @@ class LocalStorage
         $file_id = self::generateUniqueId( $file["name"] );
         self::checkPath();
 
-        move_uploaded_file($file["tmp_name"], $destination."/$file_id");
-        return $file_id;
+        if(move_uploaded_file($file["tmp_name"], $destination."/$file_id"))
+        {
+            return $file_id;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public static function getFilePath($file_id)
