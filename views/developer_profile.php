@@ -38,18 +38,19 @@
 
 
 <?php $profile = $developer->getProfile() ?>
-<div class="container-flex">
-    <div class="profile-content row mt-3">
-        <div class="image-container d-flex align-items-center justify-content-center col-3">
-            <img src="<?php echo $profile->getPhoto()?>" class="avatar" id="photo" alt="Pretty face:)" >
+<!-- Profile -->
+<div class="profile container mt-3">
+    <div class="profile__header row w-100 justify-content-center">
+        <div class="profile__image-container  col-sm-12 col-lg-3 mb-3">
+            <img src="<?php echo $profile->getPhoto()?>" class="profile__avatar" id="photo" alt="Pretty face:)" >
         </div>
-        <div class="about col">
-            <h1 class="dev-name"><?php echo $developer->getFullName() ?></h1>
-            <p id="about"><?php echo $profile->getAbout() ?></p>
+        <div class="profile__info col">
+            <h1 class="profile__dev-name"><?php echo $developer->getFullName() ?></h1>
+            <p id="about" class="profile__about"><?php echo $profile->getAbout() ?></p>
         </div>
     </div>
 </div>
-
+<!-- Profile -->
 
 
 
