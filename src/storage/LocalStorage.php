@@ -37,9 +37,9 @@ class LocalStorage
 
     private static function checkPath()
     {
-         if(!file_exists(self::$path))
+         if(!file_exists(ROOTDIR.self::$path))
          {
-             mkdir(self::$path, 0777, true);
+             mkdir(ROOTDIR.self::$path, 0777, true);
          }
     }
 
