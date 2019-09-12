@@ -13,6 +13,8 @@
         <div class="row align-items-center">
             <div class="col">
                 <?php //navigation block
+                use qk1e\mysite\storage\LocalStorage;
+
                 if(isset($nav_block))
                 {
                     include($nav_block);
@@ -74,10 +76,16 @@
                 <h1 class="text-warning col ml-5 pl-5">No developers found:(</h1>
                 <?php
             }
-            foreach ($devs as $dev){?>
+            foreach ($devs as $dev){
+                $photo = $dev->getProfile()->getPhoto();
+                if(!isset($photo))
+                {
+                    $photo = LocalStorage::getDefaultPhoto();
+                }
+                ?>
             <div class="dev-list__dev row p-3 mt-2">
                 <div class="col-3">
-                    <img class="dev-list__photo img-thumbnail" src="<?php echo $dev->getProfile()->getPhoto()?>">
+                    <img class="dev-list__photo img-thumbnail" src="<?php echo $photo?>">
                 </div>
                 <div class="dev-list__info col-9">
                     <a href="/developer?id=<?php echo $dev->getId()?>">

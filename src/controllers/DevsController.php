@@ -28,7 +28,6 @@ class DevsController
         }
         $filter->setVisibility(true);
 
-
         $page = $request->getArgument("page");
         if(!isset($page) || $page == 0)
         {
@@ -39,8 +38,6 @@ class DevsController
         $args["devs"] = $this->devs;
 
         $args["user_role"] = SecuritySystem::currentUserRole();
-
-
 
         $view = new View();
         $view->getPage("devs", $args);
