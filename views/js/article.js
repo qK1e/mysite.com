@@ -1,7 +1,7 @@
 function init() {
     $("#send-comment-btn").click(sendComment);
     $("#comment-textarea").on("keypress", function (e) {
-        if(e.ctrlKey && e.which === 13)
+        if(e.ctrlKey && (e.which === 13 || e.which === 10 ))
         {
             sendComment();
         }
