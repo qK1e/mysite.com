@@ -305,5 +305,31 @@ body{
     float: left;
 }
 
+.blog{
+    display: flex;
+    flex-direction: column;
+}
+
+.blog__article{
+    padding-bottom: 1rem;
+}
+
+.blog__article-header{
+
+}
+
+.blog__header-text{
+    margin-left: 2rem;
+}
+
+.blog__content{
+    margin-left: 2rem;
+    margin-top: 2rem;
+}
+
+.blog__close{
+    justify-self: end;
+}
+
 
 

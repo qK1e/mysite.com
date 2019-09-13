@@ -50,25 +50,26 @@
                     }
                     ?>
                 </div>
+
                 <!-- articles -->
-                <div class="row m-2">
+                <div class="blog row m-2">
                     <?php
                     if(isset($recent_articles)) {
                         foreach ($recent_articles as $article) {
                             ?>
                             <!--article -->
-                            <div class="blog-article col-12 m-1 py-3 border border-light shadow-sm row" id="article-<?php echo $article->getId()?>">
+                            <div class="blog__article blog-article container border border-light shadow-sm" id="article-<?php echo $article->getId()?>">
                                 <span class="article-id" style="display: none"><?php echo $article->getId()?></span>
-                                <div class="col-12 row article-header border-bottom">
-                                    <a class="text-capitalize ml-2 text-secondary col" href="/blog/article?id=<?php echo $article->getId()?>">
-                                        <h3><?php echo $article->getHeader() ?></h3>
+                                <div class="blog__article-header border-bottom row">
+                                    <a class="text-capitalize text-secondary col" href="/blog/article?id=<?php echo $article->getId()?>">
+                                        <h3 class="blog__header-text"><?php echo $article->getHeader() ?></h3>
                                     </a>
                                     <?php if($user_role == ROLE_ADMIN){ ?>
-                                        <span class="close col-1 d-flex justify-content-end delete-blog">x</span>
+                                        <span class="blog__close close delete-blog col-1">x</span>
                                     <?php } ?>
                                 </div>
 
-                                <p class="article-content ml-2 col-12 lead"><?php echo $article->getContent() ?></p>
+                                <div class="blog__content article-content"><?php echo $article->getContent() ?></div>
                                 <small class="article-author col-12 mt-0 ml-2">Submitted by <?php echo "<i>".$article->getAuthorLogin()."</i>"?> in <?php echo $article->getDate() ?></small>
                             </div>
                             <!--article -->
