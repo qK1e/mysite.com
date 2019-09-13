@@ -50,6 +50,13 @@
                             <label for="password">Your password:</label>
                             <input class="pl-1" name="password" type="password" placeholder="password"><br>
                         </div>
+
+                        <?php if($error){?>
+                            <div class="login__error">
+                                <p class="text-danger"><?php echo $error?></p>
+                            </div>
+                        <?php }?>
+
                         <input class="btn btn-primary" name="sign-in" type="submit" value="Login">
                     </form>
                 </div>

@@ -17,15 +17,23 @@ class AuthenticationController
 
         if(SecuritySystem::authenticate($username, $password))
         {
+            //redirect to main page or previous(if possible)
             header("Location: /");
         }
         else
         {
-            echo "Don't try to fool me, pal! -_-
-            <br>
-            <a href='/'>Main page</a><br>
-            <a href='/login'>Try again</a>
-            ";
+            //refresh login page with message
+            $args = array();
+            $user_role = ROLE_UNAUTHORIZED;
+            $args["user_role"] = $user_role;
+
+            $message = "Wrong login or password. Please try again!";
+            $args["error"] = $message;
+
+            $view = new View();
+            $view->getPage("login", $args);
+
+
         }
     }
 
