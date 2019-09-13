@@ -60,7 +60,7 @@
                             <div class="blog-article col-12 m-1 py-3 border border-light shadow-sm row" id="article-<?php echo $article->getId()?>">
                                 <span class="article-id" style="display: none"><?php echo $article->getId()?></span>
                                 <div class="col-12 row article-header border-bottom">
-                                    <a class="text-capitalize ml-2 text-secondary col" href="blog/article?id=<?php echo $article->getId()?>">
+                                    <a class="text-capitalize ml-2 text-secondary col" href="/blog/article?id=<?php echo $article->getId()?>">
                                         <h3><?php echo $article->getHeader() ?></h3>
                                     </a>
                                     <?php if($user_role == ROLE_ADMIN){ ?>

@@ -49,4 +49,9 @@ class ConfigurableRouter
             $controller->$method($request);
         }
     }
+
+    public function redirect(string $url)
+    {
+        header("Location: ".$url);
+    }
 }

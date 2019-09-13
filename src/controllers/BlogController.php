@@ -46,8 +46,12 @@ class BlogController
 
     public function newBlog(Request $request)
     {
+        $args = array();
+        $user_role = SecuritySystem::currentUserRole();
+        $args["user_role"] = $user_role;
+
         $view = new View();
-        $view->getPage("new_blog", null);
+        $view->getPage("new_blog", $args);
     }
 
     public function submitBlog(Request $request)
@@ -68,7 +72,7 @@ class BlogController
         $DB->addArticle($article);
 
         $router = ConfigurableRouter::getInstance();
-        $router->route("/blog", "GET", []);
+        $router->redirect("/blog");
     }
 
     public function getArticle(Request $request)
