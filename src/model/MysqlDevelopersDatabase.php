@@ -100,7 +100,7 @@ class MysqlDevelopersDatabase extends MysqlDatabase
         $where = $this->filterToWhereQueryPartDevsOnly($filter);
 
         $query = "
-            SELECT *
+            SELECT developers.*, users.role as `role`, users.login as `login`
             FROM developers INNER JOIN users
                 ON (developers.user_id=users.id 
                     AND (users.role NOT LIKE ".$this->DB->quote(ROLE_READER).") )

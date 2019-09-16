@@ -56,7 +56,15 @@ class ProfileController
 
         $DB = MysqlDevelopersDatabase::getInstance();
         $developer =  $DB->getDeveloperById($id);
-        $args["developer"] = $developer;
+        if($developer)
+        {
+            $args["developer"] = $developer;
+        }
+        else
+        {
+            $error = "Oops! No such developer in database:( Please contact administrator for solving this problem!";
+            $args["error"] = $error;
+        }
 
         $user_role = SecuritySystem::currentUserRole();
         $args["user_role"] = $user_role;

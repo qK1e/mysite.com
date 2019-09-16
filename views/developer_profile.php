@@ -36,21 +36,29 @@
 <hr class="m-0">
 <!--navigation and authorization block -->
 
-
-<?php $profile = $developer->getProfile() ?>
-<!-- Profile -->
-<div class="profile container mt-3">
-    <div class="profile__header row w-100 justify-content-center">
-        <div class="profile__image-container col-sm-12 col-lg-3 mb-3">
-            <img src="<?php echo $profile->getPhoto()?>" class="profile__avatar" id="photo" alt="Pretty face:)" >
-        </div>
-        <div class="profile__info col">
-            <h1 class="profile__dev-name"><?php echo $developer->getFullName() ?></h1>
-            <p id="about" class="profile__about"><?php echo $profile->getAbout() ?></p>
+<?php if(!isset($error)){
+    $profile = $developer->getProfile(); ?>
+    <!-- Profile -->
+    <div class="profile container mt-3">
+        <div class="profile__header row w-100 justify-content-center">
+            <div class="profile__image-container col-sm-12 col-lg-3 mb-3">
+                <img src="<?php echo $profile->getPhoto()?>" class="profile__avatar" id="photo" alt="Pretty face:)" >
+            </div>
+            <div class="profile__info col">
+                <h1 class="profile__dev-name"><?php echo $developer->getFullName() ?></h1>
+                <p id="about" class="profile__about"><?php echo $profile->getAbout() ?></p>
+            </div>
         </div>
     </div>
-</div>
-<!-- Profile -->
+    <!-- Profile -->
+<?php }
+else{ ?>
+    <div class="container">
+        <h1 class="text-warning mt-4 text-center"><?php echo $error?></h1>
+    </div>
+<?php } ?>
+
+
 
 
 

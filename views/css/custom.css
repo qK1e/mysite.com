@@ -265,6 +265,7 @@ body{
 
 .dev-list__dev{
     border: 1px solid #e7ecf3;
+    flex-wrap: nowrap;
 }
 
 .dev-list__info a{
@@ -273,10 +274,10 @@ body{
 }
 
 .dev-list__photo-container{
-    height: 100%;
 }
 
 .dev-list__photo{
+    width: 100%;
     max-width: 100%;
     max-height: 100%;
 }
