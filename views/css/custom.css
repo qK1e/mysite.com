@@ -1,6 +1,7 @@
 
 body{
     font-family: "PT Sans", SansSerif, sans-serif;!important;
+    overflow: hidden;
 }
 
 .dev-preview-img{
