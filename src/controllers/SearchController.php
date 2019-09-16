@@ -23,6 +23,7 @@ class SearchController
         $search_query = new SearchQuery();
         $search_text = $request->getArgument("search-text");
         $search_query->setSearchText($search_text);
+        
         //search for elements, get SearchItem's collection
         $DB = MysqlDatabase::getInstance();
         $search_result_collection = $DB->search($search_query);

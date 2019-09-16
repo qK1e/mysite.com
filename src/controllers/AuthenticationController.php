@@ -18,7 +18,8 @@ class AuthenticationController
         if(SecuritySystem::authenticate($username, $password))
         {
             //redirect to main page or previous(if possible)
-            header("Location: /");
+            $router = ConfigurableRouter::getInstance();
+            $router->redirect("/");
         }
         else
         {

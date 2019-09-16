@@ -25,7 +25,8 @@ class ProfileController
         }
         elseif($user_role == ROLE_READER)
         {
-            header("HTTP/1.0 404 Not Found");
+            $router = ConfigurableRouter::getInstance();
+            $router->redirect("404");
         }
         else
         {
