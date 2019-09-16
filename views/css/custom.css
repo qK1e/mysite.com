@@ -311,6 +311,7 @@ body{
 }
 
 .blog__article{
+    padding-top: 1rem;
     padding-bottom: 1rem;
 }
 
@@ -329,6 +330,10 @@ body{
 
 .blog__close{
     justify-self: end;
+}
+
+.ck-content{
+    height: 30rem;
 }
 
 

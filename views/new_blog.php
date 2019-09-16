@@ -64,7 +64,9 @@
 
     <script>
         ClassicEditor
-            .create( document.querySelector( '#editor' ) )
+            .create( document.querySelector( '#editor' ), {
+                removePlugins: ["Image", "EasyImage", "ImageCaption", "ImageStyle", "ImageUpload", "ImageToolbar", "MediaEmbed"]
+            } )
             .catch( error => {
                 console.error( error );
             } );
