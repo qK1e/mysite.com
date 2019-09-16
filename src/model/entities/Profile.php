@@ -4,7 +4,7 @@
 namespace qk1e\mysite\model\entities;
 
 
-use qk1e\mysite\model\MysqlDevelopersDatabase;
+use qk1e\mysite\model\MysqlDatabase;
 use qk1e\mysite\storage\LocalStorage;
 
 class Profile
@@ -43,7 +43,7 @@ class Profile
             $this->photo = $photo;
         }
 
-        $this->DB = MysqlDevelopersDatabase::getInstance();
+        $this->DB = MysqlDatabase::getInstance();
     }
 
     /**

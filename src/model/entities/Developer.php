@@ -4,8 +4,7 @@
 namespace qk1e\mysite\model\entities;
 
 
-use qk1e\mysite\model\MysqlDevelopersDatabase;
-use qk1e\mysite\model\MysqlUsersDatabase;
+use qk1e\mysite\model\MysqlDatabase;
 
 class Developer extends User
 {
@@ -30,7 +29,7 @@ class Developer extends User
         if($user != null)
         {
             parent::__construct($user);
-            $DB = MysqlUsersDatabase::getInstance();
+            $DB = MysqlDatabase::getInstance();
             $developer = $DB->getDeveloperByUserId($user->getUserId());
 
             if(!$developer)
@@ -60,7 +59,7 @@ class Developer extends User
 
     private function setDatabase()
     {
-        $this->DB = MysqlDevelopersDatabase::getInstance();
+        $this->DB = MysqlDatabase::getInstance();
     }
 
     /**
@@ -119,7 +118,7 @@ class Developer extends User
 
     public function getProfile()
     {
-        $DB = MysqlUsersDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
         $profile = $DB->getProfileByProfileId($this->profile_id);
         return $profile;
     }

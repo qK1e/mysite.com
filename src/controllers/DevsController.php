@@ -4,7 +4,7 @@
 namespace qk1e\mysite\controllers;
 
 use qk1e\mysite\model\entities\DeveloperFilter;
-use qk1e\mysite\model\MysqlDevelopersDatabase;
+use qk1e\mysite\model\MysqlDatabase;
 use qk1e\mysite\Request;
 use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\view\View;
@@ -45,7 +45,7 @@ class DevsController
 
     private function getDevs($filter, $page)
     {
-        $DB = MysqlDevelopersDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
         $this->devs = $DB->getPageOfDevelopers($page, 5, $filter);
     }
 }

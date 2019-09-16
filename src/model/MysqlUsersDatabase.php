@@ -11,28 +11,8 @@ use qk1e\mysite\model\entities\User;
 use qk1e\mysite\model\entities\UserFilter;
 use qk1e\mysite\storage\LocalStorage;
 
-class MysqlUsersDatabase extends MysqlDatabase
+trait MysqlUsersDatabase
 {
-    private static $instance;
-
-    private function __construct()
-    {
-        parent::__construct();
-    }
-
-    public static function getInstance(): MysqlUsersDatabase
-    {
-        if(MysqlUsersDatabase::$instance)
-        {
-            return MysqlUsersDatabase::$instance;
-        }
-        else
-        {
-            MysqlUsersDatabase::$instance = new MysqlUsersDatabase();
-            return MysqlUsersDatabase::$instance;
-        }
-    }
-
 
     public function idByLogin($login): int
     {

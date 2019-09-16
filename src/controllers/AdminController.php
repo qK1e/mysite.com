@@ -5,8 +5,7 @@ namespace qk1e\mysite\controllers;
 
 
 use qk1e\mysite\model\entities\UserFilter;
-use qk1e\mysite\model\MysqlDevelopersDatabase;
-use qk1e\mysite\model\MysqlUsersDatabase;
+use qk1e\mysite\model\MysqlDatabase;
 use qk1e\mysite\Request;
 use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\view\View;
@@ -44,7 +43,7 @@ class AdminController
             }
 
             //get users
-            $DB = MysqlUsersDatabase::getInstance();
+            $DB = MysqlDatabase::getInstance();
             $users = $DB->getUsers($filter);
             $args["users"] = $users;
 
@@ -123,7 +122,7 @@ class AdminController
         if($validated)
         {
             //update data in db
-            $DB = MysqlUsersDatabase::getInstance();
+            $DB = MysqlDatabase::getInstance();
             if( !($DB->updateUserRole($id, $role)) )
             {
                 $this->error("Database error");
@@ -147,7 +146,7 @@ class AdminController
         else
         {
             $id = $request->getArgument("id");
-            $DB = MysqlUsersDatabase::getInstance();
+            $DB = MysqlDatabase::getInstance();
 
             $DB->deleteUser($id);
 
@@ -165,7 +164,7 @@ class AdminController
         else
         {
             $id = $request->getArgument("id");
-            $DB = MysqlDevelopersDatabase::getInstance();
+            $DB = MysqlDatabase::getInstance();
 
             if( $DB->changeVisibility($id) )
             {

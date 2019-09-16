@@ -1,9 +1,6 @@
 <?php
 
 namespace qk1e\mysite\model\entities;
-use PDO;
-use PDOException;
-use qk1e\mysite\model\MysqlUsersDatabase;
 
 class User
 {

@@ -11,29 +11,8 @@ use qk1e\mysite\model\entities\Developer;
 use qk1e\mysite\search\SearchItemCollection;
 use qk1e\mysite\search\SearchQuery;
 
-class MysqlBlogDatabase extends MysqlDatabase
+trait MysqlBlogDatabase
 {
-    private static $instance;
-
-
-    private function __construct()
-    {
-        parent::__construct();
-    }
-
-    public static function getInstance(): MysqlBlogDatabase
-    {
-        if(MysqlBlogDatabase::$instance)
-        {
-            return MysqlBlogDatabase::$instance;
-        }
-        else
-        {
-            MysqlBlogDatabase::$instance = new MysqlBlogDatabase();
-            return MysqlBlogDatabase::$instance;
-        }
-    }
-
     public function getPageOfArticles($page, $page_size): array
     {
         $articles = [];

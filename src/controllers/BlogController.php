@@ -4,8 +4,7 @@
 namespace qk1e\mysite\controllers;
 
 use qk1e\mysite\model\entities\Article;
-use qk1e\mysite\model\entities\User;
-use qk1e\mysite\model\MysqlBlogDatabase;
+use qk1e\mysite\model\MysqlDatabase;
 use qk1e\mysite\routing\ConfigurableRouter;
 use qk1e\mysite\security\SecuritySystem;
 use qk1e\mysite\view\View;
@@ -67,7 +66,7 @@ class BlogController
         $article->setDate(date("j-n-Y"));
         $article->setVisibility(true);
 
-        $DB = MysqlBlogDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
 
         $DB->addArticle($article);
 
@@ -82,7 +81,7 @@ class BlogController
         $id = $request->getArgument("id");
         $args = [];
 
-        $DB = MysqlBlogDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
         $article = $DB->getArticleById($id);
         $args["article"] = $article;
         $args["user_role"] = $role;
@@ -105,7 +104,7 @@ class BlogController
         }
         else
         {
-            $DB = MysqlBlogDatabase::getInstance();
+            $DB = MysqlDatabase::getInstance();
             if($DB->postComment($blog_id, $user->getUserId(), $text, $answer_to))
             {
                echo json_encode(array('success' => true));
@@ -124,7 +123,7 @@ class BlogController
     {
         $blog_id = $request->getArgument("id");
 
-        $DB = MysqlBlogDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
         $comments = $DB->getComments($blog_id);
 
         $args = array();
@@ -152,7 +151,7 @@ class BlogController
         {
             $id = $request->getArgument("id");
 
-            $DB = MysqlBlogDatabase::getInstance();
+            $DB = MysqlDatabase::getInstance();
             if($DB->deleteComment($id))
             {
                 echo json_encode(array('success' => true, 'id' => $id));
@@ -176,7 +175,7 @@ class BlogController
         {
             $id = $request->getArgument("id");
 
-            $DB = MysqlBlogDatabase::getInstance();
+            $DB = MysqlDatabase::getInstance();
             if($DB->deleteArticle($id))
             {
                 echo json_encode(array('success' => true, 'id' => $id));
@@ -192,7 +191,7 @@ class BlogController
 
     private function getArticles($page)
     {
-        $DB = MysqlBlogDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
         $this->recent_articles = $DB->getPageOfArticles($page, $this->page_size);
     }
 }

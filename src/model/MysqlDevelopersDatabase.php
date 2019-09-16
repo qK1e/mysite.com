@@ -10,30 +10,8 @@ use qk1e\mysite\model\entities\Developer;
 use qk1e\mysite\model\entities\DeveloperFilter;
 use qk1e\mysite\storage\LocalStorage;
 
-class MysqlDevelopersDatabase extends MysqlDatabase
+trait MysqlDevelopersDatabase
 {
-    private static $instance;
-
-
-    private function __construct()
-    {
-        parent::__construct();
-    }
-
-    public static function getInstance(): MysqlDevelopersDatabase
-    {
-        if(MysqlDevelopersDatabase::$instance)
-        {
-            return MysqlDevelopersDatabase::$instance;
-        }
-        else
-        {
-            MysqlDevelopersDatabase::$instance = new MysqlDevelopersDatabase();
-            return MysqlDevelopersDatabase::$instance;
-        }
-    }
-
-
     private function filterToWhereQueryPartDevsOnly(DeveloperFilter $filter)
     {
         $where = "";

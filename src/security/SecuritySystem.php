@@ -2,7 +2,7 @@
 namespace qk1e\mysite\security;
 
 use qk1e\mysite\model\entities\User;
-use qk1e\mysite\model\MysqlUsersDatabase as MysqlUsersDatabase;
+use qk1e\mysite\model\MysqlDatabase;
 
 class SecuritySystem
 {
@@ -21,7 +21,7 @@ class SecuritySystem
 
     private static function verifyUser($login, $password)
     {
-        $DB = MysqlUsersDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
         $hash = $DB->getPasswordByLogin($login);
         return password_verify($password, $hash);
 
@@ -35,7 +35,7 @@ class SecuritySystem
 
     public static function register($login, $password, $role=ROLE_READER, $first_name=null, $second_name=null)
     {
-        $DB = MysqlUsersDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
 
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -59,7 +59,7 @@ class SecuritySystem
 
     public static function currentUserRole()
     {
-        $DB = MysqlUsersDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
         if(isset($_SESSION["user"]))
         {
             return $DB->getRole($_SESSION["user"]);
@@ -87,7 +87,7 @@ class SecuritySystem
         $login = SecuritySystem::currentUserLogin();
         if($login)
         {
-            $DB = MysqlUsersDatabase::getInstance();
+            $DB = MysqlDatabase::getInstance();
 
             $user = $DB->getUserByLogin($login);
 

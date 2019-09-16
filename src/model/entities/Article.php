@@ -2,8 +2,7 @@
 
 namespace qk1e\mysite\model\entities;
 
-use qk1e\mysite\model\MysqlBlogDatabase;
-use qk1e\mysite\model\MysqlUsersDatabase;
+use qk1e\mysite\model\MysqlDatabase;
 
 class Article
 {
@@ -75,7 +74,7 @@ class Article
 
     public function getAuthorLogin()
     {
-        $DB = MysqlUsersDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
         return $DB->loginById($this->author_id);
     }
 
@@ -108,7 +107,7 @@ class Article
         }
         else
         {
-            $DB = MysqlBlogDatabase::getInstance();
+            $DB = MysqlDatabase::getInstance();
             return $DB->getIdByHeader($this->header);
         }
     }

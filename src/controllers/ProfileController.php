@@ -2,10 +2,8 @@
 
 namespace qk1e\mysite\controllers;
 
-use qk1e\mysite\controllers\Controller;
 use qk1e\mysite\model\entities\Developer;
-use qk1e\mysite\model\MysqlDevelopersDatabase;
-use qk1e\mysite\model\MysqlUsersDatabase;
+use qk1e\mysite\model\MysqlDatabase;
 use qk1e\mysite\Request;
 use qk1e\mysite\routing\ConfigurableRouter;
 use qk1e\mysite\security\SecuritySystem;
@@ -54,7 +52,7 @@ class ProfileController
 
         $id = $request->getArgument("id");
 
-        $DB = MysqlDevelopersDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
         $developer =  $DB->getDeveloperById($id);
         if($developer)
         {
@@ -88,14 +86,14 @@ class ProfileController
                 $file_id = LocalStorage::saveImage($photo);
                 if($file_id)
                 {
-                    $DB = MysqlDevelopersDatabase::getInstance();
+                    $DB = MysqlDatabase::getInstance();
                     $DB->updateProfilePhoto($profile_id, $file_id);
                 }
             }
         }
 
 
-        $DB = MysqlDevelopersDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
         $DB->updateProfile($profile_id, $about);
 
         $ex_full_name = explode(" ", $full_name, 2);

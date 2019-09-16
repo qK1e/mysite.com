@@ -4,7 +4,7 @@
 namespace qk1e\mysite\controllers;
 
 
-use qk1e\mysite\model\MysqlBlogDatabase;
+use qk1e\mysite\model\MysqlDatabase;
 use qk1e\mysite\Request;
 use qk1e\mysite\search\SearchQuery;
 use qk1e\mysite\security\SecuritySystem;
@@ -24,7 +24,7 @@ class SearchController
         $search_text = $request->getArgument("search-text");
         $search_query->setSearchText($search_text);
         //search for elements, get SearchItem's collection
-        $DB = MysqlBlogDatabase::getInstance();
+        $DB = MysqlDatabase::getInstance();
         $search_result_collection = $DB->search($search_query);
         $args["search_items"] = $search_result_collection;
 
