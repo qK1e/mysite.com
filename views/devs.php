@@ -84,7 +84,7 @@
                 }
                 ?>
             <div class="dev-list__dev row p-3 mt-2">
-                <div class="col-3">
+                <div class="dev-list__photo-container col-3">
                     <img class="dev-list__photo img-thumbnail" src="<?php echo $photo?>">
                 </div>
                 <div class="dev-list__info col-9">
