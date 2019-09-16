@@ -95,20 +95,24 @@
                 </div>
             </div>
             <?php }?>
+
+            <!-- blog pagination -->
+            <?php if(!isset($devs_page)){ $devs_page = 1;}?>
+            <nav aria-label="Page navigation example" class="m-2">
+                <ul class="pagination">
+                    <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page-1?>">Previous</a></li>
+                    <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page?>"><?php echo $devs_page?></a></li>
+                    <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page+1?>"><?php echo $devs_page+1?></a></li>
+                    <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page+2?>"><?php echo $devs_page+2?></a></li>
+                    <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page+1?>">Next</a></li>
+                </ul>
+            </nav>
+            <!-- blog pagination -->
+
         </div>
         <!-- developers section -->
 
-        <!-- blog pagination -->
-        <?php if(!isset($devs_page)){ $devs_page = 1;}?>
-        <nav aria-label="Page navigation example" class="row m-2">
-            <ul class="pagination ml-4">
-                <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page-1?>">Previous</a></li>
-                <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page?>"><?php echo $devs_page?></a></li>
-                <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page+1?>"><?php echo $devs_page+1?></a></li>
-                <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page+2?>"><?php echo $devs_page+2?></a></li>
-                <li class="page-item"><a class="page-link  text-info" href="devs?page=<?php echo $devs_page+1?>">Next</a></li>
-            </ul>
-        </nav>
+
     </section>
 
 

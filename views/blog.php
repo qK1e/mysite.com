@@ -40,7 +40,7 @@
     <section class="content content-clr container-fluid">
         <div class="row">
             <!-- Blog section -->
-            <div class="blogs col-9 container">
+            <div class="blogs container">
                 <!--buttons -->
                 <div class="row justify-content-end">
                     <?php //the buttons that creates new blog. Should be available only to developers and admin(and Ricardo)
@@ -93,7 +93,7 @@
                 </div>
                 <!-- blog pagination -->
                 <nav aria-label="Page navigation example" class="row m-2">
-                    <ul class="pagination ml-4">
+                    <ul class="pagination">
                         <li class="page-item"><a class="page-link  text-info" href="blog?page=<?php echo $blog_page-1?>">Previous</a></li>
                         <li class="page-item"><a class="page-link  text-info" href="blog?page=<?php echo $blog_page?>"><?php echo $blog_page?></a></li>
                         <li class="page-item"><a class="page-link  text-info" href="blog?page=<?php echo $blog_page+1?>"><?php echo $blog_page+1?></a></li>
